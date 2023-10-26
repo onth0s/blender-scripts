@@ -1,6 +1,8 @@
 import bpy
 import os
 import re
+from datetime import datetime
+
 from bpy.props import (FloatProperty, IntProperty, BoolProperty, StringProperty)
 from bpy.types            import (Menu, Operator)
 from bl_operators.presets import AddPresetBase
@@ -8,6 +10,7 @@ from mathutils            import *
 from math                 import *
  
 from AAA_var import *
+
 
 ''' Notes
 
@@ -120,6 +123,14 @@ class RollViewport(Operator):
     camNormal = Vector((0, 0, -1))
 
     temp_degree = 0
+
+        
+    def toDegrees(radians):
+        return radians * (180 / pi)
+    def to360Degrees(test):
+        return radians * (180 / pi)
+
+
     def invoke(self, context, event):
         rv3d = context.space_data.region_3d
         context.window_manager.modal_handler_add(self)
@@ -1300,75 +1311,11 @@ class TestOperator(Operator):
     bl_label = ""
     bl_options = {'REGISTER', 'UNDO'}
 
-    test: IntProperty()
     def execute(self, context):
-        print("--------------------------  EXEC OPS  --------------------------")
-        C   = context
-        D   = bpy.data
-        
-        SEQ = C.scene.sequence_editor.sequences_all['Araburu - Subtitles'].sequences
-        AF  = D.actions['SceneAction'].fcurves
-
-        def print_stuff():
-            i = 1
-            for txt in SEQ:
-                if txt.select:
-                    print("   " + str(i) + " - '" + "(" + txt.name + ") " + txt.text+"'")
-                    i += 1
-
-        # D.actions['SceneAction'].fcurves[6].range()
-        # D.actions['SceneAction'].fcurves[6].select = True
-        # C.scene.sequence_editor.active_strip.channel
-
-        # D.actions['SceneAction'].fcurves[6].keyframe_points[1].co[0] += 1
-
-        def fade_in(offset=3):
-            for txt in SEQ:
-                if txt.select:
-                    bpy.ops.sequencer.fades_add(type='IN')
-                    for i in AF:
-                        if len(i.keyframe_points) > 2:
-                            i.keyframe_points[1].co[0] = i.keyframe_points[0].co[0] + offset
-        def fade_out(offset=3):
-            for txt in SEQ:
-                if txt.select:
-                    bpy.ops.sequencer.fades_add(type='OUT')
-                    for i in AF:
-                        if len(i.keyframe_points) > 2:
-                            i.keyframe_points[2].co[0] = i.keyframe_points[3].co[0] - offset
-                        else:
-                            i.keyframe_points[0].co[0] = i.keyframe_points[1].co[0] - offset
-                            
-       
-        if self.test == 0:
-            pass
-        if self.test == 1:
-            print("fade in:")
-            print_stuff()
-            fade_in()
-        if self.test == 2:
-            print("fade out")
-            print_stuff()
-            fade_out()
-        if self.test == 3:
-            print("fade in + out")
-            print_stuff()            
-            fade_in()
-            fade_out()
+        time = str(datetime.time(datetime.now()))
+        print("test: {}".format(time[:-7]))
 
         return {'FINISHED'}
-    def invoke(self, context, event):
-        context.scene.some_iteration +=1
-        print("--------------------------  INVK OPS ", context.scene.some_iteration, " --------------------------")
-        
-        
-
-        return {'RUNNING_MODAL'}
-
-def toDegrees(radians):
-    return radians * (180 / pi)
-def to360Degrees(test):
-    return radians * (180 / pi)
 
 ''' Preset Operator
 class test(Operator):
