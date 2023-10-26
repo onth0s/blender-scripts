@@ -299,14 +299,14 @@ class VIEW3D_MT_TIMELINE_TEST(Menu):
         pie = layout.menu_pie()
         pie.operator_context = 'EXEC_DEFAULT'
         
-        pie.operator(OPS, text="").test = 0
-        pie.operator(OPS, text="FADE IN + OUT").test = 3
-        pie.operator(OPS, text="").test = 0
-        pie.operator(OPS, text="").test = 0
-        pie.operator(OPS, text="").test = 0
-        pie.operator(OPS, text="FADE IN").test = 1
-        pie.operator(OPS, text="").test = 0
-        pie.operator(OPS, text="FADE OUT").test = 2
+        pie.operator(OPS, text="").testVal = 0
+        pie.operator(OPS, text="FADE IN + OUT").testVal = 3
+        pie.operator(OPS, text="").testVal = 0
+        pie.operator(OPS, text="").testVal = 0
+        pie.operator(OPS, text="").testVal = 0
+        pie.operator(OPS, text="FADE IN").testVal = 1
+        pie.operator(OPS, text="").testVal = 0
+        pie.operator(OPS, text="FADE OUT").testVal = 2
 
 
 class VIEW3D_MT_GP_BRUSHES_PIE(Menu):

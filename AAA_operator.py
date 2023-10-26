@@ -124,12 +124,10 @@ class RollViewport(Operator):
 
     temp_degree = 0
 
-        
     def toDegrees(radians):
         return radians * (180 / pi)
     def to360Degrees(test):
         return radians * (180 / pi)
-
 
     def invoke(self, context, event):
         rv3d = context.space_data.region_3d
@@ -1311,9 +1309,10 @@ class TestOperator(Operator):
     bl_label = ""
     bl_options = {'REGISTER', 'UNDO'}
 
+    testVal: bpy.props.IntProperty()
     def execute(self, context):
         time = str(datetime.time(datetime.now()))
-        print("test: {}".format(time[:-7]))
+        print("{}: {}".format(self.testVal, time[:-7]))
 
         return {'FINISHED'}
 
