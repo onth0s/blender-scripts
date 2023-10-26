@@ -300,11 +300,11 @@ class VIEW3D_MT_TIMELINE_TEST(Menu):
         pie.operator_context = 'EXEC_DEFAULT'
         
         pie.operator(OPS, text="").testVal = 0
-        pie.operator(OPS, text="FADE IN + OUT").testVal = 3
         pie.operator(OPS, text="").testVal = 0
         pie.operator(OPS, text="").testVal = 0
         pie.operator(OPS, text="").testVal = 0
         pie.operator(OPS, text="FADE IN").testVal = 1
+        pie.operator("wm.call_menu", text="Strip Tools").name = "VIEW3D_MT_STRIP_TOOLS"
         pie.operator(OPS, text="").testVal = 0
         pie.operator(OPS, text="FADE OUT").testVal = 2
 

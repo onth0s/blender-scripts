@@ -497,6 +497,18 @@ class VIEW3D_MT_ABOUT_FRAMES(Menu):
             layout.operator_context = 'INVOKE_DEFAULT'
             layout.operator("anim.previewrange_set", text="W - Set Bounds")
 
+class VIEW3D_MT_STRIP_TOOLS(Menu):
+    bl_label = "Strip Tools"
+    def draw(self, context):
+        lyt = self.layout
+        # lyt.operator_context = 'EXEC_DEFAULT'
+        lyt.operator_context = 'INVOKE_REGION_WIN'
+
+        props = lyt.operator("sequencer.split", text="E - Split")
+        props.type = 'SOFT'
+    
+        # bpy.ops.sequencer.split(type='SOFT', side='RIGHT')
+
 class VIEW3D_MT_GP_OPS(Menu):
     bl_label = ""
     def draw(self, context):
@@ -769,6 +781,8 @@ classes = (
     
     VIEW3D_MT_GP_TOOLS,
     VIEW3D_MT_GP_OPS,
+
+    VIEW3D_MT_STRIP_TOOLS,
 
     VIEW3D_MT_ABOUT_FRAMES,
     VIEW3D_MT_GRAPH_EDITOR_TRANSFORM,
