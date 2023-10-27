@@ -508,6 +508,11 @@ class VIEW3D_MT_STRIP_TOOLS(Menu):
         props.type = 'SOFT'
     
         # bpy.ops.sequencer.split(type='SOFT', side='RIGHT')
+class VIEW3D_MT_SEQUENCER_CONDITIONS(Menu):
+    bl_label = "Strip Tools"
+    def draw(self, context):
+        lyt = self.layout
+        lyt.operator("aaa.conditions_switcher_sequencer", text="Q - Ignore Markers")
 
 class VIEW3D_MT_GP_OPS(Menu):
     bl_label = ""
@@ -782,6 +787,7 @@ classes = (
     VIEW3D_MT_GP_TOOLS,
     VIEW3D_MT_GP_OPS,
 
+    VIEW3D_MT_SEQUENCER_CONDITIONS, 
     VIEW3D_MT_STRIP_TOOLS,
 
     VIEW3D_MT_ABOUT_FRAMES,

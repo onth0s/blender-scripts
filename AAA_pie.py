@@ -36,7 +36,7 @@ class PIE_MT_KEY_CONDITIONS(Menu):
 
         pie.operator(CN, text="").cond=""
         pie.operator(CN, text="Transform").cond="TRANSFORM"
-        pie.operator(CN, text="").cond=""
+        pie.operator("wm.call_menu", text="Sequencer Conds").name = "VIEW3D_MT_SEQUENCER_CONDITIONS"
         pie.operator(CN, text="").cond=""
         pie.operator(CN, text="").cond=""
         pie.operator(CN, text="Layers").cond="LAYERS"

@@ -1059,6 +1059,16 @@ class CONDITIONS_SWITCHER(Operator):
     def execute(self, context):
         context.scene.conditions = self.cond            
         return {'FINISHED'}
+class CONDITIONS_SWITCHER_SEQUENCER(Operator):
+    bl_idname = "aaa.conditions_switcher_sequencer"
+    bl_label = "CONDITIONS_SWITCHER_SEQUENCER"
+    bl_options = {'REGISTER'}
+
+    cond: bpy.props.StringProperty()
+    def execute(self, context):
+        context.scene.markersExist = not context.scene.markersExist
+        print(context.scene.markersExist)
+        return {'FINISHED'}
 
 # shift, ctrl, alt
 # thats the order
@@ -1173,7 +1183,7 @@ class GLOBAL_SHIFT_E(Operator):
         if A in 'VIEW_3D':
             pass
         if A in 'SEQUENCE_EDITOR':
-            if SN.timeline_markers.items():
+            if SN.timeline_markers.items() and SN.markersExist:
                 # 'loop_frames' is a BoolProperty in 'AAA_settings'
                 if SN.loop_frames:
                     temp_list = []
@@ -1205,7 +1215,7 @@ class GLOBAL_SHIFT_Q(Operator):
         if A in 'IMAGE_EDITOR':
             C.space_data.image.render_slots.active_index += 1
         if A in 'SEQUENCE_EDITOR':
-            if SN.timeline_markers.items():
+            if SN.timeline_markers.items() and SN.markersExist:
                 # 'loop_frames' is a BoolProperty in 'AAA_settings'
                 if SN.loop_frames:
                     temp_list = []
@@ -1345,9 +1355,8 @@ classes = (
     GLOBAL_Q,
     GLOBAL_E,
 
-
+    CONDITIONS_SWITCHER_SEQUENCER,
     CONDITIONS_SWITCHER,
-    
 
     PresetFrameRangePreviewMove,
     PresetFrameRangePreviewOverwrite,

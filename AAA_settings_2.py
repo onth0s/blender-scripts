@@ -53,6 +53,7 @@ class TestSettings(PropertyGroup):
     bpy.types.Scene.rest_layers_opacity   = FloatProperty(update=updateGPLayerOpacity, min=0, max=1, default=1)
 
     bpy.types.Scene.conditions            = StringProperty(update=dummyUpdate)
+    bpy.types.Scene.markersExist          = BoolProperty(update=dummyUpdate)
 
     bpy.types.Scene.loop_frames           = BoolProperty(default=False)
     bpy.types.Scene.panel_info_show       = BoolProperty()
