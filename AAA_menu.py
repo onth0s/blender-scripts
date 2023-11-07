@@ -342,6 +342,7 @@ class VIEW3D_MT_COMMON_MODELING_TOOLS(Menu):
         layout.operator("aaa.common_tools", text="E - Connect Path").name="CONNECT_PATH"
         layout.operator("aaa.common_tools", text="Q - Duplicate").name="DUPLICATE"
         layout.operator("aaa.common_tools", text="X - Subdivide").name="SUBDIVIDE"
+        layout.operator("aaa.common_tools", text="Z - Remove Doubles").name="REMOVE_DOUBLES"
 
 class VIEW3D_MT_CURSOR_POSITION(Menu):
     bl_label = "Cursor Position"

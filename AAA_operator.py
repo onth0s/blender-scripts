@@ -254,6 +254,8 @@ class CommonTools(Operator):
             bpy.ops.mesh.duplicate_move('INVOKE_DEFAULT')
         if self.name == "SUBDIVIDE":
             bpy.ops.mesh.subdivide('INVOKE_DEFAULT')
+        if self.name == "REMOVE_DOUBLES":
+            bpy.ops.mesh.remove_doubles('INVOKE_DEFAULT')
         return {'FINISHED'}
 
 class DyntopoDetailing(Operator):
