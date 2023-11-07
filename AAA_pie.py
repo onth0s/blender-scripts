@@ -150,17 +150,17 @@ class PIE_MT_S(Menu):
         pie = layout.menu_pie()
 
         # ------------------------   LEFT   --------------------------------- #
-        if M in (OBJ, MHE, LCE):
+        if M in (OBJ, MHE, LCE, CVE):
             pie.operator(PT, text="Orientation")\
                 .name="VIEW3D_PT_transform_orientations"
-        if M in (MHS, MHW, MHV, MHT, ARE, ARP, CVE):
+        if M in (MHS, MHW, MHV, MHT, ARE, ARP):
             pie.operator(MT, text="").name=""
         if M in (GPE, GPS, GPW, GPP):
             pie.operator(MT, text="Layers").name="VIEW3D_MT_GP_LAYERS_1"
         # ------------------------   RIGHT   -------------------------------- #
-        if M in (OBJ, MHT, MHW, MHV, ARE, ARP, CVE, LCE):
+        if M in (OBJ, MHT, MHW, MHV, ARE, ARP, LCE):
             pie.operator(MT, text="").name=""
-        if M in (MHE):
+        if M in (MHE, CVE):
             pie.operator(MT, text="Tools").name="VIEW3D_MT_COMMON_MODELING_TOOLS"
         if M in (MHS):
             pie.operator(MT, text="Some Brushes").name="VIEW3D_MT_SOME_BRUSHES"
