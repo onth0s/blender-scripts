@@ -68,6 +68,7 @@ class VIEW3D_MT_SELECT(Menu):
                 layout.operator("object.select_all", text="A - All").action='SELECT'
                 layout.operator("object.select_all", text="S - None").action='DESELECT'
                 layout.operator("object.select_all", text="D - Invert").action='INVERT'
+                layout.operator("object.select_grouped", text="Q - Select Grouped").type='PARENT'
             if M in MHE:
                 layout.operator("mesh.select_all", text="A - All").action='SELECT'
                 layout.operator("mesh.select_all", text="S - None").action='DESELECT'

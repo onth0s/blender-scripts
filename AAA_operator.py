@@ -36,41 +36,42 @@ class ToggleOverlays(Operator):
     bl_label = ""
     bl_options = {'REGISTER'}
 
-    '''this should be an arbitrary preset created by the user (or just a removable default), not this hard coded contingent bullshit'''
-    # ^ it's almost done. Now I know how to set up arbitrary presets of any (primitive) data type
-
     header: bpy.props.BoolProperty()
     def execute(self, context):
-        if self.header:
-            context.space_data.show_region_header = not context.space_data.show_region_header
-        else:
-            context.space_data.overlay.show_ortho_grid = not context.space_data.overlay.show_ortho_grid
-
-            context.space_data.overlay.show_floor = not context.space_data.overlay.show_floor
-
-            context.space_data.overlay.show_axis_x = not context.space_data.overlay.show_axis_x
-            context.space_data.overlay.show_axis_y = not context.space_data.overlay.show_axis_y
-
-
-
-
-
-            context.space_data.overlay.show_overlays = not context.space_data.overlay.show_overlays
-            context.space_data.show_gizmo = not context.space_data.show_gizmo
+        CSD = context.space_data
+        CS  = context.scene
         
-            context.space_data.show_gizmo_navigate = not context.space_data.show_gizmo_navigate
+        if self.header:
+            CSD.show_region_header = not CSD.show_region_header
+        else:
+            # currentState = [
+            #     CSD.overlay.show_overlays,
+            #     CSD.show_gizmo           ,
+            #     CSD.show_region_ui       ,
+            #     CSD.show_region_toolbar  ,
+            # ]
 
-            context.space_data.show_region_hud = not context.space_data.show_region_hud
-            
-            if context.space_data.overlay.show_overlays:
-                context.space_data.overlay.vertex_opacity = 1
-                # bpy.context.space_data.show_region_ui  = True
-                # context.space_data.show_region_toolbar = True
-            else:
-                bpy.context.space_data.show_region_ui    = False
-                # context.space_data.show_region_toolbar = False
+            if not CS.show_bool_toggle: 
+                CS.show_overlays = CSD.overlay.show_overlays
+                CS.show_gizmo    = CSD.show_gizmo          
+                CS.show_t_menu   = CSD.show_region_ui      
+                CS.show_n_menu   = CSD.show_region_toolbar 
 
-                context.space_data.overlay.vertex_opacity = 0
+                CSD.overlay.show_overlays = False
+                CSD.show_gizmo            = False
+                CSD.show_region_ui        = False
+                CSD.show_region_toolbar   = False
+            else: 
+                CSD.overlay.show_overlays = CS.show_overlays
+                CSD.show_gizmo            = CS.show_gizmo    
+                CSD.show_region_ui        = CS.show_t_menu   
+                CSD.show_region_toolbar   = CS.show_n_menu   
+
+            CS.show_bool_toggle = not CS.show_bool_toggle
+
+            # print("currentState: {}".format(currentState))
+            # print("boolToggle: {}".format(CS.show_bool_toggle))
+           
         return {'FINISHED'}
 class ToggleSolidWireframe(Operator):
     bl_idname = "aaa.toggle_solid_wireframe"
@@ -1071,7 +1072,6 @@ class CONDITIONS_SWITCHER_SEQUENCER(Operator):
     bl_label = "CONDITIONS_SWITCHER_SEQUENCER"
     bl_options = {'REGISTER'}
 
-    cond: bpy.props.StringProperty()
     def execute(self, context):
         context.scene.markersExist = not context.scene.markersExist
         print(context.scene.markersExist)

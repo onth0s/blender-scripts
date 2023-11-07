@@ -58,6 +58,12 @@ class TestSettings(PropertyGroup):
     bpy.types.Scene.loop_frames           = BoolProperty(default=False)
     bpy.types.Scene.panel_info_show       = BoolProperty()
 
+    bpy.types.Scene.show_overlays = BoolProperty(default=False, update=dummyUpdate)
+    bpy.types.Scene.show_gizmo = BoolProperty(default=False, update=dummyUpdate)
+    bpy.types.Scene.show_t_menu = BoolProperty(default=False, update=dummyUpdate)
+    bpy.types.Scene.show_n_menu = BoolProperty(default=False, update=dummyUpdate)
+    bpy.types.Scene.show_bool_toggle = BoolProperty(default=False, update=dummyUpdate)
+
     bpy.types.Scene.pt_info_1 = BoolProperty(default=False, update=dummyUpdate)
     bpy.types.Scene.pt_info_2 = BoolProperty(default=True, update=dummyUpdate)
     bpy.types.Scene.pt_info_3 = BoolProperty(default=True, update=dummyUpdate)
