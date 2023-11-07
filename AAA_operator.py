@@ -112,6 +112,14 @@ class ToggleXRay(Operator):
         else:
             context.space_data.shading.show_xray = not context.space_data.shading.show_xray
         return {'FINISHED'}
+class ToggleFaceOrientation(Operator):
+    bl_idname = "aaa.toggle_face_orientation"
+    bl_label = ""
+    bl_options = {'REGISTER'}
+
+    def execute(self, context):
+        context.space_data.overlay.show_face_orientation = not context.space_data.overlay.show_face_orientation    
+        return {'FINISHED'}
 
 class RollViewport(Operator):
     bl_idname = "aaa.roll_viewport"
@@ -1437,6 +1445,7 @@ classes = (
     RollAxis,
     RollViewport,
 
+    ToggleFaceOrientation,
     ToggleXRay,
     ToggleWireframeOverlay,
     ToggleSolidWireframe,

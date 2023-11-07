@@ -287,8 +287,6 @@ class VIEW3D_MT_SHADING(Menu):
         layout.operator("aaa.toggle_overlays", text="A - Overlays").header=False
         
         layout.separator()
-        layout.operator("aaa.toggle_xray", text="S - XRay")
-
         if C.scene.solidwireframe:
             solid_wire = "Wireframe"
         else:
@@ -298,6 +296,7 @@ class VIEW3D_MT_SHADING(Menu):
         layout.separator()
         layout.operator("aaa.toggle_wireframe_overlay", text="C - Wireframe").mode="ALL_EDGES"
         layout.operator("aaa.toggle_wireframe_overlay", text="V - Optimal Display").mode="CONTROL_EDGES"
+        layout.operator("aaa.toggle_face_orientation", text="Z - Face Orientation")
 
         if M in (GPE, GPS, GPW):
             layout.separator()
