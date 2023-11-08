@@ -114,6 +114,10 @@ class VIEW3D_MT_SELECT(Menu):
                 layout.operator("lattice.select_all", text="A - All").action='SELECT'
                 layout.operator("lattice.select_all", text="S - None").action='DESELECT'
                 layout.operator("lattice.select_all", text="D - Invert").action='INVERT'
+        if AT == 'NODE_EDITOR':
+            layout.operator("node.select_all", text="A - All").action='SELECT'
+            layout.operator("node.select_all", text="S - None").action='DESELECT'
+            layout.operator("node.select_all", text="D - Invert").action='INVERT'
 
         if AT == 'GRAPH_EDITOR':
             layout.operator("graph.select_all", text="A - All").action='SELECT'
