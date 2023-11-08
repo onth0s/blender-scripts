@@ -110,8 +110,10 @@ class PIE_MT_SPACE(Menu):
         if M in (ALL):
             pie.operator(MN, text="View").name = "VIEW3D_MT_VIEW"
         # ------------------------   TOP-RIGHT   ---------------------------- #
-        if M in (OBJ, ARP, CVE, LCE):
-            pie.operator(MN, text="")
+        if M in (ARP, CVE, LCE):
+            pie.operator(MN, text="nothing yet")
+        if M in (OBJ):
+            pie.operator(MN, text="Object Operations").name = "VIEW3D_MT_OBJECT_OPERATIONS"
         if M in (MHS):
             pie.operator_context = 'EXEC_DEFAULT'
             pie.operator("sculpt.dynamic_topology_toggle", text="D - Dynatopo")

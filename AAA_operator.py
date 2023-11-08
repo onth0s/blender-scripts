@@ -266,6 +266,8 @@ class CommonTools(Operator):
                 bpy.ops.mesh.subdivide('INVOKE_DEFAULT')
             if self.name == "REMOVE_DOUBLES":
                 bpy.ops.mesh.remove_doubles('INVOKE_DEFAULT')
+            if self.name == "SPLIT":
+                bpy.ops.mesh.split('INVOKE_DEFAULT')
         if context.mode == CVE: 
             if self.name == "EXTRUDE":
                 bpy.ops.curve.extrude_move('INVOKE_DEFAULT')

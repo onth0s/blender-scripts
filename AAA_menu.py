@@ -54,6 +54,14 @@ class VIEW3D_MT_MODE(Menu):
             layout.operator(OM, text="A - Object Mode").mode='OBJECT'
             layout.operator(OM, text="S - Edit Mode").mode='EDIT'
 
+class VIEW3D_MT_OBJECT_OPERATIONS(Menu):
+    bl_label = "Object Operations"
+    def draw(self, context):
+        layout = self.layout
+
+        layout.operator("object.parent_set", text="E - Parent Object").type='OBJECT'
+        layout.operator("object.parent_clear", text="Q - Clear Parent").type='CLEAR'
+
 class VIEW3D_MT_SELECT(Menu):
     bl_label = "Select"
     def draw(self, context):
@@ -172,6 +180,7 @@ class VIEW3D_MT_VIEW(Menu):
         layout.separator()
         layout.operator_context = 'INVOKE_DEFAULT'
         layout.operator("view3d.walk", text="F - Walk Navigation")
+        layout.operator("view3d.localview", text="Z - Local View")
 class VIEW3D_MT_VIEW_ALIGN(Menu):
     bl_label = "Align Normal"
     def draw(self, context):
@@ -347,6 +356,7 @@ class VIEW3D_MT_COMMON_MODELING_TOOLS(Menu):
         layout.operator("aaa.common_tools", text="Q - Duplicate").name="DUPLICATE"
         layout.operator("aaa.common_tools", text="X - Subdivide").name="SUBDIVIDE"
         layout.operator("aaa.common_tools", text="Z - Remove Doubles").name="REMOVE_DOUBLES"
+        layout.operator("aaa.common_tools", text="R - Split").name="SPLIT"
 
 class VIEW3D_MT_CURSOR_POSITION(Menu):
     bl_label = "Cursor Position"
@@ -829,6 +839,8 @@ classes = (
     
     VIEW3D_MT_SELECT_MODE,
     VIEW3D_MT_SELECT,
+    
+    VIEW3D_MT_OBJECT_OPERATIONS,
     
     VIEW3D_MT_MODE,
     VIEW3D_MT_WORKSPACE,
