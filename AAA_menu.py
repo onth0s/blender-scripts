@@ -355,6 +355,7 @@ class VIEW3D_MT_COMMON_MODELING_TOOLS(Menu):
         layout.operator("aaa.common_tools", text="E - Connect Path").name="CONNECT_PATH"
         layout.operator("aaa.common_tools", text="Q - Duplicate").name="DUPLICATE"
         layout.operator("aaa.common_tools", text="X - Subdivide").name="SUBDIVIDE"
+        layout.operator("wm.tool_set_by_id", text="F - Spin").name="builtin.spin"
         layout.operator("aaa.common_tools", text="Z - Remove Doubles").name="REMOVE_DOUBLES"
         layout.operator("aaa.common_tools", text="R - Split").name="SPLIT"
 

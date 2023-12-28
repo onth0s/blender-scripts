@@ -1181,7 +1181,7 @@ class GLOBAL_SHIFT_A(Operator):
         M = C.mode
         A = C.area.type
         if A in 'VIEW_3D':
-            if M in (OBJ):
+            if M in (OBJ, MHE):
                 bpy.ops.wm.call_menu_pie(name="VIEW3D_MT_ADD_OBJECT_PIE")
             if M in (GPE, GPS, GPP):
                 bpy.ops.gpencil.layer_move(type='DOWN')
