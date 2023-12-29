@@ -522,6 +522,7 @@ class VIEW3D_MT_STRIP_TOOLS(Menu):
 
         props = lyt.operator("sequencer.split", text="E - Split")
         props.type = 'SOFT'
+        lyt.operator("wm.call_menu", text="Q - Align").name="VIEW3D_MT_VSE_ALIGN"
     
         # bpy.ops.sequencer.split(type='SOFT', side='RIGHT')
 class VIEW3D_MT_SEQUENCER_CONDITIONS(Menu):
@@ -529,6 +530,23 @@ class VIEW3D_MT_SEQUENCER_CONDITIONS(Menu):
     def draw(self, context):
         lyt = self.layout
         lyt.operator("aaa.conditions_switcher_sequencer", text="Q - Ignore Markers")
+
+class VIEW3D_MT_VSE_ALIGN(Menu):
+    bl_label = "Align Strip"
+    def draw(self, context):
+        lyt = self.layout
+        
+        lyt.operator("aaa.vse_align_strip", text="Q - Top Left").location="TOP_LEFT"
+        lyt.operator("aaa.vse_align_strip", text="W - Top Centre").location="TOP_CENTRE"
+        lyt.operator("aaa.vse_align_strip", text="E - Top Right").location="TOP_RIGHT"
+        lyt.separator()
+        lyt.operator("aaa.vse_align_strip", text="A - Middle Left").location="MIDDLE_LEFT"
+        lyt.operator("aaa.vse_align_strip", text="S - Middle Centre").location="MIDDLE_CENTRE"
+        lyt.operator("aaa.vse_align_strip", text="D - Middle Right").location="MIDDLE_RIGHT"
+        lyt.separator()
+        lyt.operator("aaa.vse_align_strip", text="Z - Bottom Left").location="BOTTOM_LEFT"
+        lyt.operator("aaa.vse_align_strip", text="X - Bottom Centre").location="BOTTOM_CENTRE"
+        lyt.operator("aaa.vse_align_strip", text="C - Bottom Right").location="BOTTOM_RIGHT"
 
 class VIEW3D_MT_GP_OPS(Menu):
     bl_label = ""
@@ -802,6 +820,8 @@ classes = (
     
     VIEW3D_MT_GP_TOOLS,
     VIEW3D_MT_GP_OPS,
+
+    VIEW3D_MT_VSE_ALIGN,
 
     VIEW3D_MT_SEQUENCER_CONDITIONS, 
     VIEW3D_MT_STRIP_TOOLS,

@@ -21,6 +21,31 @@ from AAA_var import *
     I need to register the operator and get some flood if i wanna update the Info Editor
 '''
 
+class VSEAlignStrip(Operator):
+    bl_idname = "aaa.vse_align_strip"
+    bl_label = "Align Strip"
+    bl_options = {'REGISTER'}
+    
+    location: bpy.props.StringProperty()
+
+    @classmethod #this shit is necessary
+    def poll(cls, context):
+        strip = context.active_sequence_strip
+
+        tmp = False
+        for sq in bpy.context.scene.sequence_editor.sequences_all:
+            if sq.select:
+                tmp = True
+                break
+
+        # return strip and (strip.type == 'IMAGE')
+        return tmp
+
+    def execute(self, context):
+        print(self.location)
+        print(context.active_sequence_strip)
+        return {'FINISHED'}
+
 class SwitchWorkspace(Operator):
     bl_idname = "aaa.switch_workspace"
     bl_label = ""
@@ -1454,6 +1479,8 @@ classes = (
     ToggleOverlays,
     
     SwitchWorkspace,
+
+    VSEAlignStrip,
 )
 def register():
     for c in classes:
