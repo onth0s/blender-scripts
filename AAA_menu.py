@@ -12,14 +12,14 @@ class VIEW3D_MT_WORKSPACE(Menu):
         WS = "aaa.switch_workspace"
         layout = self.layout
         
-        layout.operator(WS, text="A - Object")   .name="Object"
-        layout.operator(WS, text="D - GPencil")  .name="GPencil"
+        layout.operator(WS, text="A - Main").name="Main"
+        # layout.operator(WS, text="D - GPencil").name="GPencil"
 
         layout.separator()
         layout.operator(WS, text="V - Video Editing").name="Video Editing"
         
-        layout.separator()
-        layout.operator(WS, text="F - Full View").name="Full View"
+        # layout.separator()
+        # layout.operator(WS, text="F - Full View").name="Full View"
 class VIEW3D_MT_MODE(Menu):
     bl_label = "Mode"
     def draw(self, context):
