@@ -38,8 +38,7 @@ class VSEAlignStrip(Operator):
                 tmp = True
                 break
 
-        # return strip and (strip.type == 'IMAGE')
-        return tmp
+        return tmp and (strip.type in ['IMAGE', 'MOVIE'])
 
     def execute(self, context):
         print(self.location)
