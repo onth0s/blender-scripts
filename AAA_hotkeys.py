@@ -93,8 +93,7 @@ def TestKeymap():
 
     # call a pie menu from the timeline. I belive. it looks like it
     # ------------------------   Timeline   ------------------------ #
-    km = kc.keymaps.new('Animation', space_type='EMPTY', region_type='WINDOW',\
-        modal=False)
+    km = kc.keymaps.new('Animation', space_type='EMPTY', region_type='WINDOW')
     
     kmi = km.keymap_items.new(pie, 'A', 'PRESS').properties\
         .name="VIEW3D_MT_ANIMATION_PIE"

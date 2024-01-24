@@ -131,6 +131,7 @@ class VIEW3D_MT_SELECT(Menu):
             layout.operator("graph.select_all", text="A - All").action='SELECT'
             layout.operator("graph.select_all", text="S - None").action='DESELECT'
             layout.operator("graph.select_all", text="D - Invert").action='INVERT'
+            layout.operator("graph.select_linked", text="Q - Linked")
         if AT == 'DOPESHEET_EDITOR':
             layout.operator("action.select_all", text="A - All").action='SELECT'
             layout.operator("action.select_all", text="S - None").action='DESELECT'
