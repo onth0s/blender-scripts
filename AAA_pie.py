@@ -67,6 +67,7 @@ class PIE_MT_SAVE_N_STUFF(Menu):
         pie.operator("wm.read_homefile", text="New File").app_template=""
         pie.operator("wm.append", text="Append")
         pie.operator("aaa.save_incremental", text="Save Incremental")
+        pie.operator("aaa.save_file", text="[...]")
 
 class PIE_MT_SPACE(Menu):
     bl_idname = "PIE_MT_SPACE"
