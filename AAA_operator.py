@@ -41,8 +41,50 @@ class VSEAlignStrip(Operator):
         return tmp and (strip.type in ['IMAGE', 'MOVIE'])
 
     def execute(self, context):
-        print(self.location)
-        print(context.active_sequence_strip)
+        strip = context.active_sequence_strip
+        
+        x = context.scene.render.resolution_x
+        y = context.scene.render.resolution_y
+        
+        width = strip.elements[0].orig_width * strip.transform.scale_x
+        height = strip.elements[0].orig_height * strip.transform.scale_y
+        
+        offset_x = 0
+        offset_y = 0
+
+        if self.location == 'TOP_LEFT':
+            offset_x = (x - width) / 2 * -1   
+            offset_y = (y - height) / 2
+        elif self.location == 'TOP_CENTRE':
+            offset_x = 0
+            offset_y = (y - height) / 2
+        elif self.location == 'TOP_RIGHT':
+            offset_x = (x - width) / 2
+            offset_y = (y - height) / 2
+
+        elif self.location == 'MIDDLE_LEFT':
+            offset_x = (x - width) / 2 * -1   
+            offset_y = 0
+        elif self.location == 'MIDDLE_CENTRE':
+            offset_x = 0
+            offset_y = 0
+        elif self.location == 'MIDDLE_RIGHT':
+            offset_x = (x - width) / 2
+            offset_y = 0
+
+        elif self.location == 'BOTTOM_LEFT':
+            offset_x = (x - width) / 2 * -1   
+            offset_y = (y - height) / 2 * -1   
+        elif self.location == 'BOTTOM_CENTRE':
+            offset_x = 0
+            offset_y = (y - height) / 2 * -1   
+        elif self.location == 'BOTTOM_RIGHT':
+            offset_x = (x - width) / 2
+            offset_y = (y - height) / 2 * -1   
+
+        strip.transform.offset_x = offset_x
+        strip.transform.offset_y = offset_y
+
         return {'FINISHED'}
 
 class SwitchWorkspace(Operator):
