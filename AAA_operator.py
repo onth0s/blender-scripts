@@ -118,10 +118,9 @@ class VSECustomFade(Operator):
 
         frame_end = strip.frame_final_end - 1
         frame_end2 = frame_end - FADE_LENGHT
-        
+
+        fc = C.scene.animation_data.action.fcurves.find(datapath) if hasattr(C.scene.animation_data.action, 'fcurves') else bpy.data.actions.new(name="CustomFade")        
         if self.type == 'START':
-            fc = C.scene.animation_data.action.fcurves.find(datapath)
-            
             if hasattr(fc, 'keyframe_points'):
                 if len(fc.keyframe_points) == 2:
                     if int(fc.keyframe_points[0].co.x) == strip.frame_start:
@@ -161,8 +160,6 @@ class VSECustomFade(Operator):
                 fc.keyframe_points[1].handle_left.y  = 1
                 fc.keyframe_points[1].handle_right.y = 1
         elif self.type == 'END':
-            fc = C.scene.animation_data.action.fcurves.find(datapath)
-
             if hasattr(fc, 'keyframe_points'):
                 if len(fc.keyframe_points) == 2:
                     if int(fc.keyframe_points[1].co.x) + 1 == frame_end:
