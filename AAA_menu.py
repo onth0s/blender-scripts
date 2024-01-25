@@ -555,15 +555,16 @@ class VIEW3D_MT_VSE_CUSTOM_FADE(Menu):
     def draw(self, context):
         lyt = self.layout
         
-        lyt.operator("aaa.vse_custom_fade", text="Z - Settings").type="VIEW3D_MT_VSE_CUSTOM_FADE"
-        lyt.separator()
+        # lyt.operator("aaa.vse_custom_fade", text="Z - Settings").type="VIEW3D_MT_VSE_CUSTOM_FADE"
+        # lyt.separator()
         lyt.operator("aaa.vse_custom_fade", text="A - Fade In").type="START"
         lyt.operator("aaa.vse_custom_fade", text="S - Fade In & Out").type="BOTH"
         lyt.operator("aaa.vse_custom_fade", text="D - Fade Out").type="END"
         lyt.separator()
-        lyt.operator("aaa.vse_custom_fade_clear", text="Q - Clear Fade In").type="START"
-        lyt.operator("aaa.vse_custom_fade_clear", text="W - Clear Fade In & Out").type="BOTH"
-        lyt.operator("aaa.vse_custom_fade_clear", text="E - Clear Fade Out").type="END"
+        lyt.operator("aaa.vse_custom_fade_clear", text="W - Clear").type="BOTH"
+        # lyt.operator("aaa.vse_custom_fade_clear", text="Q - Clear Fade In").type="START"
+        # lyt.operator("aaa.vse_custom_fade_clear", text="W - Clear Fade In & Out").type="BOTH"
+        # lyt.operator("aaa.vse_custom_fade_clear", text="E - Clear Fade Out").type="END"
 class VIEW3D_MT_VSE_CUSTOM_FADE_SETTINGS(Menu):
     bl_label = "Custom Fade Settings"
     def draw(self, context):

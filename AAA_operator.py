@@ -133,10 +133,10 @@ class VSECustomFade(Operator):
                         fc.keyframe_points[0].co.y = 0      
                         fc.keyframe_points[1].co.y = 1
 
-                        fc.keyframe_points[0].handle_left.x  = frame_start - (FADE_LENGHT / 3) 
-                        fc.keyframe_points[0].handle_right.x = frame_start + (FADE_LENGHT / 3) 
-                        fc.keyframe_points[1].handle_left.x  = frame_start2 - (FADE_LENGHT) / 3
-                        fc.keyframe_points[1].handle_right.x = frame_start2 + (FADE_LENGHT) / 3
+                        fc.keyframe_points[0].handle_left.x  = frame_start  - (FADE_LENGHT / 3) 
+                        fc.keyframe_points[0].handle_right.x = frame_start  + (FADE_LENGHT / 3) 
+                        fc.keyframe_points[1].handle_left.x  = frame_start2 - (FADE_LENGHT / 3)
+                        fc.keyframe_points[1].handle_right.x = frame_start2 + (FADE_LENGHT / 3)
                         
                         fc.keyframe_points[2].handle_left.x = frame_end2 - (FADE_LENGHT / 3) 
 
@@ -147,8 +147,8 @@ class VSECustomFade(Operator):
                 else: 
                     bpy.ops.error.message('INVOKE_DEFAULT', type="Error", message="incorrect number of keyframes, something is fucked (aaa.vse_custom_fade)")
             else: 
-                strip.keyframe_insert(data_path='blend_alpha', frame=strip.frame_start)
-                strip.keyframe_insert(data_path='blend_alpha', frame=strip.frame_start + FADE_LENGHT)
+                strip.keyframe_insert(data_path='blend_alpha', frame=frame_start)
+                strip.keyframe_insert(data_path='blend_alpha', frame=frame_start2)
 
                 fc = C.scene.animation_data.action.fcurves.find(datapath)
 
@@ -159,6 +159,7 @@ class VSECustomFade(Operator):
                 fc.keyframe_points[0].handle_right.y = 0
                 fc.keyframe_points[1].handle_left.y  = 1
                 fc.keyframe_points[1].handle_right.y = 1
+       
         elif self.type == 'END':
             if hasattr(fc, 'keyframe_points'):
                 if len(fc.keyframe_points) == 2:
@@ -198,8 +199,37 @@ class VSECustomFade(Operator):
                 fc.keyframe_points[0].handle_right.y = 1
                 fc.keyframe_points[1].handle_left.y  = 0
                 fc.keyframe_points[1].handle_right.y = 0
-        elif self.type == 'BOTH':
-            pass
+        
+        elif self.type == 'BOTH' and not hasattr(fc, 'keyframe_points'):
+            strip.keyframe_insert(data_path='blend_alpha', frame=frame_start)
+            strip.keyframe_insert(data_path='blend_alpha', frame=frame_start2)
+            strip.keyframe_insert(data_path='blend_alpha', frame=frame_end)
+            strip.keyframe_insert(data_path='blend_alpha', frame=frame_end2)
+           
+            fc = C.scene.animation_data.action.fcurves.find(datapath)
+
+            fc.keyframe_points[0].co.y = 0      
+            fc.keyframe_points[1].co.y = 1
+            fc.keyframe_points[2].co.y = 1      
+            fc.keyframe_points[3].co.y = 0
+
+            fc.keyframe_points[0].handle_left.y  = 0
+            fc.keyframe_points[0].handle_right.y = 0
+            fc.keyframe_points[1].handle_left.y  = 1
+            fc.keyframe_points[1].handle_right.y = 1
+            fc.keyframe_points[2].handle_left.y  = 1
+            fc.keyframe_points[2].handle_right.y = 1
+            fc.keyframe_points[3].handle_left.y  = 0
+            fc.keyframe_points[3].handle_right.y = 0
+
+            fc.keyframe_points[0].handle_left.x  = frame_start  - (FADE_LENGHT / 3) 
+            fc.keyframe_points[0].handle_right.x = frame_start  + (FADE_LENGHT / 3) 
+            fc.keyframe_points[1].handle_left.x  = frame_start2 - (FADE_LENGHT / 3)
+            fc.keyframe_points[1].handle_right.x = frame_start2 + (FADE_LENGHT / 3)
+            fc.keyframe_points[2].handle_left.x  = frame_end2   - (FADE_LENGHT / 3) 
+            fc.keyframe_points[2].handle_right.x = frame_end2   + (FADE_LENGHT / 3) 
+            fc.keyframe_points[3].handle_left.x  = frame_end    - (FADE_LENGHT / 3)
+            fc.keyframe_points[3].handle_right.x = frame_end    + (FADE_LENGHT / 3)
 
         return {'FINISHED'}
 class VSECustomFadeClear(Operator):
@@ -209,14 +239,22 @@ class VSECustomFadeClear(Operator):
     
     type: bpy.props.StringProperty()
 
+
     def execute(self, context):
         C = context 
+        
+        strip = C.active_sequence_strip
+        datapath = strip.path_from_id("blend_alpha")
+     
         if self.type == 'START':
             pass
         elif self.type == 'END':
             pass
         elif self.type == 'BOTH':
+            # fc = C.scene.animation_data.action.fcurves.find(datapath)
+            # fc.keyframe_points.clear()
             pass
+
 
         return {'FINISHED'}
     
@@ -1465,9 +1503,19 @@ class GLOBAL_CTRL_F(Operator):
     bl_label = "GLOBAL_CTRL_F"
     bl_options = {'UNDO'}
     def execute(self, context):
-        M = context.mode
+        C = context
+        M = C.mode
+        
         if M in (GPE, GPS, GPP):
             bpy.ops.aaa.toggle_prop(prop="context.active_gpencil_layer.hide")
+        elif C.active_sequence_strip.select:
+            for i in range(20):
+                # print(f">>{i if i > 10 else f"0{i}"}: {strip.channel}")
+                print(i)
+
+            # strip = C.active_sequence_strip
+            # C.scene.sequence_editor.channels[strip.channel].mute = not C.scene.sequence_editor.channels[strip.channel].mute
+
         return {'FINISHED'}
 class GLOBAL_CTRL_ALT_H(Operator):
     bl_idname = "aaa.ctrl_alt_h"

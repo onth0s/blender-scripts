@@ -102,6 +102,12 @@ def TestKeymap():
     
     kmi = km.keymap_items.new(pie, 'SPACE', 'PRESS').properties\
         .name="VIEW3D_MT_TIMELINE_PIE"
+    
+    # ------------------------   Preview?   ------------------------ #
+    # km = kc.keymaps.new('Preview', SEQUENCE_EDITOR='EMPTY', region_type='PREVIEW')
+    
+    # kmi = km.keymap_items.new(pie, 'S', 'PRESS').properties\
+    #     .name="VIEW3D_MT_TIMELINE_TEST"
    
 def register():
     TestKeymap()
