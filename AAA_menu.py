@@ -523,7 +523,9 @@ class VIEW3D_MT_STRIP_TOOLS(Menu):
 
         props = lyt.operator("sequencer.split", text="E - Split")
         props.type = 'SOFT'
+
         lyt.operator("wm.call_menu", text="Q - Align").name="VIEW3D_MT_VSE_ALIGN"
+        lyt.operator("wm.call_menu", text="F - Fade").name="VIEW3D_MT_VSE_CUSTOM_FADE"
     
         # bpy.ops.sequencer.split(type='SOFT', side='RIGHT')
 class VIEW3D_MT_SEQUENCER_CONDITIONS(Menu):
@@ -548,6 +550,24 @@ class VIEW3D_MT_VSE_ALIGN(Menu):
         lyt.operator("aaa.vse_align_strip", text="Z - Bottom Left").location="BOTTOM_LEFT"
         lyt.operator("aaa.vse_align_strip", text="X - Bottom Centre").location="BOTTOM_CENTRE"
         lyt.operator("aaa.vse_align_strip", text="C - Bottom Right").location="BOTTOM_RIGHT"
+class VIEW3D_MT_VSE_CUSTOM_FADE(Menu):
+    bl_label = "Custom Fade"
+    def draw(self, context):
+        lyt = self.layout
+        
+        lyt.operator("aaa.vse_custom_fade", text="Z - Settings").type="VIEW3D_MT_VSE_CUSTOM_FADE"
+        lyt.separator()
+        lyt.operator("aaa.vse_custom_fade", text="A - Fade In").type="START"
+        lyt.operator("aaa.vse_custom_fade", text="S - Fade In & Out").type="BOTH"
+        lyt.operator("aaa.vse_custom_fade", text="D - Fade Out").type="END"
+        lyt.separator()
+        lyt.operator("aaa.vse_custom_fade_clear", text="Q - Clear Fade In").type="START"
+        lyt.operator("aaa.vse_custom_fade_clear", text="W - Clear Fade In & Out").type="BOTH"
+        lyt.operator("aaa.vse_custom_fade_clear", text="E - Clear Fade Out").type="END"
+class VIEW3D_MT_VSE_CUSTOM_FADE_SETTINGS(Menu):
+    bl_label = "Custom Fade Settings"
+    def draw(self, context):
+        lyt = self.layout
 
 class VIEW3D_MT_GP_OPS(Menu):
     bl_label = ""
@@ -822,6 +842,8 @@ classes = (
     VIEW3D_MT_GP_TOOLS,
     VIEW3D_MT_GP_OPS,
 
+    VIEW3D_MT_VSE_CUSTOM_FADE_SETTINGS,
+    VIEW3D_MT_VSE_CUSTOM_FADE,
     VIEW3D_MT_VSE_ALIGN,
 
     VIEW3D_MT_SEQUENCER_CONDITIONS, 
