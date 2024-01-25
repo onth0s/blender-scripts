@@ -106,58 +106,81 @@ class VSECustomFade(Operator):
         return tmp and (strip.type in ['TEXT', 'IMAGE', 'MOVIE'])
     
     def execute(self, context):
-        # context.active_sequence_strip
-
-        # C.active_sequence_strip.frame_start
-        # C.active_sequence_strip.frame_final_end
-
-        # C.scene.sequence_editor.sequences['TEXTS'].sequences['TXT_1_A'].blend_alpha
-        # C.scene.sequence_editor.sequences['TEXTS'].sequences['TXT_1_A'].path_from_id('blend_alpha')
-        # # are there keyframes?
-       
-        # datapath = C.active_sequence_strip.path_from_id('blend_alpha')
-        # fc = C.scene.animation_data.action.fcurves.find(datapath)
-        # # this gets the 'global path' or some shit, which seems
-        # # to be needed to get the keyframes
-        # # 'sequence_editor.sequences_all["TXT_1_A"].blend_alpha'
-
-
-
-        # C.scene.animation_data.action.fcurves.find(C.active_sequence_strip.path_from_id("blend_alpha"))
+        #fc = C.scene.animation_data.action.fcurves.find(C.active_sequence_strip.path_from_id("blend_alpha"))
         C = context 
-        strip = C.active_sequence_strip
-
         FADE_LENGHT = 6
+        
+        strip = C.active_sequence_strip
         datapath = strip.path_from_id("blend_alpha")
 
+        frame_start = strip.frame_start
+        frame_start2 = frame_start + FADE_LENGHT
+
+        frame_end = strip.frame_final_end - 1
+        frame_end2 = frame_end - FADE_LENGHT
+        
         if self.type == 'START':
-            strip.keyframe_insert(data_path='blend_alpha', frame=strip.frame_start)
-            strip.keyframe_insert(data_path='blend_alpha', frame=strip.frame_start + FADE_LENGHT)
-            
             fc = C.scene.animation_data.action.fcurves.find(datapath)
+            
+            if hasattr(fc, 'keyframe_points'):
+                if len(fc.keyframe_points) == 2:
+                    if int(fc.keyframe_points[0].co.x) == strip.frame_start:
+                        # if the first keyframe is at the start of the active stip, then we know it a fade in
+                        pass
+                    else:
+                        strip.keyframe_insert(data_path='blend_alpha', frame=frame_start)
+                        strip.keyframe_insert(data_path='blend_alpha', frame=frame_start2)
 
-            fc.keyframe_points[0].co.y = 0
-            fc.keyframe_points[1].co.y = 1
+                        fc.keyframe_points[0].co.y = 0      
+                        fc.keyframe_points[1].co.y = 1
 
-            fc.keyframe_points[0].handle_left.y  = 0
-            fc.keyframe_points[0].handle_right.y = 0
-            fc.keyframe_points[1].handle_left.y  = 1
-            fc.keyframe_points[1].handle_right.y = 1
+                        fc.keyframe_points[0].handle_left.x  = frame_start - (FADE_LENGHT / 3) 
+                        fc.keyframe_points[0].handle_right.x = frame_start + (FADE_LENGHT / 3) 
+                        fc.keyframe_points[1].handle_left.x  = frame_start2 - (FADE_LENGHT) / 3
+                        fc.keyframe_points[1].handle_right.x = frame_start2 + (FADE_LENGHT) / 3
+                        
+                        fc.keyframe_points[2].handle_left.x = frame_end2 - (FADE_LENGHT / 3) 
 
+                        fc.keyframe_points[0].handle_left.y  = 0
+                        fc.keyframe_points[0].handle_right.y = 0
+                        fc.keyframe_points[1].handle_left.y  = 1
+                        fc.keyframe_points[1].handle_right.y = 1
+                else: 
+                    bpy.ops.error.message('INVOKE_DEFAULT', type="Error", message="incorrect number of keyframes, something is fucked (aaa.vse_custom_fade)")
+            else: 
+                strip.keyframe_insert(data_path='blend_alpha', frame=strip.frame_start)
+                strip.keyframe_insert(data_path='blend_alpha', frame=strip.frame_start + FADE_LENGHT)
+
+                fc = C.scene.animation_data.action.fcurves.find(datapath)
+
+                fc.keyframe_points[0].co.y = 0      
+                fc.keyframe_points[1].co.y = 1
+
+                fc.keyframe_points[0].handle_left.y  = 0
+                fc.keyframe_points[0].handle_right.y = 0
+                fc.keyframe_points[1].handle_left.y  = 1
+                fc.keyframe_points[1].handle_right.y = 1
         elif self.type == 'END':
             fc = C.scene.animation_data.action.fcurves.find(datapath)
 
             if hasattr(fc, 'keyframe_points'):
                 if len(fc.keyframe_points) == 2:
-                    if int(fc.keyframe_points[1].co.x) + 1 == strip.frame_final_end:
+                    if int(fc.keyframe_points[1].co.x) + 1 == frame_end:
                         # if the last keyframe is at the end of the active stip, then we know it a fade out
                         pass
                     else:
-                        strip.keyframe_insert(data_path='blend_alpha', frame=strip.frame_final_end - 1)
-                        strip.keyframe_insert(data_path='blend_alpha', frame=strip.frame_final_end - 1 - FADE_LENGHT)
+                        strip.keyframe_insert(data_path='blend_alpha', frame=frame_end)
+                        strip.keyframe_insert(data_path='blend_alpha', frame=frame_end2)
 
                         fc.keyframe_points[0 + 2].co.y = 1      
                         fc.keyframe_points[1 + 2].co.y = 0
+
+                        fc.keyframe_points[0 + 2].handle_left.x  = frame_end2 - (FADE_LENGHT / 3) 
+                        fc.keyframe_points[0 + 2].handle_right.x = frame_end2 + (FADE_LENGHT / 3) 
+                        fc.keyframe_points[1 + 2].handle_left.x  = frame_end  - (FADE_LENGHT / 3)
+                        fc.keyframe_points[1 + 2].handle_right.x = frame_end  + (FADE_LENGHT / 3)
+
+                        fc.keyframe_points[1].handle_right.x = frame_start2 + (FADE_LENGHT / 3)
 
                         fc.keyframe_points[0 + 2].handle_left.y  = 1
                         fc.keyframe_points[0 + 2].handle_right.y = 1
@@ -166,8 +189,8 @@ class VSECustomFade(Operator):
                 else: 
                     bpy.ops.error.message('INVOKE_DEFAULT', type="Error", message="incorrect number of keyframes, something is fucked (aaa.vse_custom_fade)")
             else: 
-                strip.keyframe_insert(data_path='blend_alpha', frame=strip.frame_final_end - 1)
-                strip.keyframe_insert(data_path='blend_alpha', frame=strip.frame_final_end - 1 - FADE_LENGHT)
+                strip.keyframe_insert(data_path='blend_alpha', frame=frame_end - 1)
+                strip.keyframe_insert(data_path='blend_alpha', frame=frame_end2)
 
                 fc = C.scene.animation_data.action.fcurves.find(datapath)
 
@@ -178,6 +201,8 @@ class VSECustomFade(Operator):
                 fc.keyframe_points[0].handle_right.y = 1
                 fc.keyframe_points[1].handle_left.y  = 0
                 fc.keyframe_points[1].handle_right.y = 0
+        elif self.type == 'BOTH':
+            pass
 
         return {'FINISHED'}
 class VSECustomFadeClear(Operator):
