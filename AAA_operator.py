@@ -1532,13 +1532,17 @@ class GLOBAL_CTRL_F(Operator):
     def execute(self, context):
         C = context
         M = C.mode
-        
+        strip = C.active_sequence_strip
+
         if M in (GPE, GPS, GPP):
             bpy.ops.aaa.toggle_prop(prop="context.active_gpencil_layer.hide")
         
-        elif C.active_sequence_strip.select:
-            strip = C.active_sequence_strip
-            C.scene.sequence_editor.channels[strip.channel].mute = not C.scene.sequence_editor.channels[strip.channel].mute
+        elif strip.select:
+            if strip.parent_meta():
+                C.scene.sequence_editor.sequences_all[strip.parent_meta().name].channels[strip.channel].mute = not C.scene.sequence_editor.sequences_all[strip.parent_meta().name].channels[strip.channel].mute
+            else:
+                strip = strip
+                C.scene.sequence_editor.channels[strip.channel].mute = not C.scene.sequence_editor.channels[strip.channel].mute
 
             # for i in range(20):
             #     # print(f">>{i if i > 10 else f"0{i}"}: {strip.channel}")
