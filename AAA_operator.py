@@ -1521,7 +1521,13 @@ class GLOBAL_SHIFT_ALT_Z(Operator):
     def execute(self, context):
         C = context
         strip = C.active_sequence_strip
+        
         if strip.select: 
+            if strip.parent_meta():
+                C.scene.sequence_editor.sequences_all[strip.parent_meta().name].channels[strip.channel].lock = not C.scene.sequence_editor.sequences_all[strip.parent_meta().name].channels[strip.channel].lock
+            else:
+                C.scene.sequence_editor.channels[strip.channel].lock = not C.scene.sequence_editor.channels[strip.channel].lock
+
             C.scene.sequence_editor.channels[strip.channel].lock = not C.scene.sequence_editor.channels[strip.channel].lock
         return {'FINISHED'}
 
