@@ -1436,7 +1436,7 @@ class GLOBAL_SHIFT_E(Operator):
         SN = C.scene
         if A in 'VIEW_3D':
             pass
-        if A in 'SEQUENCE_EDITOR':
+        if A in ('SEQUENCE_EDITOR', 'GRAPH_EDITOR'):
             if SN.timeline_markers.items() and SN.markersExist:
                 # 'loop_frames' is a BoolProperty in 'AAA_settings'
                 if SN.loop_frames:
@@ -1468,7 +1468,7 @@ class GLOBAL_SHIFT_Q(Operator):
                 bpy.ops.gpencil.layer_move(type='UP')
         if A in 'IMAGE_EDITOR':
             C.space_data.image.render_slots.active_index += 1
-        if A in 'SEQUENCE_EDITOR':
+        if A in ('SEQUENCE_EDITOR', 'GRAPH_EDITOR'):
             if SN.timeline_markers.items() and SN.markersExist:
                 # 'loop_frames' is a BoolProperty in 'AAA_settings'
                 if SN.loop_frames:
