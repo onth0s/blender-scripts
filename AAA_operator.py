@@ -1543,7 +1543,7 @@ class GLOBAL_CTRL_F(Operator):
         if M in (GPE, GPS, GPP):
             bpy.ops.aaa.toggle_prop(prop="context.active_gpencil_layer.hide")
         
-        elif strip.select:
+        elif hasattr(strip, 'select') and strip.select:
             if strip.parent_meta():
                 C.scene.sequence_editor.sequences_all[strip.parent_meta().name].channels[strip.channel].mute = not C.scene.sequence_editor.sequences_all[strip.parent_meta().name].channels[strip.channel].mute
             else:
