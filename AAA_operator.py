@@ -1498,6 +1498,33 @@ class GLOBAL_SHIFT_ALT_F(Operator):
             self.report({'INFO'}, "Layer '"+from_layer+"' Deleted")
         return {'FINISHED'}
 
+class GLOBAL_SHIFT_CTRL_F(Operator):
+    bl_idname = "aaa.shift_ctrl_f"
+    bl_label = "GLOBAL_SHIFT_CTRL_F"
+    bl_options = {'UNDO'}
+    def execute(self, context):
+        C = context
+        strip = C.active_sequence_strip
+        if strip.select: 
+            if strip.blend_alpha == 0:
+                strip.blend_alpha = 1
+            elif strip.blend_alpha == 1: 
+                strip.blend_alpha = 0
+            else:
+                strip.blend_alpha = 1
+        return {'FINISHED'}
+    
+class GLOBAL_SHIFT_ALT_Z(Operator):
+    bl_idname = "aaa.shift_alt_z"
+    bl_label = "GLOBAL_SHIFT_ALT_Z"
+    bl_options = {'UNDO'}
+    def execute(self, context):
+        C = context
+        strip = C.active_sequence_strip
+        if strip.select: 
+            C.scene.sequence_editor.channels[strip.channel].lock = not C.scene.sequence_editor.channels[strip.channel].lock
+        return {'FINISHED'}
+
 class GLOBAL_CTRL_F(Operator):
     bl_idname = "aaa.ctrl_f"
     bl_label = "GLOBAL_CTRL_F"
@@ -1508,14 +1535,16 @@ class GLOBAL_CTRL_F(Operator):
         
         if M in (GPE, GPS, GPP):
             bpy.ops.aaa.toggle_prop(prop="context.active_gpencil_layer.hide")
+        
         elif C.active_sequence_strip.select:
-            for i in range(20):
-                # print(f">>{i if i > 10 else f"0{i}"}: {strip.channel}")
-                print(i)
+            strip = C.active_sequence_strip
+            C.scene.sequence_editor.channels[strip.channel].mute = not C.scene.sequence_editor.channels[strip.channel].mute
 
-            # strip = C.active_sequence_strip
-            # C.scene.sequence_editor.channels[strip.channel].mute = not C.scene.sequence_editor.channels[strip.channel].mute
+            # for i in range(20):
+            #     # print(f">>{i if i > 10 else f"0{i}"}: {strip.channel}")
+            #     print('>>>>>>>>>>>>>>>> select?')
 
+        
         return {'FINISHED'}
 class GLOBAL_CTRL_ALT_H(Operator):
     bl_idname = "aaa.ctrl_alt_h"
@@ -1609,6 +1638,10 @@ classes = (
 
     GLOBAL_CTRL_ALT_H,
     GLOBAL_CTRL_F,
+
+    GLOBAL_SHIFT_CTRL_F,
+
+    GLOBAL_SHIFT_ALT_Z,
 
     GLOBAL_SHIFT_ALT_F,
     GLOBAL_SHIFT_Q,

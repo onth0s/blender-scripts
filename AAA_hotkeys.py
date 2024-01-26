@@ -43,6 +43,10 @@ def TestKeymap():
     kmi = km.keymap_items.new("aaa.shift_alt_f", 'F', 'PRESS', shift=True,\
         alt=True)
     
+    kmi = km.keymap_items.new("aaa.shift_ctrl_f", 'F', 'PRESS', shift=True, ctrl=True)
+    
+    kmi = km.keymap_items.new("aaa.shift_alt_z", 'Z', 'PRESS', shift=True, alt=True)
+
     kmi = km.keymap_items.new("aaa.ctrl_f"    , 'F', 'PRESS', ctrl=True)
     kmi = km.keymap_items.new("aaa.ctrl_alt_h", 'H', 'PRESS', ctrl=True,\
         alt=True)
@@ -104,10 +108,10 @@ def TestKeymap():
         .name="VIEW3D_MT_TIMELINE_PIE"
     
     # ------------------------   Preview?   ------------------------ #
-    # km = kc.keymaps.new('Preview', SEQUENCE_EDITOR='EMPTY', region_type='PREVIEW')
+    km = kc.keymaps.new('Preview', SEQUENCE_EDITOR='EMPTY', region_type='PREVIEW')
     
-    # kmi = km.keymap_items.new(pie, 'S', 'PRESS').properties\
-    #     .name="VIEW3D_MT_TIMELINE_TEST"
+    kmi = km.keymap_items.new(pie, 'S', 'PRESS').properties\
+        .name="VIEW3D_MT_TIMELINE_TEST"
    
 def register():
     TestKeymap()
