@@ -309,7 +309,7 @@ class VIEW3D_MT_TIMELINE_TEST(Menu):
         pie.operator(OPS, text="FADE IN").testVal = 1
         pie.operator("wm.call_menu", text="Strip Tools").name = "VIEW3D_MT_STRIP_TOOLS"
         pie.operator(OPS, text="").testVal = 0
-        pie.operator(OPS, text="FADE OUT").testVal = 2
+        pie.operator("graph.snap", text="Snap").type='CFRA'
 
 
 class VIEW3D_MT_GP_BRUSHES_PIE(Menu):
