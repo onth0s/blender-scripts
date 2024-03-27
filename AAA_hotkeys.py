@@ -78,7 +78,7 @@ def TestKeymap():
         .name="VIEW3D_MT_SHADING_PIE"
 
 
-
+        
     km = kc.keymaps.new('Node Generic', space_type='NODE_EDITOR', region_type='WINDOW')
     kmi = km.keymap_items.new(pie, 'SPACE', 'PRESS').properties\
         .name="PIE_MT_SPACE"

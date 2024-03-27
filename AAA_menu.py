@@ -321,6 +321,7 @@ class VIEW3D_MT_SHADING_OPTIONS(Menu):
     def draw(self, context):
         layout = self.layout
         if context.object.type == 'MESH':
+            layout.operator("object.shade_flat", text="A - Flat")
             layout.operator("aaa.toggle_prop", text="D - Autosmooth").prop="context.object.data.use_auto_smooth"
             layout.prop(context.object.data, "auto_smooth_angle", text="Angle")
         
@@ -532,7 +533,7 @@ class VIEW3D_MT_SEQUENCER_CONDITIONS(Menu):
     bl_label = "Strip Tools"
     def draw(self, context):
         lyt = self.layout
-        lyt.operator("aaa.conditions_switcher_sequencer", text="Q - Ignore Markers")
+        lyt.operator("aaa.conditions_switcher_sequencer", text="A - Ignore Markers")
 
 class VIEW3D_MT_VSE_ALIGN(Menu):
     bl_label = "Align Strip"
