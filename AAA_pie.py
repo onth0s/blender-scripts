@@ -298,6 +298,7 @@ class VIEW3D_MT_TIMELINE_TEST(Menu):
     def draw(self, context):
         layout = self.layout
         OPS = "aaa.test_operator"
+        areaType = context.area.type
 
         pie = layout.menu_pie()
         pie.operator_context = 'EXEC_DEFAULT'
@@ -309,7 +310,13 @@ class VIEW3D_MT_TIMELINE_TEST(Menu):
         pie.operator(OPS, text="FADE IN").testVal = 1
         pie.operator("wm.call_menu", text="Strip Tools").name = "VIEW3D_MT_STRIP_TOOLS"
         pie.operator(OPS, text="").testVal = 0
-        pie.operator("graph.snap", text="Snap").type='CFRA'
+        
+
+        if areaType in ('DOPESHEET_EDITOR', 'GRAPH_EDITOR'): 
+            pie.operator("graph.snap", text="Snap").type='CFRA'
+        elif areaType == 'SEQUENCE_EDITOR':
+            pie.operator("sequencer.snap", text="Snap").frame=context.scene.frame_current
+        
 
 
 class VIEW3D_MT_GP_BRUSHES_PIE(Menu):
