@@ -103,7 +103,7 @@ class VSECustomFade(Operator):
                 tmp = True
                 break
 
-        return tmp and (strip.type in ['TEXT', 'IMAGE', 'MOVIE'])
+        return tmp and (strip.type in ['TEXT', 'IMAGE', 'MOVIE', 'META'])
     
     def execute(self, context):
         #fc = C.scene.animation_data.action.fcurves.find(C.active_sequence_strip.path_from_id("blend_alpha"))
@@ -238,7 +238,6 @@ class VSECustomFadeClear(Operator):
     bl_options = {'REGISTER'}
     
     type: bpy.props.StringProperty()
-
 
     def execute(self, context):
         C = context 
