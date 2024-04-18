@@ -55,3 +55,8 @@ TCM = 'CAMERA'
 TLT = 'LIGHT'
 TLP = 'LIGHT_PROBE'
 TSK = 'SPEAKER'
+
+def register():
+    pass
+def unregister():
+    pass
