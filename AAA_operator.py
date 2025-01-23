@@ -1,16 +1,17 @@
+from AAA_var import *
+
+from math import *
+from mathutils import *
+from bl_operators.presets import AddPresetBase
+from bpy.types import (Menu, Operator)
 import bpy
 import os
 import re
 from datetime import datetime
 
-from bpy.props import (FloatProperty, IntProperty,
-                       BoolProperty, StringProperty)
-from bpy.types import (Menu, Operator)
-from bl_operators.presets import AddPresetBase
-from mathutils import *
-from math import *
-
-from AAA_var import *
+from bpy.props import
+(FloatProperty, IntProperty,
+ BoolProperty, StringProperty)
 
 
 ''' Notes
@@ -22,6 +23,39 @@ from AAA_var import *
 '''
 
 # if you call it from other operator the self.report() function prints to the console instead of the Info Editor, independently of the 'execution context'
+
+''' Preset Operator
+class test(Operator):
+    bl_idname = "aaa.test"
+    bl_label = ""
+    bl_options = {'REGISTER', 'UNDO'}
+    def execute(self, context):
+        
+        return {'FINISHED'}
+'''
+
+
+class SaveFile(Operator):
+    bl_idname = "aaa.save_file"
+    bl_label = "saveFile"
+    bl_options = {'REGISTER'}
+
+    def execute(self, context):
+        filename = bpy.path.basename(bpy.context.blend_data.filepath)
+        bpy.ops.wm.save_mainfile('INVOKE_DEFAULT')
+        if bpy.data.is_saved:
+            if bpy.data.is_dirty:
+                saved = "Saved: " + filename
+                self.report({'INFO'}, saved)
+
+                bpy.data.scenes[0].already_saved_counter = 0
+            else:
+                bpy.data.scenes[0].already_saved_counter += 1
+                st = "No changes have been made to '" + filename + \
+                    "'. Already saved file (" + \
+                    str(bpy.data.scenes[0].already_saved_counter) + ")"
+                self.report({'INFO'}, st)
+        return {'FINISHED'}
 
 
 class SaveIncremental(Operator):
@@ -89,29 +123,6 @@ class SaveIncremental(Operator):
             pass
 
 
-class SaveFile(Operator):
-    bl_idname = "aaa.save_file"
-    bl_label = "saveFile"
-    bl_options = {'REGISTER'}
-
-    def execute(self, context):
-        filename = bpy.path.basename(bpy.context.blend_data.filepath)
-        bpy.ops.wm.save_mainfile('INVOKE_DEFAULT')
-        if bpy.data.is_saved:
-            if bpy.data.is_dirty:
-                saved = "Saved: " + filename
-                self.report({'INFO'}, saved)
-
-                bpy.data.scenes[0].already_saved_counter = 0
-            else:
-                bpy.data.scenes[0].already_saved_counter += 1
-                st = "No changes have been made to '" + filename + \
-                    "'. Already saved file (" + \
-                    str(bpy.data.scenes[0].already_saved_counter) + ")"
-                self.report({'INFO'}, st)
-        return {'FINISHED'}
-
-
 class TestOperator(Operator):
     bl_idname = "aaa.test_operator"
     bl_label = ""
@@ -126,125 +137,11 @@ class TestOperator(Operator):
         return {'FINISHED'}
 
 
-''' Preset Operator
-class test(Operator):
-    bl_idname = "aaa.test"
-    bl_label = ""
-    bl_options = {'REGISTER', 'UNDO'}
-    def execute(self, context):
-        
-        return {'FINISHED'}
-'''
 classes = (
-
-    TestOperator,
-
-    GLOBAL_ALT_S,
-    GLOBAL_ALT_Q,
-    GLOBAL_ALT_A,
-
-    GLOBAL_CTRL_ALT_H,
-    GLOBAL_CTRL_F,
-
-    GLOBAL_SHIFT_CTRL_F,
-
-    GLOBAL_SHIFT_ALT_Z,
-
-    GLOBAL_SHIFT_ALT_F,
-    GLOBAL_SHIFT_Q,
-    GLOBAL_SHIFT_E,
-    GLOBAL_SHIFT_A,
-
-    GLOBAL_W,
-    GLOBAL_Q,
-    GLOBAL_E,
-
-    CONDITIONS_SWITCHER_SEQUENCER,
-    CONDITIONS_SWITCHER,
-
-    PresetFrameRangePreviewMove,
-    PresetFrameRangePreviewOverwrite,
-    PresetFrameRangePreviewRemove,
-    PresetFrameRangePreviewAdd,
-
-    # PresetPanelInfo,
-    PresetOverlays,
-    PresetBackground,
-
-    SetProp,
-    ToggleProp,
-
-    PanelGPBrushesManagerRefresh,
-    PanelInfoShow,
-
-    OnaddGPObject,
-    OnCallGPLayersPanel,
-
-    SelectReferenceImage,
-
     SaveFile,
     SaveIncremental,
 
-    ApplyModifiers,
-
-    SetBaseFPS,
-
-    HelperGPBrushesManager,
-
-    GPSetStrokesOpacity,
-
-    GPSwitchMaterial,
-
-    GPRemoveTool,
-
-    GPSetTool1,
-    GPSetTool2,
-    GPSetTool3,
-    GPSetTool4,
-    GPSetTool5,
-    GPSetTool6,
-    GPSetTool7,
-    GPSetTool8,
-
-    GPSwitchTool,
-
-    GPLayerUnlockedMovetoSelected,
-    GPLayerUnlockedMove,
-    GPLayerClear,
-    GPLayerResetOpacity,
-    GPLayerDuplicateHide,
-    GPLayerSeparateSelection,
-    GPLayerDelete,
-    GPLayerMergeDown,
-    GPLayerNew,
-
-    ModeGPSwitcher,
-
-    SwitchCavityType,
-
-    RendererPicker,
-
-    DyntopoDetailing,
-
-    CommonTools,
-    PivotSelector,
-
-    ModeSet,
-
-    RollAxis,
-    RollViewport,
-
-    ToggleFaceOrientation,
-    ToggleXRay,
-    ToggleWireframeOverlay,
-    ToggleSolidWireframe,
-    ToggleOverlays,
-
-    SwitchWorkspace,
-
-    VSECustomFadeClear,
-    VSECustomFade,
-    VSEAlignStrip,
+    TestOperator,
 )
 
 
