@@ -1,17 +1,16 @@
-from AAA_var import *
-
-from math import *
-from mathutils import *
-from bl_operators.presets import AddPresetBase
-from bpy.types import (Menu, Operator)
 import bpy
 import os
 import re
 from datetime import datetime
 
-from bpy.props import
-(FloatProperty, IntProperty,
- BoolProperty, StringProperty)
+from bpy.props import (FloatProperty, IntProperty,
+                       BoolProperty, StringProperty)
+from bpy.types import (Menu, Operator)
+from bl_operators.presets import AddPresetBase
+from mathutils import *
+from math import *
+
+from AAA_var import *
 
 
 ''' Notes
