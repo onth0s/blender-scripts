@@ -1,6 +1,7 @@
-import bpy  # type: ignore
-from bpy.types import Menu  # type: ignore
+import bpy
+from bpy.types import Menu
 
+from AAA_var import *
 # 'VIEW3D_' is not necessary, it just looks cleaner this way,
 # because it's the context in which you shall call it
 
@@ -19,6 +20,76 @@ from bpy.types import Menu  # type: ignore
         enum in [MESH, CURVE, SURFACE, META, FONT, ARMATURE, LATTICE, EMPTY,
         GPENCIL, CAMERA, LIGHT, SPEAKER, LIGHT_PROBE], default EMPTY
     '''
+
+
+class PIE_MT_SPACE(Menu):
+    bl_idname = "PIE_MT_SPACE"
+    bl_label = "General"
+
+    def draw(self, context):
+        M = context.mode
+        MN = "wm.call_menu"
+
+        pie = self.layout.menu_pie()
+        pie.operator_context = 'EXEC_DEFAULT'
+
+        # ------------------------   LEFT   --------------------------------- #
+        if M in (OBJ, MHT, MHW, MHV):
+            pie.operator("aaa.test_operator", text="TEST OPERATOR")
+        if M in (MHE, MHS):
+            pie.operator(MN, text="").name = ""
+
+        # ------------------------   RIGHT   -------------------------------- #
+        if M in (OBJ, MHE):
+            pie.operator(MN, text="Transform Gizmo")\
+                .name = "VIEW3D_MT_TRANSFORM_GIZMO"
+        if M in (MHS, MHT, MHW, MHV):
+            pie.operator(MN, text="").name = ""
+
+        # ------------------------   BOTTOM   ------------------------------- #
+        if M in (ALL):
+            pie.operator(MN, text="")
+
+        # ------------------------   TOP   ---------------------------------- #
+        if M in (ALL):
+            pie.operator(MN, text="Workspace").name = "VIEW3D_MT_WORKSPACE"
+
+        # ------------------------   TOP-LEFT   ----------------------------- #
+        if M in (ALL):
+            pie.operator(MN, text="View").name = "VIEW3D_MT_VIEW"
+
+        # # ------------------------   TOP-RIGHT   ---------------------------- #
+        # if M in (ARP, CVE, LCE):
+        #     pie.operator(MN, text="nothing yet")
+        # if M in (OBJ):
+        #     pie.operator(
+        #         MN, text="Object Operations").name = "VIEW3D_MT_OBJECT_OPERATIONS"
+        # if M in (MHS):
+        #     pie.operator("sculpt.dynamic_topology_toggle", text="D - Dynatopo")
+        # if M in (MHE, MHW, MHV, GPE, GPS, GPW, GPP):
+        #     # TODO Handle properly all of this "modes"
+        #     pie.operator(MN, text="Select Mode")\
+        #         .name = "VIEW3D_MT_SOME_MODES"
+        # if M in (MHT):
+        #     pie.operator("aaa.toggle_prop", text="D - Face Mask")\
+        #         .prop = "context.object.data.use_paint_mask"
+        # if M in (ARE):
+        #     pie.operator("wm.call_panel", text="Rename")\
+        #         .name = "VIEW3D_PT_rename_bone"
+
+        # # ------------------------   BOTTOM-LEFT   -------------------------- #
+        # if M in (OBJ, MHE, MHV, MHW, GPE, GPS, ARE, ARP, CVE, LCE):
+        #     pie.operator(MN, text="Select").name = "VIEW3D_MT_SELECT"
+        # if M in (MHT, MHW, GPW, GPP):
+        #     pie.operator(MN, text="").name = ""
+        # if M in (MHS):
+        #     pie.operator(MN, text="Detailing").name = "VIEW3D_MT_MASK_N_STUFF"
+
+        # # ------------------------   BOTTOM-RIGHT   ------------------------- #
+        # if M in (OBJ, MHE, MHT, MHW, MHV, GPE, GPS, ARE, ARP, CVE, LCE):
+        #     pie.operator(MN, text="Select Mode").name = "VIEW3D_MT_SELECT_MODE"
+        # if M in (MHS, SFE, GPW, GPP, MBE, PTC, TXE):
+        #     pie.operator(MN, text="").name = ""
 
 
 class PIE_MT_KEY_CONDITIONS(Menu):
@@ -67,6 +138,7 @@ class PIE_MT_SAVE_N_STUFF(Menu):
 
 
 classes = (
+    PIE_MT_SPACE,
     PIE_MT_KEY_CONDITIONS,
     PIE_MT_SAVE_N_STUFF,
 )

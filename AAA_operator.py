@@ -127,6 +127,19 @@ class SaveIncremental(Operator):
             pass
 
 
+class SwitchWorkspace(Operator):
+    """Switch Workspace"""
+    bl_idname = "aaa.switch_workspace"
+    bl_label = ""
+    bl_options = {'REGISTER'}
+
+    name: bpy.props.StringProperty()
+
+    def execute(self, context):
+        context.window.workspace = bpy.data.workspaces[self.name]
+        return {'FINISHED'}
+
+
 class RollViewport(Operator):
     bl_idname = "aaa.roll_viewport"
     bl_label = "Roll Viewport"
@@ -215,25 +228,27 @@ class RollViewport(Operator):
         return {'RUNNING_MODAL'}
 
 
-# class RollAxis(Operator):
-#     bl_idname = "aaa.roll_axis"
-#     bl_label = ""
-#     bl_options = {'REGISTER'}
+class RollAxis(Operator):
+    bl_idname = "aaa.roll_axis"
+    bl_label = ""
+    bl_options = {'REGISTER'}
 
-#     axis: bpy.props.StringProperty()
+    axis: bpy.props.StringProperty()
 
-#     def execute(self, context):
-#         if self.axis == 'X':
-#             bpy.data.scenes[0].axis_roll = 'X'
-#         if self.axis == 'Y':
-#             bpy.data.scenes[0].axis_roll = 'Y'
-#         if self.axis == 'Z':
-#             bpy.data.scenes[0].axis_roll = 'Z'
+    def execute(self, context):
+        if self.axis == 'X':
+            bpy.data.scenes[0].axis_roll = 'X'
+        if self.axis == 'Y':
+            bpy.data.scenes[0].axis_roll = 'Y'
+        if self.axis == 'Z':
+            bpy.data.scenes[0].axis_roll = 'Z'
 
-#         return {'FINISHED'}
+        return {'FINISHED'}
 
 
 class TestOperator(Operator):
+    """Test Operator Docstring"""
+
     bl_idname = "aaa.test_operator"
     bl_label = ""
     bl_options = {'REGISTER', 'UNDO'}
@@ -251,8 +266,10 @@ classes = (
     SaveFile,
     SaveIncremental,
 
+    SwitchWorkspace,
+
     RollViewport,
-    # RollAxis,
+    RollAxis,
 
     TestOperator,
 )

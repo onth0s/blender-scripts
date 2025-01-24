@@ -41,6 +41,8 @@ def global_keymap():
     ################################# GLOBAL ##################################
     km = kc.keymaps.new('Window', space_type='EMPTY')
 
+    kmi = km.keymap_items.new(pie, 'SPACE', 'PRESS') \
+        .properties.name = "PIE_MT_SPACE"
     km.keymap_items.new(pie, 'C', 'PRESS') \
         .properties.name = "PIE_MT_KEY_CONDITIONS"
     km.keymap_items.new(pie, 'S', 'PRESS', ctrl=True) \
