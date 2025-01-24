@@ -56,14 +56,14 @@ class PIE_MT_SAVE_N_STUFF(Menu):
         pie.operator_context = 'INVOKE_DEFAULT'
         pie.operator("wm.open_mainfile", text="Open")
 
-        # pie.operator("wm.save_homefile", text="Override Startup")
-        # pie.operator("wm.import_scene.obj", text="Import OBJ")
+        pie.operator("wm.save_homefile", text="Override Startup")
+        pie.operator("wm.obj_import", text="Import OBJ")
 
-        # pie.operator("wm.append", text="Append")
+        pie.operator("wm.append", text="Append")
 
-        # # leave 'app_template' in blank to load the 'startup' file
-        # pie.operator("wm.read_homefile", text="New File").app_template = ""
-        # pie.operator("aaa.save_incremental", text="Save Incremental")
+        # leave 'app_template' in blank to load the 'startup' file
+        pie.operator("wm.read_homefile", text="New File").app_template = ""
+        pie.operator("aaa.save_incremental", text="Save Incremental")
 
 
 classes = (

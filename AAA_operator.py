@@ -35,12 +35,14 @@ class test(Operator):
 
 
 class SaveFile(Operator):
+    """Save the current file and check if it has already been saved."""
+
     bl_idname = "aaa.save_file"
     bl_label = "saveFile"
     bl_options = {'REGISTER'}
 
     def execute(self, context):
-        filename = bpy.path.basename(bpy.context.blend_data.filepath)
+        filename = bpy.path.basename(context.blend_data.filepath)
         bpy.ops.wm.save_mainfile('INVOKE_DEFAULT')
         if bpy.data.is_saved:
             if bpy.data.is_dirty:
@@ -73,6 +75,8 @@ class SaveIncremental(Operator):
             else:
                 bpy.ops.wm.save_as_mainfile(filepath=save_path)
                 self.report({'INFO'}, "Saved blend incrementally:" + save_path)
+
+                bpy.data.scenes[0].already_saved_counter = 0
         else:
             bpy.ops.wm.save_mainfile('INVOKE_DEFAULT')
         return {'FINISHED'}
