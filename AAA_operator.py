@@ -44,6 +44,7 @@ class SaveFile(Operator):
     def execute(self, context):
         filename = bpy.path.basename(context.blend_data.filepath)
         bpy.ops.wm.save_mainfile('INVOKE_DEFAULT')
+
         if bpy.data.is_saved:
             if bpy.data.is_dirty:
                 saved = "Saved: " + filename
@@ -56,6 +57,7 @@ class SaveFile(Operator):
                     "'. Already saved file (" + \
                     str(bpy.data.scenes[0].already_saved_counter) + ")"
                 self.report({'INFO'}, st)
+
         return {'FINISHED'}
 
 
