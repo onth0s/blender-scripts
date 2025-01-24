@@ -1,6 +1,6 @@
 import bpy  # type: ignore
 
-""" space_type, region_type - ENUMS
+""" USEFUL ENUMS: space_type, region_type 
 space_types = {
     "Empty": "EMPTY",
     "General": ["VIEW_3D",
@@ -38,6 +38,7 @@ def global_keymap():
     kc = C.window_manager.keyconfigs.addon
     pie = "wm.call_menu_pie"
 
+    ################################# GLOBAL ##################################
     km = kc.keymaps.new('Window', space_type='EMPTY')
 
     km.keymap_items.new(pie, 'C', 'PRESS') \
@@ -45,13 +46,11 @@ def global_keymap():
     km.keymap_items.new(pie, 'S', 'PRESS', ctrl=True) \
         .properties.name = "PIE_MT_SAVE_N_STUFF"
 
-    #####################################################################
-    #####################################################################
-    #####################################################################
-
+    ################################ OUTLINER #################################
     km = kc.keymaps.new('Outliner', space_type='OUTLINER')
     kmi = km.keymap_items.new(
         "outliner.collection_new", 'N', 'PRESS', ctrl=True)
+
 
 def register():
     global_keymap()
