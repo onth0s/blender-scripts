@@ -12,7 +12,6 @@ from math import *
 
 from AAA_var import *
 
-
 ''' Notes
     I dont know how to set up the poll() function
 
@@ -128,6 +127,112 @@ class SaveIncremental(Operator):
             pass
 
 
+class RollViewport(Operator):
+    bl_idname = "aaa.roll_viewport"
+    bl_label = "Roll Viewport"
+    bl_options = {'GRAB_CURSOR'}
+
+    initial_angle = 0
+    angle_now = 0
+    initial_rotation = Vector((0, 0, 0))
+    camNormal = Vector((0, 0, -1))
+
+    temp_degree = 0
+
+    def toDegrees(radians):
+        return radians * (180 / pi)
+
+    def to360Degrees(test):
+        return radians * (180 / pi)
+
+    def invoke(self, context, event):
+        rv3d = context.space_data.region_3d
+        context.window_manager.modal_handler_add(self)
+
+        ''' TODO
+            takes you out from the camera view into the perspective view to call the rotation view modal 
+            it should rotate the camera too, or be an option'''
+        if rv3d.view_perspective == 'CAMERA':
+            rv3d.view_perspective = 'PERSP'
+
+        # get the center of the viewport
+        self.view3d_bounds = Vector(
+            (context.region.width, context.region.height))
+        self.view3d_center = self.view3d_bounds / 2
+
+        # how far is the mouse from the center, returns a Vector
+        mouseloc = Vector((event.mouse_region_x, event.mouse_region_y))
+        mouseloc_centered = mouseloc - self.view3d_center
+
+        # copy a Quaternion(w, x, y, z) into a Vector((x, y, z)), returns a Quaternion()
+        self.initial_rotation = rv3d.view_rotation.copy()
+        # the angle in radians from the center of the viewport to the position of the cursor
+        # past 180 degrees (or PI radians) counterclockwise will get you negative numbers: 180 turn into -179, not 181 (it's not an integer though)
+        self.initial_angle = atan2(mouseloc_centered.y, mouseloc_centered.x)
+        self.angle_now = self.initial_angle
+
+        # change the axis of rotation
+        if bpy.data.scenes[0].axis_roll == "X":
+            self.camNormal = Vector((1, 0, 0))
+        elif bpy.data.scenes[0].axis_roll == "Y":
+            self.camNormal = Vector((0, 0, -1))
+        elif bpy.data.scenes[0].axis_roll == "Z":
+            self.camNormal = Vector((0, 1, 0))
+
+        return {'RUNNING_MODAL'}
+
+    def execute(self, context):
+        rv3d = context.space_data.region_3d
+
+        angle_diff = self.angle_now - self.initial_angle
+        quat = Quaternion(self.camNormal, angle_diff)
+        rv3d.view_rotation = self.initial_rotation @ quat
+
+        if angle_diff > 0:
+            # print(toDegrees(angle_diff))
+            self.temp_degree = angle_diff
+        else:
+            self.temp_degree = -1 * angle_diff
+            a = 2 * pi - self.temp_degree
+            # print(toDegrees(a))
+
+        return {'FINISHED'}
+
+    def modal(self, context, event):
+        rv3d = context.space_data.region_3d
+
+        if event.type == 'MOUSEMOVE':
+            mouseloc = Vector((event.mouse_region_x, event.mouse_region_y))
+            mouseloc_centered = mouseloc - self.view3d_center
+            self.angle_now = atan2(mouseloc_centered.y, mouseloc_centered.x)
+            self.execute(context)
+        elif event.type in {'LEFTMOUSE', 'MIDDLEMOUSE'}:
+            return {'FINISHED'}
+        elif event.type in {'RIGHTMOUSE', 'ESC'}:
+            rv3d.view_rotation = self.initial_rotation
+            return {'CANCELLED'}
+
+        return {'RUNNING_MODAL'}
+
+
+# class RollAxis(Operator):
+#     bl_idname = "aaa.roll_axis"
+#     bl_label = ""
+#     bl_options = {'REGISTER'}
+
+#     axis: bpy.props.StringProperty()
+
+#     def execute(self, context):
+#         if self.axis == 'X':
+#             bpy.data.scenes[0].axis_roll = 'X'
+#         if self.axis == 'Y':
+#             bpy.data.scenes[0].axis_roll = 'Y'
+#         if self.axis == 'Z':
+#             bpy.data.scenes[0].axis_roll = 'Z'
+
+#         return {'FINISHED'}
+
+
 class TestOperator(Operator):
     bl_idname = "aaa.test_operator"
     bl_label = ""
@@ -145,6 +250,9 @@ class TestOperator(Operator):
 classes = (
     SaveFile,
     SaveIncremental,
+
+    RollViewport,
+    # RollAxis,
 
     TestOperator,
 )

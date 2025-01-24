@@ -46,10 +46,21 @@ def global_keymap():
     km.keymap_items.new(pie, 'S', 'PRESS', ctrl=True) \
         .properties.name = "PIE_MT_SAVE_N_STUFF"
 
+    ################################# 3D VIEW #################################
+    km = kc.keymaps.new('3D View', space_type='VIEW_3D')
+    kmi = km.keymap_items.new(
+        'aaa.roll_viewport', 'MIDDLEMOUSE', 'CLICK_DRAG', alt=True)
+
     ################################ OUTLINER #################################
     km = kc.keymaps.new('Outliner', space_type='OUTLINER')
     kmi = km.keymap_items.new(
         "outliner.collection_new", 'N', 'PRESS', ctrl=True)
+
+    ################################ OVERRIDES ################################
+    km = kc.keymaps.new('3D View', space_type='VIEW_3D')
+    kmi = km.keymap_items.new(
+        "view3d.view_center_pick", 'MIDDLEMOUSE', 'CLICK',
+        ctrl=True, alt=True)
 
 
 def register():
