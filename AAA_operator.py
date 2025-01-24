@@ -38,7 +38,7 @@ class SaveFile(Operator):
     """Save the current file and check if it has already been saved."""
 
     bl_idname = "aaa.save_file"
-    bl_label = "saveFile"
+    bl_label = "Save File"
     bl_options = {'REGISTER'}
 
     def execute(self, context):

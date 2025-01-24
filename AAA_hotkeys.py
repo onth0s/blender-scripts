@@ -49,9 +49,9 @@ def global_keymap():
     #####################################################################
     #####################################################################
 
-    km = kc.keymaps.new('Window', space_type='OUTLINER')
+    km = kc.keymaps.new('Outliner', space_type='OUTLINER')
     kmi = km.keymap_items.new(
-        "ops.outliner.collection_new", 'N', 'PRESS', ctrl=True)
+        "outliner.collection_new", 'N', 'PRESS', ctrl=True)
 
 def register():
     global_keymap()
