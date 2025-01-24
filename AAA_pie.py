@@ -48,7 +48,7 @@ class PIE_MT_SPACE(Menu):
 
         # ------------------------   BOTTOM   ------------------------------- #
         if M in (ALL):
-            pie.operator(MN, text="")
+            pie.operator(MN, text="Apply/Clear").name = "VIEW3D_MT_APPLY_CLEAR"
 
         # ------------------------   TOP   ---------------------------------- #
         if M in (ALL):
@@ -58,38 +58,21 @@ class PIE_MT_SPACE(Menu):
         if M in (ALL):
             pie.operator(MN, text="View").name = "VIEW3D_MT_VIEW"
 
-        # # ------------------------   TOP-RIGHT   ---------------------------- #
-        # if M in (ARP, CVE, LCE):
-        #     pie.operator(MN, text="nothing yet")
-        # if M in (OBJ):
-        #     pie.operator(
-        #         MN, text="Object Operations").name = "VIEW3D_MT_OBJECT_OPERATIONS"
-        # if M in (MHS):
-        #     pie.operator("sculpt.dynamic_topology_toggle", text="D - Dynatopo")
-        # if M in (MHE, MHW, MHV, GPE, GPS, GPW, GPP):
-        #     # TODO Handle properly all of this "modes"
-        #     pie.operator(MN, text="Select Mode")\
-        #         .name = "VIEW3D_MT_SOME_MODES"
-        # if M in (MHT):
-        #     pie.operator("aaa.toggle_prop", text="D - Face Mask")\
-        #         .prop = "context.object.data.use_paint_mask"
-        # if M in (ARE):
-        #     pie.operator("wm.call_panel", text="Rename")\
-        #         .name = "VIEW3D_PT_rename_bone"
+        # ------------------------   TOP-RIGHT   ---------------------------- #
+        if M in (OBJ):
+            pie.operator(MN, text="Object Operations") \
+                .name = "VIEW3D_MT_OBJECT_OPERATIONS"
+        if M in (MHE):
+            pie.operator(MN, text="Select Mode") \
+                .name = "VIEW3D_MT_MHE_MODE"
 
-        # # ------------------------   BOTTOM-LEFT   -------------------------- #
-        # if M in (OBJ, MHE, MHV, MHW, GPE, GPS, ARE, ARP, CVE, LCE):
-        #     pie.operator(MN, text="Select").name = "VIEW3D_MT_SELECT"
-        # if M in (MHT, MHW, GPW, GPP):
-        #     pie.operator(MN, text="").name = ""
-        # if M in (MHS):
-        #     pie.operator(MN, text="Detailing").name = "VIEW3D_MT_MASK_N_STUFF"
+        # ------------------------   BOTTOM-LEFT   -------------------------- #
+        if M in (ALL):
+            pie.operator(MN, text="Select").name = "VIEW3D_MT_SELECT"
 
-        # # ------------------------   BOTTOM-RIGHT   ------------------------- #
-        # if M in (OBJ, MHE, MHT, MHW, MHV, GPE, GPS, ARE, ARP, CVE, LCE):
-        #     pie.operator(MN, text="Select Mode").name = "VIEW3D_MT_SELECT_MODE"
-        # if M in (MHS, SFE, GPW, GPP, MBE, PTC, TXE):
-        #     pie.operator(MN, text="").name = ""
+        # ------------------------   BOTTOM-RIGHT   ------------------------- #
+        if M in (OBJ, MHE):
+            pie.operator(MN, text="Select Mode").name = "VIEW3D_MT_SELECT_MODE"
 
 
 class PIE_MT_KEY_CONDITIONS(Menu):

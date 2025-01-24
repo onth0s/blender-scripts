@@ -124,14 +124,112 @@ class VIEW3D_MT_TRANSFORM_GIZMO(Menu):
         layout.operator(TL, text="D - Rotate").name = "builtin.rotate"
 
 
-class VIEW3D_MT_VIEW_AXIS_ROLL(Menu):
-    bl_label = "Axis Roll"
+class VIEW3D_MT_OBJECT_OPERATIONS(Menu):
+    bl_label = "Object Operations"
 
     def draw(self, context):
-        layout = self.layout
-        layout.operator("aaa.roll_axis", text="A - X Axis").axis = 'X'
-        layout.operator("aaa.roll_axis", text="S - Y Axis").axis = 'Y'
-        layout.operator("aaa.roll_axis", text="D - Z Axis").axis = 'Z'
+        LYT = self.layout
+
+        LYT.operator("object.parent_set", text="E - Parent Object") \
+            .type = 'OBJECT'
+        LYT.operator("object.parent_clear", text="Q - Clear Parent")\
+            .type = 'CLEAR'
+
+
+class VIEW3D_MT_SELECT_MODE(Menu):
+    bl_label = "Select"
+
+    def draw(self, context):
+        TL = "wm.tool_set_by_id"
+        LYT = self.layout
+
+        LYT.operator(TL, text="W - Default").name = "builtin.select"
+
+        LYT.separator()
+        LYT.operator(TL, text="A - Lasso").name = "builtin.select_lasso"
+        LYT.operator(TL, text="S - Box").name = "builtin.select_box"
+        LYT.operator(TL, text="D - Circle").name = "builtin.select_circle"
+
+        LYT.separator()
+        LYT.operator(TL, text="E - Cursor").name = "builtin.cursor"
+
+
+class VIEW3D_MT_MHE_MODE(Menu):
+    bl_label = "Select Mode"
+
+    def draw(self, context):
+        LYT = self.layout
+
+        LYT.operator("mesh.select_mode", text="A - Vertex Select") \
+            .type = 'VERT'
+        LYT.operator("mesh.select_mode", text="S - Edge Select") \
+            .type = 'EDGE'
+        LYT.operator("mesh.select_mode", text="D - Face Select")\
+            .type = 'FACE'
+
+
+class VIEW3D_MT_APPLY_CLEAR(Menu):
+    bl_label = "Apply or Clear"
+
+    def draw(self, context):
+        LYT = self.layout
+        MN = "wm.call_menu"
+
+        LYT.operator(MN, text="A - Apply").name = 'VIEW3D_MT_APPLY'
+        LYT.operator(MN, text="D - Clear").name = 'VIEW3D_MT_CLEAR'
+
+
+class VIEW3D_MT_APPLY(Menu):
+    bl_label = "Apply or Clear"
+
+    def draw(self, context):
+        LYT = self.layout
+
+        props = LYT.operator("object.transform_apply", text="Q - All")
+        props.location = True
+        props.scale = True
+        props.rotation = True
+        props = LYT.operator("object.transform_apply",
+                             text="W - Except Location")
+        props.location = False
+        props.scale = True
+        props.rotation = True
+
+        LYT.separator()
+        props = LYT.operator("object.transform_apply", text="A - Location")
+        props.location = True
+        props.scale = False
+        props.rotation = False
+
+        props = LYT.operator("object.transform_apply", text="S - Scale")
+        props.location = False
+        props.scale = True
+        props.rotation = False
+
+        props = LYT.operator("object.transform_apply", text="D - Rotation")
+        props.location = False
+        props.scale = False
+        props.rotation = True
+
+
+class VIEW3D_MT_CLEAR(Menu):
+    bl_label = "Apply or Clear"
+
+    def draw(self, context):
+        LYT = self.layout
+        OB = 'object'
+
+        props = LYT.operator(OB+".location_clear", text="A - Location")
+        props.clear_delta = False
+
+        props = LYT.operator(OB+".scale_clear", text="S - Scale")
+        props.clear_delta = False
+
+        props = LYT.operator(OB+".rotation_clear", text="D - Rotation")
+        props.clear_delta = False
+
+        LYT.separator()
+        props = LYT.operator(OB+".origin_clear", text="W - Origin to Parent")
 
 
 classes = (
@@ -143,6 +241,15 @@ classes = (
     VIEW3D_MT_VIEW_AXIS_ROLL,
 
     VIEW3D_MT_TRANSFORM_GIZMO,
+
+    VIEW3D_MT_OBJECT_OPERATIONS,
+
+    VIEW3D_MT_SELECT_MODE,
+    VIEW3D_MT_MHE_MODE,
+
+    VIEW3D_MT_APPLY_CLEAR,
+    VIEW3D_MT_APPLY,
+    VIEW3D_MT_CLEAR,
 )
 
 
