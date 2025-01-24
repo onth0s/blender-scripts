@@ -52,6 +52,8 @@ def global_keymap():
     km = kc.keymaps.new('3D View', space_type='VIEW_3D')
     kmi = km.keymap_items.new(
         'aaa.roll_viewport', 'MIDDLEMOUSE', 'CLICK_DRAG', alt=True)
+    kmi = km.keymap_items.new(
+        'view3d.view_selected', 'MIDDLEMOUSE', 'PRESS', shift=True, ctrl=True)
 
     ################################ OUTLINER #################################
     km = kc.keymaps.new('Outliner', space_type='OUTLINER')

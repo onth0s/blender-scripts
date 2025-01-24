@@ -29,26 +29,26 @@ class VIEW3D_MT_VIEW(Menu):
         MN = "wm.call_menu"
 
         LYT.operator(MN, text="Q - Align Normal").name = "VIEW3D_MT_VIEW_ALIGN"
-        # LYT.operator(MN, text="W - Views")\
-        #     .name = "VIEW3D_MT_VIEW_VIEW"
+        LYT.operator(MN, text="W - Views").name = "VIEW3D_MT_VIEW_VIEW"
 
-        # LYT.separator()
-        # LYT.operator("view3d.view_persportho", text="E - Persp/Ortho")
+        LYT.separator()
+        LYT.operator("view3d.view_persportho", text="E - Persp/Ortho")
 
-        # LYT.separator()
-        # LYT.operator(
-        #     "aaa.toggle_prop", text="R - Lock Orbit").prop = "context.space_data.region_3d.lock_rotation"
+        LYT.separator()
+        LYT.operator(
+            "aaa.toggle_prop", text="R - Lock Orbit") \
+            .prop = "context.space_data.region_3d.lock_rotation"
 
-        # LYT.operator(MN, text="X - Axis Roll")\
-        #     .name = "VIEW3D_MT_VIEW_AXIS_ROLL"
+        LYT.operator(MN, text="X - Axis Roll")\
+            .name = "VIEW3D_MT_VIEW_AXIS_ROLL"
 
-        # LYT.separator()
-        # LYT.operator("aaa.select_reference_image", text="C - Select Image")
+        LYT.separator()
+        LYT.operator("aaa.select_reference_image", text="C - Select Image")
 
-        # LYT.separator()
-        # LYT.operator_context = 'INVOKE_DEFAULT'
-        # LYT.operator("view3d.walk", text="F - Walk Navigation")
-        # LYT.operator("view3d.localview", text="Z - Local View")
+        LYT.separator()
+        LYT.operator_context = 'INVOKE_DEFAULT'
+        LYT.operator("view3d.walk", text="F - Walk Navigation")
+        LYT.operator("view3d.localview", text="Z - Local View")
 
 
 class VIEW3D_MT_VIEW_ALIGN(Menu):
@@ -79,6 +79,33 @@ class VIEW3D_MT_VIEW_ALIGN(Menu):
         props = LYT.operator("view3d.view_axis", text="D - Left")
         props.align_active = True
         props.type = 'LEFT'
+
+
+class VIEW3D_MT_VIEW_VIEW(Menu):
+    bl_label = "Views"
+
+    def draw(self, context):
+        LYT = self.layout
+        LYT.operator("view3d.view_axis", text="Q - Top").type = 'TOP'
+        LYT.operator("view3d.view_axis", text="A - Bottom").type = 'BOTTOM'
+
+        LYT.separator()
+        LYT.operator("view3d.view_axis", text="W - Front").type = 'FRONT'
+        LYT.operator("view3d.view_axis", text="S - Back").type = 'BACK'
+
+        LYT.separator()
+        LYT.operator("view3d.view_axis", text="E - Right").type = 'RIGHT'
+        LYT.operator("view3d.view_axis", text="D - Left").type = 'LEFT'
+
+
+class VIEW3D_MT_VIEW_AXIS_ROLL(Menu):
+    bl_label = "Axis Roll"
+
+    def draw(self, context):
+        layout = self.layout
+        layout.operator("aaa.roll_axis", text="A - X Axis").axis = 'X'
+        layout.operator("aaa.roll_axis", text="S - Y Axis").axis = 'Y'
+        layout.operator("aaa.roll_axis", text="D - Z Axis").axis = 'Z'
 
 
 class VIEW3D_MT_TRANSFORM_GIZMO(Menu):
@@ -112,10 +139,10 @@ classes = (
 
     VIEW3D_MT_VIEW,
     VIEW3D_MT_VIEW_ALIGN,
+    VIEW3D_MT_VIEW_VIEW,
+    VIEW3D_MT_VIEW_AXIS_ROLL,
 
     VIEW3D_MT_TRANSFORM_GIZMO,
-
-    VIEW3D_MT_VIEW_AXIS_ROLL,
 )
 
 

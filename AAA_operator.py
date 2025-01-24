@@ -246,6 +246,18 @@ class RollAxis(Operator):
         return {'FINISHED'}
 
 
+class ToggleProp(Operator):
+    bl_idname = "aaa.toggle_prop"
+    bl_label = ""
+    bl_options = {'UNDO'}
+
+    prop: bpy.props.StringProperty()
+
+    def execute(self, context):
+        exec(self.prop+" = not "+self.prop)
+        return {'FINISHED'}
+
+
 class TestOperator(Operator):
     """Test Operator Docstring"""
 
@@ -271,6 +283,7 @@ classes = (
     RollViewport,
     RollAxis,
 
+    ToggleProp,
     TestOperator,
 )
 
