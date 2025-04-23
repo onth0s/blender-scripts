@@ -263,20 +263,21 @@ class GLOBAL_E(Operator):
         # if CN in ('LAYERS'):
         #     bpy.ops.aaa.gp_layer_duplicate_hide()
 
-        if CN in ('TIMELINE'):
-            if SN.loop_frames:
-                if SN.use_preview_range:
-                    if SN.frame_current == SN.frame_preview_end:
-                        SN.frame_current = SN.frame_preview_start
-                    else:
-                        bpy.ops.screen.frame_offset(delta=1)
-                else:
-                    if SN.frame_current == SN.frame_end:
-                        SN.frame_current = SN.frame_start
-                    else:
-                        bpy.ops.screen.frame_offset(delta=1)
-            else:
-                bpy.ops.screen.frame_offset(delta=1)
+        # if CN in ('TIMELINE'):
+        #     if SN.loop_frames:
+        #         if SN.use_preview_range:
+        #             if SN.frame_current == SN.frame_preview_end:
+        #                 SN.frame_current = SN.frame_preview_start
+        #             else:
+        #                 bpy.ops.screen.frame_offset(delta=1)
+        #         else:
+        #             if SN.frame_current == SN.frame_end:
+        #                 SN.frame_current = SN.frame_start
+        #             else:
+        #                 bpy.ops.screen.frame_offset(delta=1)
+        #     else:
+        #         bpy.ops.screen.frame_offset(delta=1)
+        return {'FINISHED'}
 
 
 class ToggleProp(Operator):
