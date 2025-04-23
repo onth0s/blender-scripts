@@ -306,7 +306,7 @@ class GLOBAL_W(Operator):
         if CN in ('TRANSFORM'):
             if AT in ("VIEW_3D", 'GRAPH_EDITOR'):
                 bpy.ops.transform.resize('INVOKE_DEFAULT')
-            if AT == "DOPESHEET_EDITOR":
+            elif AT == "DOPESHEET_EDITOR":
                 bpy.ops.transform.transform(
                     'INVOKE_DEFAULT', mode="TIME_SCALE")
 

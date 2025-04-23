@@ -3,19 +3,23 @@ import bpy  # type: ignore
 """ USEFUL ENUMS: space_type, region_type 
 space_types = {
     "Empty": "EMPTY",
+    
     "General": ["VIEW_3D",
                 "IMAGE_EDITOR",
                 "NODE_EDITOR",
                 "SEQUENCE_EDITOR",
                 "CLIP_EDITOR"],
+    
     "Animation": ["DOPESHEET_EDITOR",
                 "GRAPH_EDITOR",
                 "NLA_EDITOR"],
+    
     "Scripting": ["TEXT_EDITOR",
                 "CONSOLE",
                 "INFO",
                 "TOPBAR",
                 "STATUSBAR"],
+    
     "Data": ["OUTLINER",
             "PROPERTIES",
             "FILE_BROWSER",
@@ -31,6 +35,10 @@ region_types = [
 ]
 """
 
+# TODO THIS SHIT IS ACTUALLY MAGIC
+# for km in bpy.context.window_manager.keyconfigs.active.keymaps:
+#     print(km.name, km.space_type)
+# TODO GET ***ALL*** KEYMAP-SPACE_TYPE COMBINATIONS
 
 def global_keymap():
     C = bpy.context
@@ -48,10 +56,10 @@ def global_keymap():
     km.keymap_items.new(pie, 'S', 'PRESS', ctrl=True) \
         .properties.name = "PIE_MT_SAVE_N_STUFF"
 
-    """ currently if you try to use the Global Keys it will throw an error
-    when you call it while the mouse is over the transparent part of the 
-    N Panel. The working fix is to simply limit the keymap to the
-    3D View. """
+    # currently if you try to use the Global Keys it will throw an error
+    # when you call it while the mouse is over the transparent part of the 
+    # N Panel. The working fix is to simply limit the keymap to the
+    # 3D View.
     # TODO: find a way to make it work globally.
 
     # km.keymap_items.new("aaa.key_q", 'Q', 'PRESS')
@@ -64,6 +72,14 @@ def global_keymap():
         'aaa.roll_viewport', 'MIDDLEMOUSE', 'CLICK_DRAG', alt=True)
     km.keymap_items.new(
         'view3d.view_selected', 'MIDDLEMOUSE', 'PRESS', shift=True, ctrl=True)
+
+    km.keymap_items.new("aaa.key_q", 'Q', 'PRESS')
+    km.keymap_items.new("aaa.key_w", 'W', 'PRESS')
+    km.keymap_items.new("aaa.key_e", 'E', 'PRESS')
+
+    ################################# FRAMES ##################################
+    km = kc.keymaps.new('Dopesheet', space_type='DOPESHEET_EDITOR',
+                        region_type='WINDOW')
 
     km.keymap_items.new("aaa.key_q", 'Q', 'PRESS')
     km.keymap_items.new("aaa.key_w", 'W', 'PRESS')
