@@ -48,6 +48,8 @@ def global_keymap():
     km.keymap_items.new(pie, 'S', 'PRESS', ctrl=True) \
         .properties.name = "PIE_MT_SAVE_N_STUFF"
 
+    km.keymap_items.new("aaa.key_q", 'Q', 'PRESS')
+    km.keymap_items.new("aaa.key_w", 'W', 'PRESS')
     km.keymap_items.new("aaa.key_e", 'E', 'PRESS')
 
     ################################# 3D VIEW #################################

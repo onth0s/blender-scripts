@@ -246,6 +246,73 @@ class RollAxis(Operator):
         return {'FINISHED'}
 
 
+class GLOBAL_Q(Operator):
+    bl_idname = "aaa.key_q"
+    bl_label = "GLOBAL_Q"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    def execute(self, context):
+        SN = context.scene
+        CN = context.scene.conditions
+        AT = context.area.type
+
+        if CN in ('TRANSFORM'):
+            if AT in ("VIEW_3D", 'GRAPH_EDITOR'):
+                bpy.ops.transform.translate('INVOKE_DEFAULT')
+            if AT == "DOPESHEET_EDITOR":
+                bpy.ops.transform.transform(
+                    'INVOKE_DEFAULT', mode="TIME_TRANSLATE")
+            if AT == "SEQUENCE_EDITOR":
+                bpy.ops.transform.seq_slide('INVOKE_DEFAULT')
+
+        if CN in ('LAYERS'):
+            bpy.ops.aaa.gp_layer_new()
+
+        if CN in ('TIMELINE'):
+            # 'loop_frames' is a BoolProperty in 'AAA_settings'
+            if SN.loop_frames:
+                if SN.use_preview_range:
+                    if SN.frame_current == SN.frame_preview_start:
+                        SN.frame_current = SN.frame_preview_end
+                    else:
+                        bpy.ops.screen.frame_offset(delta=-1)
+                else:
+                    if SN.frame_current == SN.frame_start:
+                        SN.frame_current = SN.frame_end
+                    else:
+                        bpy.ops.screen.frame_offset(delta=-1)
+            else:
+                bpy.ops.screen.frame_offset(delta=-1)
+
+        return {'FINISHED'}
+
+
+class GLOBAL_W(Operator):
+    bl_idname = "aaa.key_w"
+    bl_label = "GLOBAL_W"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    def execute(self, context):
+        C = context
+        CN = C.scene.conditions
+        AT = C.area.type
+
+        if CN in ('TRANSFORM'):
+            if AT in ("VIEW_3D", 'GRAPH_EDITOR'):
+                bpy.ops.transform.resize('INVOKE_DEFAULT')
+            if AT == "DOPESHEET_EDITOR":
+                bpy.ops.transform.transform(
+                    'INVOKE_DEFAULT', mode="TIME_SCALE")
+
+        if CN in ('TIMELINE'):
+            if C.scene.use_preview_range:
+                C.scene.frame_current = C.scene.frame_preview_start
+            else:
+                C.scene.frame_current = C.scene.frame_start
+
+        return {'FINISHED'}
+
+
 class GLOBAL_E(Operator):
     bl_idname = "aaa.key_e"
     bl_label = "GLOBAL_E"
@@ -319,6 +386,8 @@ classes = (
     RollViewport,
     RollAxis,
 
+    GLOBAL_Q,
+    GLOBAL_W,
     GLOBAL_E,
 
     ToggleProp,
