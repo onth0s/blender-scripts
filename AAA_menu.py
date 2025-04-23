@@ -136,6 +136,41 @@ class VIEW3D_MT_OBJECT_OPERATIONS(Menu):
             .type = 'CLEAR'
 
 
+class VIEW3D_MT_SELECT(Menu):
+    bl_label = "Select"
+
+    def draw(self, context):
+        AT = context.area.type
+        M = context.mode
+
+        layout = self.layout
+
+        if AT == 'VIEW_3D':
+            if M in OBJ:
+                layout.operator("object.select_all", text="A - All") \
+                    .action = 'SELECT'
+                layout.operator("object.select_all", text="S - None") \
+                    .action = 'DESELECT'
+                layout.operator("object.select_all", text="D - Invert") \
+                    .action = 'INVERT'
+                layout.operator("object.select_grouped",
+                                text="Q - Select Grouped").type = 'PARENT'
+            if M in MHE:
+                layout.operator("mesh.select_all", text="A - All") \
+                    .action = 'SELECT'
+                layout.operator("mesh.select_all", text="S - None") \
+                    .action = 'DESELECT'
+                layout.operator("mesh.select_all", text="D - Invert") \
+                    .action = 'INVERT'
+
+                layout.separator()
+                layout.operator("mesh.select_linked", text="Q - Linked")
+
+                layout.separator()
+                layout.operator("mesh.loop_to_region", text="E - Inner Region")
+                layout.operator("mesh.region_to_loop", text="F - Boundary")
+
+
 class VIEW3D_MT_SELECT_MODE(Menu):
     bl_label = "Select"
 
@@ -244,7 +279,9 @@ classes = (
 
     VIEW3D_MT_OBJECT_OPERATIONS,
 
+    VIEW3D_MT_SELECT,
     VIEW3D_MT_SELECT_MODE,
+    
     VIEW3D_MT_MHE_MODE,
 
     VIEW3D_MT_APPLY_CLEAR,
