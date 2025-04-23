@@ -287,7 +287,6 @@ class GLOBAL_Q(Operator):
                     else:
                         bpy.ops.screen.frame_offset(delta=-1)
             else:
-                print("loop_frames is False")
                 bpy.ops.screen.frame_offset(delta=-1)
 
         return {'FINISHED'}

@@ -27,17 +27,6 @@ class VIEW3D_PT_frame_range(Panel):
             layout.prop(SC, "frame_start", text="Start")
             layout.prop(SC, "frame_end", text="End")
 
-    bl_space_type = 'VIEW_3D'
-    bl_region_type = 'WINDOW'
-    bl_ui_units_x = 12
-    bl_label = ""
-
-    def draw(self, context):
-        layout = self.layout
-        layout.label(text="Nothing to show here")
-
-# ------------------------   Toolbar   ------------------------ #
-
 
 class AAA_BASE_PANEL():
     bl_space_type = 'VIEW_3D'

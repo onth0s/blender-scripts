@@ -48,7 +48,7 @@ def global_keymap():
     pie = "wm.call_menu_pie"
 
     ################################# GLOBAL ##################################
-    km = kc.keymaps.new('Window', space_type='EMPTY')
+    km = kc.keymaps.new('Window', space_type='EMPTY', region_type='WINDOW')
 
     km.keymap_items.new("aaa.test_context_debugger", 'P', 'PRESS',
                         shift=True, ctrl=True, alt=True)
@@ -60,18 +60,8 @@ def global_keymap():
     km.keymap_items.new(pie, 'S', 'PRESS', ctrl=True) \
         .properties.name = "PIE_MT_SAVE_N_STUFF"
 
-    # currently if you try to use the Global Keys it will throw an error
-    # when you call it while the mouse is over the transparent part of the
-    # N Panel. The working fix is to simply limit the keymap to the
-    # 3D View.
-    # TODO: find a way to make it work globally.
-
-    # km.keymap_items.new("aaa.key_q", 'Q', 'PRESS')
-    # km.keymap_items.new("aaa.key_w", 'W', 'PRESS')
-    # km.keymap_items.new("aaa.key_e", 'E', 'PRESS')
-
     ################################# 3D VIEW #################################
-    km = kc.keymaps.new('3D View', space_type='VIEW_3D')
+    km = kc.keymaps.new('3D View', space_type='VIEW_3D', region_type='WINDOW')
     km.keymap_items.new(
         'aaa.roll_viewport', 'MIDDLEMOUSE', 'CLICK_DRAG', alt=True)
     km.keymap_items.new(
@@ -90,12 +80,13 @@ def global_keymap():
     km.keymap_items.new("aaa.key_e", 'E', 'PRESS')
 
     ################################ OUTLINER #################################
-    km = kc.keymaps.new('Outliner', space_type='OUTLINER')
+    km = kc.keymaps.new('Outliner', space_type='OUTLINER',
+                        region_type='WINDOW')
     km.keymap_items.new(
         "outliner.collection_new", 'N', 'PRESS', ctrl=True)
 
     ################################ OVERRIDES ################################
-    km = kc.keymaps.new('3D View', space_type='VIEW_3D')
+    km = kc.keymaps.new('3D View', space_type='VIEW_3D', region_type='WINDOW')
     km.keymap_items.new(
         "view3d.view_center_pick", 'MIDDLEMOUSE', 'CLICK',
         ctrl=True, alt=True)

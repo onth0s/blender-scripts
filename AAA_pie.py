@@ -83,7 +83,7 @@ class PIE_MT_KEY_CONDITIONS(Menu):
         FN = "aaa.conditions_switcher"
         pie = self.layout.menu_pie()
 
-        pie.operator("wm.call_panel", text="F - Frame Range") \
+        pie.operator("wm.call_panel", text="Frame Range") \
             .name = "VIEW3D_PT_frame_range"
         
         pie.operator(FN, text="Transform").cond = "TRANSFORM"
