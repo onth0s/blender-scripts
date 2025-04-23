@@ -246,6 +246,39 @@ class RollAxis(Operator):
         return {'FINISHED'}
 
 
+class GLOBAL_E(Operator):
+    bl_idname = "aaa.key_e"
+    bl_label = "GLOBAL_E"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    def execute(self, context):
+        SN = context.scene
+        CN = SN.conditions
+        AT = context.area.type
+
+        if CN in ('TRANSFORM'):
+            if AT in ('VIEW_3D', 'GRAPH_EDITOR'):
+                bpy.ops.transform.rotate('INVOKE_DEFAULT')
+
+        # if CN in ('LAYERS'):
+        #     bpy.ops.aaa.gp_layer_duplicate_hide()
+
+        if CN in ('TIMELINE'):
+            if SN.loop_frames:
+                if SN.use_preview_range:
+                    if SN.frame_current == SN.frame_preview_end:
+                        SN.frame_current = SN.frame_preview_start
+                    else:
+                        bpy.ops.screen.frame_offset(delta=1)
+                else:
+                    if SN.frame_current == SN.frame_end:
+                        SN.frame_current = SN.frame_start
+                    else:
+                        bpy.ops.screen.frame_offset(delta=1)
+            else:
+                bpy.ops.screen.frame_offset(delta=1)
+
+
 class ToggleProp(Operator):
     bl_idname = "aaa.toggle_prop"
     bl_label = ""
@@ -255,6 +288,8 @@ class ToggleProp(Operator):
 
     def execute(self, context):
         exec(self.prop+" = not "+self.prop)
+        return {'FINISHED'}
+
         return {'FINISHED'}
 
 
@@ -282,6 +317,8 @@ classes = (
 
     RollViewport,
     RollAxis,
+
+    GLOBAL_E,
 
     ToggleProp,
     TestOperator,

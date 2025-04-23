@@ -41,28 +41,30 @@ def global_keymap():
     ################################# GLOBAL ##################################
     km = kc.keymaps.new('Window', space_type='EMPTY')
 
-    kmi = km.keymap_items.new(pie, 'SPACE', 'PRESS') \
+    km.keymap_items.new(pie, 'SPACE', 'PRESS') \
         .properties.name = "PIE_MT_SPACE"
     km.keymap_items.new(pie, 'C', 'PRESS') \
         .properties.name = "PIE_MT_KEY_CONDITIONS"
     km.keymap_items.new(pie, 'S', 'PRESS', ctrl=True) \
         .properties.name = "PIE_MT_SAVE_N_STUFF"
 
+    km.keymap_items.new("aaa.key_e", 'E', 'PRESS')
+
     ################################# 3D VIEW #################################
     km = kc.keymaps.new('3D View', space_type='VIEW_3D')
-    kmi = km.keymap_items.new(
+    km.keymap_items.new(
         'aaa.roll_viewport', 'MIDDLEMOUSE', 'CLICK_DRAG', alt=True)
-    kmi = km.keymap_items.new(
+    km.keymap_items.new(
         'view3d.view_selected', 'MIDDLEMOUSE', 'PRESS', shift=True, ctrl=True)
 
     ################################ OUTLINER #################################
     km = kc.keymaps.new('Outliner', space_type='OUTLINER')
-    kmi = km.keymap_items.new(
+    km.keymap_items.new(
         "outliner.collection_new", 'N', 'PRESS', ctrl=True)
 
     ################################ OVERRIDES ################################
     km = kc.keymaps.new('3D View', space_type='VIEW_3D')
-    kmi = km.keymap_items.new(
+    km.keymap_items.new(
         "view3d.view_center_pick", 'MIDDLEMOUSE', 'CLICK',
         ctrl=True, alt=True)
 
