@@ -303,14 +303,14 @@ class GLOBAL_W(Operator):
         CN = C.scene.conditions
         AT = C.area.type
 
-        if CN in ('TRANSFORM'):
+        if CN == 'TRANSFORM':
             if AT in ("VIEW_3D", 'GRAPH_EDITOR'):
                 bpy.ops.transform.resize('INVOKE_DEFAULT')
             elif AT == "DOPESHEET_EDITOR":
                 bpy.ops.transform.transform(
                     'INVOKE_DEFAULT', mode="TIME_SCALE")
 
-        if CN in ('TIMELINE'):
+        if CN == 'TIMELINE':
             if C.scene.use_preview_range:
                 C.scene.frame_current = C.scene.frame_preview_start
             else:
@@ -329,27 +329,25 @@ class GLOBAL_E(Operator):
         CN = SN.conditions
         AT = context.area.type
 
-        if CN in ('TRANSFORM'):
+        if CN == 'TRANSFORM':
             if AT in ('VIEW_3D', 'GRAPH_EDITOR'):
                 bpy.ops.transform.rotate('INVOKE_DEFAULT')
 
-        # if CN in ('LAYERS'):
-        #     bpy.ops.aaa.gp_layer_duplicate_hide()
+        if CN == 'TIMELINE':
+            if SN.loop_frames:
+                if SN.use_preview_range:
+                    if SN.frame_current == SN.frame_preview_end:
+                        SN.frame_current = SN.frame_preview_start
+                    else:
+                        bpy.ops.screen.frame_offset(delta=1)
+                else:
+                    if SN.frame_current == SN.frame_end:
+                        SN.frame_current = SN.frame_start
+                    else:
+                        bpy.ops.screen.frame_offset(delta=1)
+            else:
+                bpy.ops.screen.frame_offset(delta=1)
 
-        # if CN in ('TIMELINE'):
-        #     if SN.loop_frames:
-        #         if SN.use_preview_range:
-        #             if SN.frame_current == SN.frame_preview_end:
-        #                 SN.frame_current = SN.frame_preview_start
-        #             else:
-        #                 bpy.ops.screen.frame_offset(delta=1)
-        #         else:
-        #             if SN.frame_current == SN.frame_end:
-        #                 SN.frame_current = SN.frame_start
-        #             else:
-        #                 bpy.ops.screen.frame_offset(delta=1)
-        #     else:
-        #         bpy.ops.screen.frame_offset(delta=1)
         return {'FINISHED'}
 
 
