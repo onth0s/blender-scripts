@@ -9,18 +9,18 @@ space_types = {
                 "SEQUENCE_EDITOR",
                 "CLIP_EDITOR"],
     "Animation": ["DOPESHEET_EDITOR",
-                  "GRAPH_EDITOR",
-                  "NLA_EDITOR"],
+                "GRAPH_EDITOR",
+                "NLA_EDITOR"],
     "Scripting": ["TEXT_EDITOR",
-                  "CONSOLE",
-                  "INFO",
-                  "TOPBAR",
-                  "STATUSBAR"],
+                "CONSOLE",
+                "INFO",
+                "TOPBAR",
+                "STATUSBAR"],
     "Data": ["OUTLINER",
-             "PROPERTIES",
-             "FILE_BROWSER",
-             "SPREADSHEET",
-             "PREFERENCES"]
+            "PROPERTIES",
+            "FILE_BROWSER",
+            "SPREADSHEET",
+            "PREFERENCES"]
 }
 region_types = [
     "WINDOW", "HEADER", "CHANNELS",

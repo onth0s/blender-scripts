@@ -274,6 +274,7 @@ class GLOBAL_Q(Operator):
 
         if CN == 'TIMELINE':
             # 'loop_frames' is a BoolProperty in 'AAA_settings'
+
             if SN.loop_frames:
                 if SN.use_preview_range:
                     if SN.frame_current == SN.frame_preview_start:
