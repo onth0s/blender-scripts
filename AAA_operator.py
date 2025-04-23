@@ -246,6 +246,18 @@ class RollAxis(Operator):
         return {'FINISHED'}
 
 
+class CONDITIONS_SWITCHER(Operator):
+    bl_idname = "aaa.conditions_switcher"
+    bl_label = "CONDITIONS_SWITCHER"
+    bl_options = {'REGISTER'}
+
+    cond: bpy.props.StringProperty()
+
+    def execute(self, context):
+        context.scene.conditions = self.cond
+        return {'FINISHED'}
+
+
 class GLOBAL_Q(Operator):
     bl_idname = "aaa.key_q"
     bl_label = "GLOBAL_Q"
@@ -256,19 +268,11 @@ class GLOBAL_Q(Operator):
         CN = context.scene.conditions
         AT = context.area.type
 
-        if CN in ('TRANSFORM'):
+        if CN == 'TRANSFORM':
             if AT in ("VIEW_3D", 'GRAPH_EDITOR'):
                 bpy.ops.transform.translate('INVOKE_DEFAULT')
-            if AT == "DOPESHEET_EDITOR":
-                bpy.ops.transform.transform(
-                    'INVOKE_DEFAULT', mode="TIME_TRANSLATE")
-            if AT == "SEQUENCE_EDITOR":
-                bpy.ops.transform.seq_slide('INVOKE_DEFAULT')
 
-        if CN in ('LAYERS'):
-            bpy.ops.aaa.gp_layer_new()
-
-        if CN in ('TIMELINE'):
+        if CN == 'TIMELINE':
             # 'loop_frames' is a BoolProperty in 'AAA_settings'
             if SN.loop_frames:
                 if SN.use_preview_range:
@@ -282,6 +286,7 @@ class GLOBAL_Q(Operator):
                     else:
                         bpy.ops.screen.frame_offset(delta=-1)
             else:
+                print("loop_frames is False")
                 bpy.ops.screen.frame_offset(delta=-1)
 
         return {'FINISHED'}
@@ -385,6 +390,8 @@ classes = (
 
     RollViewport,
     RollAxis,
+
+    CONDITIONS_SWITCHER,
 
     GLOBAL_Q,
     GLOBAL_W,

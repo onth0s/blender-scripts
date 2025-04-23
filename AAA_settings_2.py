@@ -9,9 +9,7 @@ from bpy.types import (Operator, PropertyGroup, UIList)
 
 class TestSettings(PropertyGroup):
     def dummy_update(self, context):
-        print("dummy_update() called!")
-
-        return "test dummy update return value"
+        pass
 
     bpy.types.Scene.conditions = StringProperty(
         name="Global Conditions",
@@ -21,6 +19,9 @@ class TestSettings(PropertyGroup):
     )
 
     bpy.types.Scene.axis_roll = StringProperty()
+
+    bpy.types.Scene.loop_frames = BoolProperty(default=False)
+
 
 # '_UL_' recommended infix
 

@@ -43,9 +43,6 @@ class VIEW3D_MT_VIEW(Menu):
             .name = "VIEW3D_MT_VIEW_AXIS_ROLL"
 
         LYT.separator()
-        LYT.operator("aaa.select_reference_image", text="C - Select Image")
-
-        LYT.separator()
         LYT.operator_context = 'INVOKE_DEFAULT'
         LYT.operator("view3d.walk", text="F - Walk Navigation")
         LYT.operator("view3d.localview", text="Z - Local View")

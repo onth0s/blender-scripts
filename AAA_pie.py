@@ -80,16 +80,19 @@ class PIE_MT_KEY_CONDITIONS(Menu):
     bl_label = "Conditions"
 
     def draw(self, context):
+        FN = "aaa.conditions_switcher"
         pie = self.layout.menu_pie()
 
-        pie.operator('wm.call_menu', text="")
-        pie.operator('wm.call_menu', text="")
-        pie.operator('wm.call_menu', text="")
-        pie.operator('wm.call_menu', text="")
-        pie.operator('wm.call_menu', text="")
-        pie.operator('wm.call_menu', text="")
-        pie.operator('wm.call_menu', text="")
-        pie.operator('wm.call_menu', text="")
+        pie.operator("wm.call_panel", text="F - Frame Range") \
+            .name = "VIEW3D_PT_frame_range"
+        
+        pie.operator(FN, text="Transform").cond = "TRANSFORM"
+        pie.operator(FN, text="").cond = ""
+        pie.operator(FN, text="").cond = ""
+        pie.operator(FN, text="").cond = ""
+        pie.operator(FN, text="").cond = ""
+        pie.operator(FN, text="").cond = ""
+        pie.operator(FN, text="Timeline").cond = "TIMELINE"
 
 
 class PIE_MT_SAVE_N_STUFF(Menu):

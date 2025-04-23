@@ -48,9 +48,15 @@ def global_keymap():
     km.keymap_items.new(pie, 'S', 'PRESS', ctrl=True) \
         .properties.name = "PIE_MT_SAVE_N_STUFF"
 
-    km.keymap_items.new("aaa.key_q", 'Q', 'PRESS')
-    km.keymap_items.new("aaa.key_w", 'W', 'PRESS')
-    km.keymap_items.new("aaa.key_e", 'E', 'PRESS')
+    """ currently if you try to use the Global Keys it will throw an error
+    when you call it while the mouse is over the transparent part of the 
+    N Panel. The working fix is to simply limit the keymap to the
+    3D View. """
+    # TODO: find a way to make it work globally.
+
+    # km.keymap_items.new("aaa.key_q", 'Q', 'PRESS')
+    # km.keymap_items.new("aaa.key_w", 'W', 'PRESS')
+    # km.keymap_items.new("aaa.key_e", 'E', 'PRESS')
 
     ################################# 3D VIEW #################################
     km = kc.keymaps.new('3D View', space_type='VIEW_3D')
@@ -58,6 +64,10 @@ def global_keymap():
         'aaa.roll_viewport', 'MIDDLEMOUSE', 'CLICK_DRAG', alt=True)
     km.keymap_items.new(
         'view3d.view_selected', 'MIDDLEMOUSE', 'PRESS', shift=True, ctrl=True)
+
+    km.keymap_items.new("aaa.key_q", 'Q', 'PRESS')
+    km.keymap_items.new("aaa.key_w", 'W', 'PRESS')
+    km.keymap_items.new("aaa.key_e", 'E', 'PRESS')
 
     ################################ OUTLINER #################################
     km = kc.keymaps.new('Outliner', space_type='OUTLINER')
