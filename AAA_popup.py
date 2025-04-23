@@ -14,18 +14,19 @@ class VIEW3D_PT_frame_range(Panel):
         SC = context.scene
         layout = self.layout
         row = layout.row(align=True)
-        # split = col.split(factor=0.2, align=True)
 
         row.prop(SC, "use_preview_range", text="")
         row.prop(SC, "loop_frames", text="", icon="FILE_REFRESH")
         row.prop(SC, "frame_current", text="Frame")
 
         if SC.use_preview_range:
-            layout.prop(SC, "frame_preview_start", text="Start")
-            layout.prop(SC, "frame_preview_end", text="End")
+            row = layout.row(align=True)
+            row.prop(SC, "frame_preview_start", text="Start")
+            row.prop(SC, "frame_preview_end", text="End")
         else:
-            layout.prop(SC, "frame_start", text="Start")
-            layout.prop(SC, "frame_end", text="End")
+            row = layout.row(align=True)
+            row.prop(SC, "frame_start", text="Start")
+            row.prop(SC, "frame_end", text="End")
 
 
 class AAA_BASE_PANEL():
