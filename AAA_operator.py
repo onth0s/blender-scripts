@@ -381,6 +381,38 @@ class TestOperator(Operator):
         return {'FINISHED'}
 
 
+class TestContextDebugger(Operator):
+    bl_idname = "aaa.test_context_debugger"
+    bl_label = "Test Context Debugger"
+    bl_options = {'REGISTER'}
+
+    def execute(self, context):
+        print("\n=============== FULL CONTEXT DUMP ===============\n")
+
+        print("""  >>> context.area.type:
+    Active Area:""", context.area.type)
+
+        print("""\n  >>> context.area.ui_type:
+    UI Type:""", context.area.ui_type)
+
+        print("""\n  >>> context.active_object:
+    Active Object:""", context.active_object)
+
+        print("""\n  >>> context.selected_objects:
+    Selected Objects:""", context.selected_objects)
+
+        print("""\n  >>> context.mode:
+    Mode:""", context.mode)
+
+        print("""\n  >>> context.screen.name:
+    Screen:""", context.screen.name)
+
+        print("""\n  >>> context.region.type:
+    Region:""", context.region.type)
+
+        return {'FINISHED'}
+
+
 classes = (
     SaveFile,
     SaveIncremental,
@@ -398,6 +430,7 @@ classes = (
 
     ToggleProp,
     TestOperator,
+    TestContextDebugger
 )
 
 

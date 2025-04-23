@@ -40,6 +40,7 @@ region_types = [
 #     print(km.name, km.space_type)
 # TODO GET ***ALL*** KEYMAP-SPACE_TYPE COMBINATIONS
 
+
 def global_keymap():
     C = bpy.context
 
@@ -49,6 +50,9 @@ def global_keymap():
     ################################# GLOBAL ##################################
     km = kc.keymaps.new('Window', space_type='EMPTY')
 
+    km.keymap_items.new("aaa.test_context_debugger", 'P', 'PRESS',
+                        shift=True, ctrl=True, alt=True)
+
     km.keymap_items.new(pie, 'SPACE', 'PRESS') \
         .properties.name = "PIE_MT_SPACE"
     km.keymap_items.new(pie, 'C', 'PRESS') \
@@ -57,7 +61,7 @@ def global_keymap():
         .properties.name = "PIE_MT_SAVE_N_STUFF"
 
     # currently if you try to use the Global Keys it will throw an error
-    # when you call it while the mouse is over the transparent part of the 
+    # when you call it while the mouse is over the transparent part of the
     # N Panel. The working fix is to simply limit the keymap to the
     # 3D View.
     # TODO: find a way to make it work globally.
