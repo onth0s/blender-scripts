@@ -7,8 +7,8 @@ from bl_ui.utils import PresetPanel
 class VIEW3D_PT_frame_range(Panel):
     bl_space_type = 'VIEW_3D'
     bl_region_type = 'WINDOW'
-    bl_ui_units_x = 12
-    bl_label = ""
+    bl_ui_units_x = 8
+    bl_label = "Frame Range"
 
     def draw(self, context):
         SC = context.scene
@@ -36,13 +36,10 @@ class AAA_BASE_PANEL():
 
 class VIEW3D_PT_INFO(AAA_BASE_PANEL, Panel):
     bl_category = 'AAA'
-    bl_label = " "
+    bl_label = "VIEW3D_PT_INFO Label"
     bl_order = 0
 
-    bl_options = {'HIDE_HEADER'}
-
-    # def draw_header_preset(self, _context):
-    #     VIEW3D_PT_INFO_PRESET.draw_panel_header(self.layout)
+    # bl_options = {'HIDE_HEADER'}
 
     def draw_header(self, context):
         layout = self.layout
@@ -111,13 +108,6 @@ class VIEW3D_PT_INFO_SHOW(AAA_BASE_PANEL, Panel):
                  expand=True, text="Cond", toggle=True)
         sub.prop(context.scene, "pt_info_5", expand=True,
                  text="ActTool", toggle=True)
-
-
-class VIEW3D_PT_INFO_PRESET(PresetPanel, Panel):
-    bl_label = "Info Presets"
-    preset_subdir = "scene/panel_info"
-    preset_operator = "script.execute_preset"
-    preset_add_operator = "aaa.preset_panel_info"
 
 
 class VIEW3D_PT_FRAME(AAA_BASE_PANEL, Panel):
@@ -238,7 +228,6 @@ classes = (
 
     VIEW3D_PT_INFO,
     VIEW3D_PT_INFO_SHOW,
-    VIEW3D_PT_INFO_PRESET,
 
     VIEW3D_PT_FRAME,
     VIEW3D_PT_FRAME_RATE,
