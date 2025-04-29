@@ -2,8 +2,6 @@ import bpy
 from bpy.types import Menu
 
 from AAA_var import *
-# 'VIEW3D_' is not necessary, it just looks cleaner this way,
-# because it's the context in which you shall call it
 
 ''' Useful API ENUMS
     bpy.context.area.type
@@ -11,11 +9,13 @@ from AAA_var import *
         CLIP_EDITOR, DOPESHEET_EDITOR, GRAPH_EDITOR, NLA_EDITOR, TEXT_EDITOR,
         CONSOLE, INFO, TOPBAR, STATUSBAR, OUTLINER, PROPERTIES, FILE_BROWSER,
         PREFERENCES], default VIEW_3D
+
     bpy.context.mode
         enum in [EDIT_MESH, EDIT_CURVE, EDIT_SURFACE, EDIT_TEXT, EDIT_ARMATURE,
         EDIT_METABALL, EDIT_LATTICE, POSE, SCULPT, PAINT_WEIGHT, PAINT_VERTEX,
         PAINT_TEXTURE, PARTICLE, OBJECT, PAINT_GPENCIL, EDIT_GPENCIL,
         SCULPT_GPENCIL, WEIGHT_GPENCIL], default EDIT_MESH
+
     bpy.context.object.type
         enum in [MESH, CURVE, SURFACE, META, FONT, ARMATURE, LATTICE, EMPTY,
         GPENCIL, CAMERA, LIGHT, SPEAKER, LIGHT_PROBE], default EMPTY
@@ -75,6 +75,59 @@ class PIE_MT_SPACE(Menu):
             pie.operator(MN, text="Select Mode").name = "VIEW3D_MT_SELECT_MODE"
 
 
+class PIE_MT_S(Menu):
+    bl_idname = "PIE_MT_S"
+    bl_label = "General 2"
+
+    def draw(self, context):
+        M = context.mode
+
+        MT = "wm.call_menu"
+        PT = "wm.call_panel"
+
+        pie = self.layout.menu_pie()
+
+        # ------------------------   LEFT   --------------------------------- #
+        if M in (OBJ, MHE):
+            pie.operator(PT, text="Orientation") \
+                .name = "VIEW3D_PT_transform_orientations"
+        else:
+            pie.operator(MT, text="").name = ""
+        # ------------------------   RIGHT   -------------------------------- #
+        if M in (MHE):
+            pie.operator(MT, text="Tools") \
+                .name = "VIEW3D_MT_COMMON_MODELING_TOOLS"
+        else:
+            pie.operator(MT, text="").name = ""
+        # ------------------------   BOTTOM   ------------------------------- #
+        if M in (OBJ, MHE):
+            pie.operator(MT, text="Pivot Point").name = "VIEW3D_MT_PIVOT"
+        else:
+            pie.operator(MT, text="").name = ""
+        # ------------------------   TOP   ---------------------------------- #
+        if M in (ALL):
+            pie.operator(MT, text="Mode").name = "VIEW3D_MT_MODE"
+        # ------------------------   TOP-LEFT   ----------------------------- #
+        if M in (OBJ, MHE):
+            pie.operator(PT, text="Snapping").name = "VIEW3D_PT_snapping"
+        else:
+            pie.operator(MT, text="").name = ""
+        # ------------------------   TOP-RIGHT   ---------------------------- #
+        if M in (ALL):
+            pie.operator(MT, text="").name = ""
+        # ------------------------   BOTTOM-LEFT   -------------------------- #
+        if M in (OBJ, MHE):
+            pie.operator(PT, text="Proportional") \
+                .name = "VIEW3D_PT_proportional_edit_2"
+        if M in (ALL):
+            pie.operator(MT, text="").name = ""
+        # ------------------------   BOTTOM-RIGHT   ------------------------- #
+        if M in (OBJ, MHE):
+            pie.operator(MT, text="Cursor").name = "VIEW3D_MT_CURSOR_POSITION"
+        else:
+            pie.operator(MT, text="").name = ""
+
+
 class PIE_MT_KEY_CONDITIONS(Menu):
     bl_idname = "PIE_MT_KEY_CONDITIONS"
     bl_label = "Conditions"
@@ -85,7 +138,7 @@ class PIE_MT_KEY_CONDITIONS(Menu):
 
         pie.operator("wm.call_panel", text="Frame Range") \
             .name = "VIEW3D_PT_frame_range"
-        
+
         pie.operator(FN, text="Transform").cond = "TRANSFORM"
         pie.operator(FN, text="").cond = ""
         pie.operator(FN, text="").cond = ""
@@ -125,6 +178,7 @@ class PIE_MT_SAVE_N_STUFF(Menu):
 
 classes = (
     PIE_MT_SPACE,
+    PIE_MT_S,
     PIE_MT_KEY_CONDITIONS,
     PIE_MT_SAVE_N_STUFF,
 )
