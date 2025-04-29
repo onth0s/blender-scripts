@@ -1,6 +1,6 @@
-import bpy
-from bpy.props import *
-from bpy.types import (Menu, Operator)
+import bpy # type: ignore
+from bpy.props import * # type: ignore
+from bpy.types import (Menu, Operator) # type: ignore
 
 from AAA_var import *
 

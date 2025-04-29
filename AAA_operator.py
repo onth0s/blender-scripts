@@ -1,13 +1,13 @@
-import bpy
+import bpy  # type: ignore
 import os
 import re
 from datetime import datetime
 
-from bpy.props import (FloatProperty, IntProperty,
+from bpy.props import (FloatProperty, IntProperty,  # type: ignore
                        BoolProperty, StringProperty)
-from bpy.types import (Menu, Operator)
+from bpy.types import (Menu, Operator)  # type: ignore
 from bl_operators.presets import AddPresetBase
-from mathutils import *
+from mathutils import *  # type: ignore
 from math import *
 
 from AAA_var import *
@@ -133,7 +133,7 @@ class SwitchWorkspace(Operator):
     bl_label = ""
     bl_options = {'REGISTER'}
 
-    name: bpy.props.StringProperty()
+    name: bpy.props.StringProperty()  # type: ignore
 
     def execute(self, context):
         context.window.workspace = bpy.data.workspaces[self.name]
@@ -147,8 +147,8 @@ class RollViewport(Operator):
 
     initial_angle = 0
     angle_now = 0
-    initial_rotation = Vector((0, 0, 0))
-    camNormal = Vector((0, 0, -1))
+    initial_rotation = Vector((0, 0, 0))  # type: ignore
+    camNormal = Vector((0, 0, -1))  # type: ignore
 
     temp_degree = 0
 
@@ -169,12 +169,13 @@ class RollViewport(Operator):
             rv3d.view_perspective = 'PERSP'
 
         # get the center of the viewport
-        self.view3d_bounds = Vector(
+        self.view3d_bounds = Vector(  # type: ignore
             (context.region.width, context.region.height))
         self.view3d_center = self.view3d_bounds / 2
 
         # how far is the mouse from the center, returns a Vector
-        mouseloc = Vector((event.mouse_region_x, event.mouse_region_y))
+        mouseloc = Vector(  # type: ignore
+            (event.mouse_region_x, event.mouse_region_y))
         mouseloc_centered = mouseloc - self.view3d_center
 
         # copy a Quaternion(w, x, y, z) into a Vector((x, y, z)), returns a Quaternion()
@@ -186,11 +187,11 @@ class RollViewport(Operator):
 
         # change the axis of rotation
         if bpy.data.scenes[0].axis_roll == "X":
-            self.camNormal = Vector((1, 0, 0))
+            self.camNormal = Vector((1, 0, 0))  # type: ignore
         elif bpy.data.scenes[0].axis_roll == "Y":
-            self.camNormal = Vector((0, 0, -1))
+            self.camNormal = Vector((0, 0, -1))  # type: ignore
         elif bpy.data.scenes[0].axis_roll == "Z":
-            self.camNormal = Vector((0, 1, 0))
+            self.camNormal = Vector((0, 1, 0))  # type: ignore
 
         return {'RUNNING_MODAL'}
 
@@ -198,7 +199,7 @@ class RollViewport(Operator):
         rv3d = context.space_data.region_3d
 
         angle_diff = self.angle_now - self.initial_angle
-        quat = Quaternion(self.camNormal, angle_diff)
+        quat = Quaternion(self.camNormal, angle_diff)  # type: ignore
         rv3d.view_rotation = self.initial_rotation @ quat
 
         if angle_diff > 0:
@@ -215,7 +216,8 @@ class RollViewport(Operator):
         rv3d = context.space_data.region_3d
 
         if event.type == 'MOUSEMOVE':
-            mouseloc = Vector((event.mouse_region_x, event.mouse_region_y))
+            mouseloc = Vector(  # type: ignore
+                (event.mouse_region_x, event.mouse_region_y))
             mouseloc_centered = mouseloc - self.view3d_center
             self.angle_now = atan2(mouseloc_centered.y, mouseloc_centered.x)
             self.execute(context)
@@ -233,7 +235,7 @@ class RollAxis(Operator):
     bl_label = ""
     bl_options = {'REGISTER'}
 
-    axis: bpy.props.StringProperty()
+    axis: bpy.props.StringProperty()  # type: ignore
 
     def execute(self, context):
         if self.axis == 'X':
@@ -251,7 +253,7 @@ class STDTools(Operator):
     bl_label = "Standard Tools"
     bl_options = {'REGISTER'}
 
-    name: bpy.props.StringProperty()
+    name: bpy.props.StringProperty()  # type: ignore
 
     def execute(self, context):
         if self.name == 'SPIN_TOOL':
@@ -266,7 +268,7 @@ class CONDITIONS_SWITCHER(Operator):
     bl_label = "CONDITIONS_SWITCHER"
     bl_options = {'REGISTER'}
 
-    cond: bpy.props.StringProperty()
+    cond: bpy.props.StringProperty()  # type: ignore
 
     def execute(self, context):
         context.scene.conditions = self.cond
@@ -371,7 +373,7 @@ class ToggleProp(Operator):
     bl_label = ""
     bl_options = {'UNDO'}
 
-    prop: bpy.props.StringProperty()
+    prop: bpy.props.StringProperty()  # type: ignore
 
     def execute(self, context):
         exec(self.prop+" = not "+self.prop)
@@ -387,7 +389,7 @@ class TestOperator(Operator):
     bl_label = "Test Operator"
     bl_options = {'REGISTER', 'UNDO'}
 
-    testVal: bpy.props.IntProperty()
+    testVal: bpy.props.IntProperty()  # type: ignore
 
     def execute(self, context):
         time = str(datetime.time(datetime.now()))
