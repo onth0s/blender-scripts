@@ -1,6 +1,7 @@
 import bpy  # type: ignore
 
 """ USEFUL ENUMS: space_type, region_type 
+
 space_types = {
     "Empty": "EMPTY",
     
@@ -26,6 +27,7 @@ space_types = {
             "SPREADSHEET",
             "PREFERENCES"]
 }
+
 region_types = [
     "WINDOW", "HEADER", "CHANNELS",
     "TEMPORARY", "UI", "TOOLS",
@@ -35,10 +37,10 @@ region_types = [
 ]
 """
 
-# TODO THIS SHIT IS ACTUALLY MAGIC
+# THIS SHIT IS ACTUALLY MAGIC
 # for km in bpy.context.window_manager.keyconfigs.active.keymaps:
 #     print(km.name, km.space_type)
-# TODO GET ***ALL*** KEYMAP-SPACE_TYPE COMBINATIONS
+# GET ***ALL*** KEYMAP-SPACE_TYPE COMBINATIONS
 
 
 def global_keymap():
@@ -50,22 +52,24 @@ def global_keymap():
     ################################# GLOBAL ##################################
     km = kc.keymaps.new('Window', space_type='EMPTY', region_type='WINDOW')
 
+    # Magic context debugger
     km.keymap_items.new("aaa.test_context_debugger", 'P', 'PRESS',
                         shift=True, ctrl=True, alt=True)
 
     km.keymap_items.new(pie, 'SPACE', 'PRESS') \
         .properties.name = "PIE_MT_SPACE"
+
     km.keymap_items.new(pie, 'C', 'PRESS') \
         .properties.name = "PIE_MT_KEY_CONDITIONS"
+
     km.keymap_items.new(pie, 'S', 'PRESS', ctrl=True) \
         .properties.name = "PIE_MT_SAVE_N_STUFF"
 
     ################################# 3D VIEW #################################
     km = kc.keymaps.new('3D View', space_type='VIEW_3D', region_type='WINDOW')
+
     km.keymap_items.new(
         'aaa.roll_viewport', 'MIDDLEMOUSE', 'CLICK_DRAG', alt=True)
-    km.keymap_items.new(
-        'view3d.view_selected', 'MIDDLEMOUSE', 'PRESS', shift=True, ctrl=True)
 
     km.keymap_items.new("aaa.key_q", 'Q', 'PRESS')
     km.keymap_items.new("aaa.key_w", 'W', 'PRESS')
@@ -86,7 +90,14 @@ def global_keymap():
         "outliner.collection_new", 'N', 'PRESS', ctrl=True)
 
     ################################ OVERRIDES ################################
+    # General keymaps for operators that already exist on Blender by default,
+    # but that's it's convenient add them here so you only have to disable
+    # the default key bindings that could collide to use this ones 
+
     km = kc.keymaps.new('3D View', space_type='VIEW_3D', region_type='WINDOW')
+
+    km.keymap_items.new(
+        'view3d.view_selected', 'MIDDLEMOUSE', 'PRESS', shift=True, ctrl=True)
     km.keymap_items.new(
         "view3d.view_center_pick", 'MIDDLEMOUSE', 'CLICK',
         ctrl=True, alt=True)
