@@ -5,7 +5,7 @@ from AAA_var import *
 
 ''' Useful API ENUMS
     bpy.context.area.type
-        enum in [EMPTY, VIEW_3D, IMAGE_EDITOR, NODE_EDITOR, SEQUENCE_EDITOR, 
+        enum in [EMPTY, VIEW_3D, IMAGE_EDITOR, NODE_EDITOR, SEQUENCE_EDITOR,
         CLIP_EDITOR, DOPESHEET_EDITOR, GRAPH_EDITOR, NLA_EDITOR, TEXT_EDITOR,
         CONSOLE, INFO, TOPBAR, STATUSBAR, OUTLINER, PROPERTIES, FILE_BROWSER,
         PREFERENCES], default VIEW_3D
@@ -101,7 +101,7 @@ class PIE_MT_S(Menu):
             pie.operator(MT, text="").name = ""
         # ------------------------   BOTTOM   ------------------------------- #
         if M in (OBJ, MHE):
-            pie.operator(MT, text="Pivot Point").name = "VIEW3D_MT_PIVOT"
+            pie.operator(MT, text="Pivot Point").name = "VIEW3D_MT_PIVOT_POINT"
         else:
             pie.operator(MT, text="").name = ""
         # ------------------------   TOP   ---------------------------------- #

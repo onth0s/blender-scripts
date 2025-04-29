@@ -1,6 +1,6 @@
-import bpy # type: ignore
-from bpy.props import * # type: ignore
-from bpy.types import (Menu, Operator) # type: ignore
+import bpy  # type: ignore
+from bpy.props import *  # type: ignore
+from bpy.types import (Menu, Operator)  # type: ignore
 
 from AAA_var import *
 
@@ -121,18 +121,6 @@ class VIEW3D_MT_TRANSFORM_GIZMO(Menu):
         layout.operator(TL, text="D - Rotate").name = "builtin.rotate"
 
 
-class VIEW3D_MT_OBJECT_OPERATIONS(Menu):
-    bl_label = "Object Operations"
-
-    def draw(self, context):
-        LYT = self.layout
-
-        LYT.operator("object.parent_set", text="E - Parent Object") \
-            .type = 'OBJECT'
-        LYT.operator("object.parent_clear", text="Q - Clear Parent")\
-            .type = 'CLEAR'
-
-
 class VIEW3D_MT_SELECT(Menu):
     bl_label = "Select"
 
@@ -186,6 +174,38 @@ class VIEW3D_MT_SELECT_MODE(Menu):
         LYT.operator(TL, text="E - Cursor").name = "builtin.cursor"
 
 
+class VIEW3D_MT_PIVOT_POINT(Menu):
+    bl_label = "Pivot Point test"
+
+    def draw(self, context):
+        TL = "wm.tool_set_by_id"
+        LYT = self.layout
+
+        OP1 = LYT.operator("aaa.value_switcher", text="Test")
+        OP1.val_a = "bpy.context.scene.tool_settings.transform_pivot_point"
+        OP1.val_b = "BOUNDING_BOX_CENTER"
+
+        LYT.separator()
+        LYT.operator(TL, text="A - Lasso").name = "builtin.select_lasso"
+        LYT.operator(TL, text="S - Box").name = "builtin.select_box"
+        LYT.operator(TL, text="D - Circle").name = "builtin.select_circle"
+
+        LYT.separator()
+        LYT.operator(TL, text="E - Cursor").name = "builtin.cursor"
+
+
+class VIEW3D_MT_OBJECT_OPERATIONS(Menu):
+    bl_label = "Object Operations"
+
+    def draw(self, context):
+        LYT = self.layout
+
+        LYT.operator("object.parent_set", text="E - Parent Object") \
+            .type = 'OBJECT'
+        LYT.operator("object.parent_clear", text="Q - Clear Parent")\
+            .type = 'CLEAR'
+
+
 class VIEW3D_MT_MHE_MODE(Menu):
     bl_label = "Select Mode"
 
@@ -211,14 +231,16 @@ class VIEW3D_MT_STD_TOOLS(Menu):
         layout.operator("mesh.inset", text="W - Inset")
         layout.operator("mesh.vert_connect_path", text="E - Connect Path")
         layout.operator("mesh.split", text="R - Split")
+
         layout.separator()
         layout.operator("mesh.extrude_region_move", text="S - Extrude")
         layout.operator("mesh.bevel", text="D - Bevel")
-        
+
         # custom built-in operator call to make sure the active tool switches
         # from the selection ones to the spin tool
         layout.operator("aaa.std_tools", text="F - Spin") \
             .name = "SPIN_TOOL"
+
         layout.separator()
         layout.operator("mesh.remove_doubles", text="Z - Remove Doubles")
         layout.operator("mesh.subdivide", text="X - Subdivide")
@@ -300,10 +322,12 @@ classes = (
 
     VIEW3D_MT_TRANSFORM_GIZMO,
 
-    VIEW3D_MT_OBJECT_OPERATIONS,
-
     VIEW3D_MT_SELECT,
     VIEW3D_MT_SELECT_MODE,
+
+    VIEW3D_MT_PIVOT_POINT,
+
+    VIEW3D_MT_OBJECT_OPERATIONS,
 
     VIEW3D_MT_MHE_MODE,
     VIEW3D_MT_STD_TOOLS,

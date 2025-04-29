@@ -276,6 +276,23 @@ class CONDITIONS_SWITCHER(Operator):
         return {'FINISHED'}
 
 
+class VALUE_SWITCHER(Operator):
+    bl_idname = "aaa.value_switcher"
+    bl_label = "VALUE_SWITCHER"
+    bl_options = {'REGISTER'}
+
+    val_a: bpy.props.StringProperty()  # type: ignore
+    val_b: bpy.props.StringProperty()  # type: ignore
+
+    def execute(self, context):
+        # this is a workaround to set a property from the outside
+        # it's not a good practice, but it works
+        # TODO find a better way to do this
+        exec(f"{self.val_a} = '{self.val_b}'")
+
+        return {'FINISHED'}
+
+
 class GLOBAL_Q(Operator):
     bl_idname = "aaa.key_q"
     bl_label = "GLOBAL_Q"
@@ -442,6 +459,7 @@ classes = (
     STDTools,
 
     CONDITIONS_SWITCHER,
+    VALUE_SWITCHER,
 
     GLOBAL_Q,
     GLOBAL_W,
