@@ -96,7 +96,7 @@ class PIE_MT_S(Menu):
         # ------------------------   RIGHT   -------------------------------- #
         if M in (MHE):
             pie.operator(MT, text="Tools") \
-                .name = "VIEW3D_MT_COMMON_MODELING_TOOLS"
+                .name = "VIEW3D_MT_STD_TOOLS"
         else:
             pie.operator(MT, text="").name = ""
         # ------------------------   BOTTOM   ------------------------------- #
@@ -119,7 +119,7 @@ class PIE_MT_S(Menu):
         if M in (OBJ, MHE):
             pie.operator(PT, text="Proportional") \
                 .name = "VIEW3D_PT_proportional_edit_2"
-        if M in (ALL):
+        else:
             pie.operator(MT, text="").name = ""
         # ------------------------   BOTTOM-RIGHT   ------------------------- #
         if M in (OBJ, MHE):

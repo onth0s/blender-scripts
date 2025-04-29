@@ -200,6 +200,30 @@ class VIEW3D_MT_MHE_MODE(Menu):
             .type = 'FACE'
 
 
+class VIEW3D_MT_STD_TOOLS(Menu):
+    bl_label = "Standard Tools"
+
+    def draw(self, context):
+        layout = self.layout
+        layout.operator_context = 'INVOKE_DEFAULT'
+
+        layout.operator("mesh.inset", text="W - Inset")
+        layout.operator("mesh.bevel", text="D - Bevel")
+        layout.operator("mesh.extrude_region_move", text="S - Extrude")
+        layout.operator("mesh.vert_connect_path", text="E - Connect Path")
+        layout.operator("mesh.duplicate_move", text="Q - Duplicate")
+        layout.operator("mesh.subdivide", text="X - Subdivide")
+        layout.operator("mesh.split", text="R - Split")
+        layout.operator("mesh.remove_doubles", text="Z - Remove Doubles")
+
+
+        # layout.operator(
+        #     "wm.call_menu", text="C - Merge").name = "VIEW3D_MT_MERGE"
+
+        # layout.operator("wm.tool_set_by_id",
+        #                 text="F - Spin").name = "builtin.spin"
+
+
 class VIEW3D_MT_APPLY_CLEAR(Menu):
     bl_label = "Apply or Clear"
 
@@ -278,8 +302,9 @@ classes = (
 
     VIEW3D_MT_SELECT,
     VIEW3D_MT_SELECT_MODE,
-    
+
     VIEW3D_MT_MHE_MODE,
+    VIEW3D_MT_STD_TOOLS,
 
     VIEW3D_MT_APPLY_CLEAR,
     VIEW3D_MT_APPLY,
