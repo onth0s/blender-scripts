@@ -246,6 +246,21 @@ class RollAxis(Operator):
         return {'FINISHED'}
 
 
+class STDTools(Operator):
+    bl_idname = "aaa.std_tools"
+    bl_label = "Standard Tools"
+    bl_options = {'REGISTER'}
+
+    name: bpy.props.StringProperty()
+
+    def execute(self, context):
+        if self.name == 'SPIN_TOOL':
+            bpy.ops.wm.tool_set_by_id(name="builtin.spin")
+            context.scene.tool_settings.workspace_tool_type = 'DEFAULT'
+
+        return {'FINISHED'}
+
+
 class CONDITIONS_SWITCHER(Operator):
     bl_idname = "aaa.conditions_switcher"
     bl_label = "CONDITIONS_SWITCHER"
@@ -255,6 +270,7 @@ class CONDITIONS_SWITCHER(Operator):
 
     def execute(self, context):
         context.scene.conditions = self.cond
+
         return {'FINISHED'}
 
 
@@ -420,6 +436,8 @@ classes = (
 
     RollViewport,
     RollAxis,
+
+    STDTools,
 
     CONDITIONS_SWITCHER,
 

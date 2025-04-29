@@ -207,21 +207,23 @@ class VIEW3D_MT_STD_TOOLS(Menu):
         layout = self.layout
         layout.operator_context = 'INVOKE_DEFAULT'
 
-        layout.operator("mesh.inset", text="W - Inset")
-        layout.operator("mesh.bevel", text="D - Bevel")
-        layout.operator("mesh.extrude_region_move", text="S - Extrude")
-        layout.operator("mesh.vert_connect_path", text="E - Connect Path")
         layout.operator("mesh.duplicate_move", text="Q - Duplicate")
-        layout.operator("mesh.subdivide", text="X - Subdivide")
+        layout.operator("mesh.inset", text="W - Inset")
+        layout.operator("mesh.vert_connect_path", text="E - Connect Path")
         layout.operator("mesh.split", text="R - Split")
+        layout.separator()
+        layout.operator("mesh.extrude_region_move", text="S - Extrude")
+        layout.operator("mesh.bevel", text="D - Bevel")
+        
+        # custom built-in operator call to make sure the active tool switches
+        # from the selection ones to the spin tool
+        layout.operator("aaa.std_tools", text="F - Spin") \
+            .name = "SPIN_TOOL"
+        layout.separator()
         layout.operator("mesh.remove_doubles", text="Z - Remove Doubles")
-
-
-        # layout.operator(
-        #     "wm.call_menu", text="C - Merge").name = "VIEW3D_MT_MERGE"
-
-        # layout.operator("wm.tool_set_by_id",
-        #                 text="F - Spin").name = "builtin.spin"
+        layout.operator("mesh.subdivide", text="X - Subdivide")
+        layout.operator("wm.call_menu", text="C - Merge") \
+            .name = "VIEW3D_MT_edit_mesh_merge"
 
 
 class VIEW3D_MT_APPLY_CLEAR(Menu):
