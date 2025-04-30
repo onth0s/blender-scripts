@@ -465,7 +465,7 @@ class GLOBAL_E(Operator):
 class ToggleProp(Operator):
     bl_idname = "aaa.toggle_prop"
     bl_label = ""
-    bl_options = {'UNDO'}
+    bl_options = {'REGISTER', 'UNDO'}
 
     prop: bpy.props.StringProperty()  # type: ignore
 

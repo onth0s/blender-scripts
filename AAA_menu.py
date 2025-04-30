@@ -39,24 +39,14 @@ class VIEW3D_MT_VIEWPORT_DISPLAY(Menu):
     bl_label = "Viewport Display"
 
     def draw(self, context):
-        global SW
         LYT = self.layout
 
         LYT.operator("aaa.toggle_overlays", text="Q - Header").header = True
         LYT.operator("aaa.toggle_overlays", text="A - Overlays").header = False
 
         LYT.separator()
-        SW = "Wireframe" if context.scene.solidwireframe else "Solid"
-        LYT.operator("aaa.toggle_solid_wireframe", text="D - " + SW)
-
-        LYT.separator()
-        LYT.operator("aaa.toggle_wireframe_overlay",
-                     text="C - Wireframe").mode = "ALL_EDGES"
-
-        LYT.operator("aaa.toggle_wireframe_overlay",
-                     text="V - Optimal Display").mode = "CONTROL_EDGES"
-
-        LYT.operator("aaa.toggle_face_orientation", text="Z - Face Orientation")
+        LYT.operator("aaa.toggle_prop", text="Z - Face Orientation") \
+            .prop = "context.space_data.overlay.show_face_orientation"
 
 
 class VIEW3D_MT_VIEW(Menu):
