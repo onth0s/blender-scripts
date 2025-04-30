@@ -1,5 +1,5 @@
-import bpy
-from bpy.types import Menu
+import bpy  # type: ignore
+from bpy.types import Menu  # type: ignore
 
 from AAA_var import *
 

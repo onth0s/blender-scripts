@@ -21,6 +21,20 @@ class VIEW3D_MT_WORKSPACE(Menu):
         layout.operator(WS, text="F - Full View").name = "Full View"
 
 
+class VIEW3D_MT_MODE(Menu):
+    bl_label = "Mode"
+
+    def draw(self, context):
+        OBT = context.object.type
+        MS = "aaa.mode_set"
+
+        LYT = self.layout
+
+        if OBT == 'MESH':
+            LYT.operator(MS, text="A - Object Mode").mode = 'OBJECT'
+            LYT.operator(MS, text="S - Edit Mode").mode = 'EDIT'
+
+
 class VIEW3D_MT_VIEW(Menu):
     bl_label = "Views"
 
@@ -339,6 +353,7 @@ class VIEW3D_MT_CLEAR(Menu):
 
 classes = (
     VIEW3D_MT_WORKSPACE,
+    VIEW3D_MT_MODE,
 
     VIEW3D_MT_VIEW,
     VIEW3D_MT_VIEW_ALIGN,

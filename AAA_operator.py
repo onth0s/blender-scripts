@@ -140,6 +140,24 @@ class SwitchWorkspace(Operator):
         return {'FINISHED'}
 
 
+class ModeSet(Operator):
+    bl_idname = "aaa.mode_set"
+    bl_label = ""
+    bl_options = {'UNDO'}
+    # bl_options = {'REGISTER', 'UNDO'}
+
+    mode: StringProperty()  # type: ignore
+
+    def execute(self, context):
+        bpy.ops.object.mode_set(mode=self.mode)
+
+        if self.mode in (MHE):
+            context.space_data.shading.cavity_type = 'WORLD'
+        if self.mode == OBJ:
+            context.space_data.shading.cavity_type = 'BOTH'
+        return {'FINISHED'}
+
+
 class RollViewport(Operator):
     bl_idname = "aaa.roll_viewport"
     bl_label = "Roll Viewport"
@@ -451,6 +469,7 @@ classes = (
     SaveIncremental,
 
     SwitchWorkspace,
+    ModeSet,
 
     RollViewport,
     RollAxis,

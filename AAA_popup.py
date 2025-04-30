@@ -1,7 +1,39 @@
-import bpy
-from bpy.props import *
-from bpy.types import Panel
+import bpy  # type: ignore
+from bpy.props import *  # type: ignore
+from bpy.types import Panel  # type: ignore
 from bl_ui.utils import PresetPanel
+
+from AAA_var import *
+
+
+# the '_2' is there to not collide with the built-in Panel
+class VIEW3D_PT_proportional_edit_2(Panel):
+    bl_space_type = 'VIEW_3D'
+    bl_region_type = 'HEADER'
+    bl_label = "Proportional Editing"
+    bl_ui_units_x = 8
+
+    def draw(self, context):
+        layout = self.layout
+        tool_settings = context.tool_settings
+
+        layout.label(text="Proportional Editing")
+
+        row = layout.row()
+        row.prop(tool_settings, "use_proportional_edit_objects", text="")
+        row.prop(tool_settings, "proportional_distance",
+                 text="Distance")
+        
+        col = layout.column()
+        if context.mode == MHE:
+            col.prop(tool_settings, "use_proportional_connected")
+            sub = col.column()
+            sub.active = not tool_settings.use_proportional_connected
+            sub.prop(tool_settings, "use_proportional_projected")
+
+        col.separator()
+        col.prop(tool_settings, "proportional_edit_falloff",
+                 text="", expand=False)
 
 
 class VIEW3D_PT_frame_range(Panel):
@@ -224,6 +256,8 @@ class VIEW3D_PT_test(Panel):
         
 '''
 classes = (
+    VIEW3D_PT_proportional_edit_2,
+
     VIEW3D_PT_frame_range,
 
     VIEW3D_PT_INFO,
