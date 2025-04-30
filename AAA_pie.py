@@ -137,7 +137,7 @@ class VIEW3D_MT_SHADING_PIE(Menu):
         MN = "wm.call_menu"
         PT = "wm.call_panel"
 
-        pie.operator(PT, text="Color").name = "VIEW3D_PT_color"
+        pie.operator(PT, text="Object Color").name = "VIEW3D_PT_object_color"
         pie.operator(MN, text="Viewport Display") \
             .name = "VIEW3D_MT_VIEWPORT_DISPLAY"
         

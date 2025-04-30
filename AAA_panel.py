@@ -61,7 +61,7 @@ class VIEW3D_PT_frame_range(Panel):
             row.prop(SC, "frame_end", text="End")
 
 
-class VIEW3D_PT_color(Panel):
+class VIEW3D_PT_object_color(Panel):
     bl_space_type = 'VIEW_3D'
     bl_region_type = 'WINDOW'
     bl_label = "Object Color"
@@ -90,8 +90,9 @@ class VIEW3D_PT_color(Panel):
                 LYT.row().label(text="No Material Found")
                 row = LYT.row(align=True)
                 row.operator("aaa.add_material", text="Add New").mode = "NEW"
-                row.operator("aaa.add_material", text="Use Lastest") \
-                    .mode = "LAST"
+                if bpy.data.materials:
+                    row.operator("aaa.add_material", text="Use Lastest") \
+                        .mode = "LAST"
 
 
 class AAA_BASE_PANEL():
@@ -293,7 +294,7 @@ classes = (
 
     VIEW3D_PT_frame_range,
 
-    VIEW3D_PT_color,
+    VIEW3D_PT_object_color,
 
     VIEW3D_PT_INFO,
     VIEW3D_PT_INFO_SHOW,
