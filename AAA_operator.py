@@ -394,7 +394,6 @@ class ToggleProp(Operator):
 
     def execute(self, context):
         exec(self.prop+" = not "+self.prop)
-        return {'FINISHED'}
 
         return {'FINISHED'}
 

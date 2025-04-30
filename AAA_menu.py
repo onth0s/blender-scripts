@@ -178,20 +178,45 @@ class VIEW3D_MT_PIVOT_POINT(Menu):
     bl_label = "Pivot Point test"
 
     def draw(self, context):
-        TL = "wm.tool_set_by_id"
         LYT = self.layout
+        TPV = "bpy.context.scene.tool_settings.transform_pivot_point"
 
-        OP1 = LYT.operator("aaa.value_switcher", text="Test")
-        OP1.val_a = "bpy.context.scene.tool_settings.transform_pivot_point"
-        OP1.val_b = "BOUNDING_BOX_CENTER"
+        OP = LYT.operator("aaa.value_switcher", text="Q - Bounding Box")
+        OP.val_a = TPV
+        OP.val_b = "BOUNDING_BOX_CENTER"
 
-        LYT.separator()
-        LYT.operator(TL, text="A - Lasso").name = "builtin.select_lasso"
-        LYT.operator(TL, text="S - Box").name = "builtin.select_box"
-        LYT.operator(TL, text="D - Circle").name = "builtin.select_circle"
+        OP = LYT.operator("aaa.value_switcher", text="W - Active Element")
+        OP.val_a = TPV
+        OP.val_b = "ACTIVE_ELEMENT"
 
-        LYT.separator()
-        LYT.operator(TL, text="E - Cursor").name = "builtin.cursor"
+        OP = LYT.operator("aaa.value_switcher", text="A - Individual Origins")
+        OP.val_a = TPV
+        OP.val_b = "INDIVIDUAL_ORIGINS"
+
+        OP = LYT.operator("aaa.value_switcher", text="S - Median Point")
+        OP.val_a = TPV
+        OP.val_b = "MEDIAN_POINT"
+
+        OP = LYT.operator("aaa.value_switcher", text="D - 3D Cursor")
+        OP.val_a = TPV
+        OP.val_b = "CURSOR"
+
+        if context.mode == OBJ:
+            TS = context.scene.tool_settings
+            TS2 = "context.scene.tool_settings"
+            LYT.separator()
+
+            STATE = " [ON]" if TS.use_transform_data_origin else " [OFF]"
+            LYT.operator("aaa.toggle_prop", text="Z - Only Origins" + STATE) \
+                .prop = TS2 + ".use_transform_data_origin"
+
+            STATE = " [ON]" if TS.use_transform_skip_children else " [OFF]"
+            LYT.operator("aaa.toggle_prop", text="X - Only Parents" + STATE) \
+                .prop = TS2 + ".use_transform_skip_children"
+
+            STATE = " [ON]" if TS.use_transform_pivot_point_align else " [OFF]"
+            LYT.operator("aaa.toggle_prop", text="C - Only Locations" + STATE)\
+                .prop = TS2 + ".use_transform_pivot_point_align"
 
 
 class VIEW3D_MT_OBJECT_OPERATIONS(Menu):
@@ -260,7 +285,7 @@ class VIEW3D_MT_APPLY_CLEAR(Menu):
 
 
 class VIEW3D_MT_APPLY(Menu):
-    bl_label = "Apply or Clear"
+    bl_label = "Apply"
 
     def draw(self, context):
         LYT = self.layout
@@ -293,7 +318,7 @@ class VIEW3D_MT_APPLY(Menu):
 
 
 class VIEW3D_MT_CLEAR(Menu):
-    bl_label = "Apply or Clear"
+    bl_label = "Clear"
 
     def draw(self, context):
         LYT = self.layout
