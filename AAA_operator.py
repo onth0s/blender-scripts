@@ -28,7 +28,7 @@ class test(Operator):
     bl_label = ""
     bl_options = {'REGISTER', 'UNDO'}
     def execute(self, context):
-        
+
         return {'FINISHED'}
 '''
 
@@ -181,7 +181,7 @@ class RollViewport(Operator):
         context.window_manager.modal_handler_add(self)
 
         ''' TODO
-            takes you out from the camera view into the perspective view to call the rotation view modal 
+            takes you out from the camera view into the perspective view to call the rotation view modal
             it should rotate the camera too, or be an option'''
         if rv3d.view_perspective == 'CAMERA':
             rv3d.view_perspective = 'PERSP'
@@ -277,6 +277,30 @@ class STDTools(Operator):
         if self.name == 'SPIN_TOOL':
             bpy.ops.wm.tool_set_by_id(name="builtin.spin")
             context.scene.tool_settings.workspace_tool_type = 'DEFAULT'
+
+        return {'FINISHED'}
+
+
+class AddMaterial(Operator):
+    bl_idname = "aaa.add_material"
+    bl_label = "Add Material"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    mode: bpy.props.StringProperty()  # type: ignore
+
+    def execute(self, context):
+        OB = context.active_object
+
+        if self.mode == 'NEW':
+            mat = bpy.data.materials.new(name="Material")
+        elif self.mode == 'LAST':
+            mat = bpy.data.materials[-1]
+
+        mat.use_nodes = True
+        if OB.data.materials:
+            OB.data.materials[0] = mat
+        else:
+            OB.data.materials.append(mat)
 
         return {'FINISHED'}
 
@@ -475,6 +499,8 @@ classes = (
     RollAxis,
 
     STDTools,
+
+    AddMaterial,
 
     CONDITIONS_SWITCHER,
     VALUE_SWITCHER,

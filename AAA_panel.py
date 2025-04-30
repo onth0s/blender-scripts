@@ -23,7 +23,7 @@ class VIEW3D_PT_proportional_edit_2(Panel):
         row.prop(tool_settings, "use_proportional_edit_objects", text="")
         row.prop(tool_settings, "proportional_distance",
                  text="Distance")
-        
+
         col = layout.column()
         if context.mode == MHE:
             col.prop(tool_settings, "use_proportional_connected")
@@ -59,6 +59,45 @@ class VIEW3D_PT_frame_range(Panel):
             row = layout.row(align=True)
             row.prop(SC, "frame_start", text="Start")
             row.prop(SC, "frame_end", text="End")
+
+
+class VIEW3D_PT_color(Panel):
+    bl_space_type = 'VIEW_3D'
+    bl_region_type = 'WINDOW'
+    bl_label = "Object Color"
+
+    def draw(self, context):
+        shading = context.space_data.shading
+        LYT = self.layout
+        OB = context.active_object
+
+        LYT.grid_flow(columns=3, align=True).prop(
+            shading, "color_type", expand=True)
+
+        if shading.color_type == 'SINGLE':
+            LYT.row().prop(shading, "single_color", text="")
+
+        elif shading.color_type == 'OBJECT':
+            LYT.row().prop(context.object, "color", text="")
+
+        elif shading.color_type == 'MATERIAL':
+            if OB.active_material is not None:
+                LYT.row().prop(context.object.active_material,
+                               "diffuse_color", text="")
+                LYT.row().template_ID(OB, "active_material",
+                                      new="material.new")
+                # if bpy.data.materials:
+                #     last_material = bpy.data.materials[-1]
+                #     if OB.data.materials:
+                #         OB.data.materials[0] = last_material
+                #     else:
+                #         ob.data.materials.append(last_material)
+            else:
+                LYT.row().label(text="No Material Found")
+                row = LYT.row(align=True)
+                row.operator("aaa.add_material", text="Add New").mode = "NEW"
+                row.operator("aaa.add_material", text="Use Lastest") \
+                    .mode = "LAST"
 
 
 class AAA_BASE_PANEL():
@@ -259,6 +298,8 @@ classes = (
     VIEW3D_PT_proportional_edit_2,
 
     VIEW3D_PT_frame_range,
+
+    VIEW3D_PT_color,
 
     VIEW3D_PT_INFO,
     VIEW3D_PT_INFO_SHOW,
