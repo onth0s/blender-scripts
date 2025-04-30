@@ -59,7 +59,10 @@ def global_keymap():
     km.keymap_items.new(pie, 'SPACE', 'PRESS') \
         .properties.name = "PIE_MT_SPACE"
 
-    km.keymap_items.new(pie, 'S', 'PRESS').properties.name="PIE_MT_S"
+    km.keymap_items.new(pie, 'S', 'PRESS').properties.name = "PIE_MT_S"
+
+    km.keymap_items.new(pie, 'Z', 'PRESS').properties\
+        .name = "VIEW3D_MT_SHADING_PIE"
 
     km.keymap_items.new(pie, 'C', 'PRESS') \
         .properties.name = "PIE_MT_KEY_CONDITIONS"
@@ -94,7 +97,7 @@ def global_keymap():
     ################################ OVERRIDES ################################
     # General keymaps for operators that already exist on Blender by default,
     # but that's it's convenient add them here so you only have to disable
-    # the default key bindings that could collide to use this ones 
+    # the default key bindings that could collide to use this ones
 
     km = kc.keymaps.new('3D View', space_type='VIEW_3D', region_type='WINDOW')
 

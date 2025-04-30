@@ -128,6 +128,27 @@ class PIE_MT_S(Menu):
             pie.operator(MT, text="").name = ""
 
 
+class VIEW3D_MT_SHADING_PIE(Menu):
+    bl_idname = "VIEW3D_MT_SHADING_PIE"
+    bl_label = "Viewport Shading"
+
+    def draw(self, context):
+        pie = self.layout.menu_pie()
+        MN = "wm.call_menu"
+        PT = "wm.call_panel"
+
+        pie.operator(PT, text="Color").name = "VIEW3D_PT_color"
+        pie.operator(MN, text="Shading").name = "VIEW3D_MT_SHADING"
+        pie.operator(MN, text="Rendered").name = "VIEW3D_MT_EEVEE_OR_CYCLES"
+        pie.operator(PT, text="MatCap").name = "VIEW3D_PT_matcap"
+        pie.operator(PT, text="Background").name = "VIEW3D_PT_background"
+        pie.operator(MN, text="")
+        pie.operator(MN, text="")
+
+        # This probably should be in 'Overlays', not 'Shading'
+        pie.operator(MN, text="Options").name = "VIEW3D_MT_SHADING_OPTIONS"
+
+
 class PIE_MT_KEY_CONDITIONS(Menu):
     bl_idname = "PIE_MT_KEY_CONDITIONS"
     bl_label = "Conditions"
@@ -179,6 +200,9 @@ class PIE_MT_SAVE_N_STUFF(Menu):
 classes = (
     PIE_MT_SPACE,
     PIE_MT_S,
+
+    VIEW3D_MT_SHADING_PIE,
+
     PIE_MT_KEY_CONDITIONS,
     PIE_MT_SAVE_N_STUFF,
 )
