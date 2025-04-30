@@ -56,10 +56,11 @@ class VIEW3D_MT_RENDERER(Menu):
         OP = "aaa.switch_renderer"        
         LYT = self.layout
 
-        LYT.operator(OP, text="A - EEVEE").mode = "BLENDER_EEVEE"
+        LYT.operator(OP, text="W - LookDev").mode = "MATERIAL"
+        LYT.operator(OP, text="A - EEVEE").mode = "BLENDER_EEVEE_NEXT"
         LYT.operator(OP, text="S - Workbench").mode = "BLENDER_WORKBENCH"
         LYT.operator(OP, text="D - Cycles").mode = "CYCLES"
-        LYT.operator(OP, text="W - LookDev").mode = "MATERIAL"
+        LYT.operator(OP, text="Z - Solid").mode = "SOLID"
 
 
 class VIEW3D_MT_VIEW(Menu):

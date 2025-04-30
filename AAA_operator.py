@@ -340,6 +340,29 @@ class AddMaterial(Operator):
         return {'FINISHED'}
 
 
+class SwitchRenderer(Operator):
+    bl_idname = "aaa.switch_renderer"
+    bl_label = "Switch Renderer"
+    bl_options = {'REGISTER'}
+
+    mode: bpy.props.StringProperty()  # type: ignore
+
+    def execute(self, context):
+        if self.mode == 'SOLID':
+            context.space_data.shading.type = 'SOLID'
+        else:
+            if self.mode != 'MATERIAL':
+                context.scene.render.engine = self.mode
+                context.space_data.shading.type = 'RENDERED'
+            else:
+                if context.scene.render.engine == 'BLENDER_WORKBENCH':
+                    context.scene.render.engine = 'BLENDER_EEVEE_NEXT'
+                    context.space_data.shading.type = 'MATERIAL'
+                else:
+                    context.space_data.shading.type = 'MATERIAL'
+        return {'FINISHED'}
+
+
 class SWITCH_CONDITION(Operator):
     bl_idname = "aaa.switch_condition"
     bl_label = "SWITCH_CONDITION"
@@ -538,6 +561,7 @@ classes = (
     STDTools,
 
     AddMaterial,
+    SwitchRenderer,
 
     SWITCH_CONDITION,
     SWITCH_VALUE,
