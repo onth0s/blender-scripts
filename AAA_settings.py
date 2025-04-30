@@ -1,10 +1,10 @@
-import bpy
-from bpy.props import (
+import bpy  # type: ignore
+from bpy.props import (  # type: ignore
     IntProperty, FloatProperty,
     BoolProperty, StringProperty,
     EnumProperty, CollectionProperty,
     PointerProperty)
-from bpy.types import (Operator, PropertyGroup, UIList)
+from bpy.types import (Operator, PropertyGroup, UIList)  # type: ignore
 
 
 class TestSettings(PropertyGroup):

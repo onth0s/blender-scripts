@@ -1,7 +1,7 @@
 import bpy  # type: ignore
 from bpy.types import Menu  # type: ignore
 
-from AAA_var import *
+from AAA_utils import *
 
 ''' Useful API ENUMS
     bpy.context.area.type

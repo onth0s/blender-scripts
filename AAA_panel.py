@@ -3,7 +3,7 @@ from bpy.props import *  # type: ignore
 from bpy.types import Panel  # type: ignore
 from bl_ui.utils import PresetPanel
 
-from AAA_var import *
+from AAA_utils import *
 
 
 # the '_2' is there to not collide with the built-in Panel

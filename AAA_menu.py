@@ -2,7 +2,7 @@ import bpy  # type: ignore
 from bpy.props import *  # type: ignore
 from bpy.types import (Menu, Operator)  # type: ignore
 
-from AAA_var import *
+from AAA_utils import *
 
 
 class VIEW3D_MT_WORKSPACE(Menu):

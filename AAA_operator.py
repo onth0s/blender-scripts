@@ -10,7 +10,7 @@ from bl_operators.presets import AddPresetBase
 from mathutils import *  # type: ignore
 from math import *
 
-from AAA_var import *
+from AAA_utils import *
 
 ''' Notes
     I dont know how to set up the poll() function
