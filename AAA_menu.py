@@ -35,6 +35,30 @@ class VIEW3D_MT_MODE(Menu):
             LYT.operator(MS, text="S - Edit Mode").mode = 'EDIT'
 
 
+class VIEW3D_MT_VIEWPORT_DISPLAY(Menu):
+    bl_label = "Viewport Display"
+
+    def draw(self, context):
+        global SW
+        LYT = self.layout
+
+        LYT.operator("aaa.toggle_overlays", text="Q - Header").header = True
+        LYT.operator("aaa.toggle_overlays", text="A - Overlays").header = False
+
+        LYT.separator()
+        SW = "Wireframe" if context.scene.solidwireframe else "Solid"
+        LYT.operator("aaa.toggle_solid_wireframe", text="D - " + SW)
+
+        LYT.separator()
+        LYT.operator("aaa.toggle_wireframe_overlay",
+                     text="C - Wireframe").mode = "ALL_EDGES"
+
+        LYT.operator("aaa.toggle_wireframe_overlay",
+                     text="V - Optimal Display").mode = "CONTROL_EDGES"
+
+        LYT.operator("aaa.toggle_face_orientation", text="Z - Face Orientation")
+
+
 class VIEW3D_MT_VIEW(Menu):
     bl_label = "Views"
 
@@ -368,6 +392,8 @@ class VIEW3D_MT_CLEAR(Menu):
 classes = (
     VIEW3D_MT_WORKSPACE,
     VIEW3D_MT_MODE,
+
+    VIEW3D_MT_VIEWPORT_DISPLAY,
 
     VIEW3D_MT_VIEW,
     VIEW3D_MT_VIEW_ALIGN,

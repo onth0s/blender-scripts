@@ -158,6 +158,41 @@ class ModeSet(Operator):
         return {'FINISHED'}
 
 
+class ToggleOverlays(Operator):
+    bl_idname = "aaa.toggle_overlays"
+    bl_label = "Toggle Overlays"
+    bl_options = {'REGISTER'}
+
+    header: bpy.props.BoolProperty()  # type: ignore
+
+    def execute(self, context):
+        SD = context.space_data
+        SN = context.scene
+
+        if self.header:
+            SD.show_region_header = not SD.show_region_header
+        else:
+            if not SN.show_bool_toggle:
+                SN.show_overlays = SD.overlay.show_overlays
+                SN.show_gizmo = SD.show_gizmo
+                SN.show_t_menu = SD.show_region_ui
+                SN.show_n_menu = SD.show_region_toolbar
+
+                SD.overlay.show_overlays = False
+                SD.show_gizmo = False
+                SD.show_region_ui = False
+                SD.show_region_toolbar = False
+            else:
+                SD.overlay.show_overlays = SN.show_overlays
+                SD.show_gizmo = SN.show_gizmo
+                SD.show_region_ui = SN.show_t_menu
+                SD.show_region_toolbar = SN.show_n_menu
+
+            SN.show_bool_toggle = not SN.show_bool_toggle
+
+        return {'FINISHED'}
+
+
 class RollViewport(Operator):
     bl_idname = "aaa.roll_viewport"
     bl_label = "Roll Viewport"
@@ -494,6 +529,8 @@ classes = (
 
     SwitchWorkspace,
     ModeSet,
+
+    ToggleOverlays,
 
     RollViewport,
     RollAxis,

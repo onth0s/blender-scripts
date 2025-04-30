@@ -8,27 +8,31 @@ from bpy.types import (Operator, PropertyGroup, UIList)  # type: ignore
 
 
 class TestSettings(PropertyGroup):
+    SN = bpy.types.Scene
+
     def dummy_update(self, context):
         pass
 
-    bpy.types.Scene.conditions = StringProperty(
+    SN.conditions = StringProperty(
         name="Global Conditions",
         description="A global variable for storing conditions",
         default="TRANSFORM",
         update=dummy_update
     )
 
-    bpy.types.Scene.axis_roll = StringProperty()
+    SN.show_overlays = BoolProperty(default=False, update=dummy_update)
+    SN.show_gizmo = BoolProperty(default=False, update=dummy_update)
+    SN.show_t_menu = BoolProperty(default=False, update=dummy_update)
+    SN.show_n_menu = BoolProperty(default=False, update=dummy_update)
+    SN.show_bool_toggle = BoolProperty(default=False, update=dummy_update)
 
-    bpy.types.Scene.loop_frames = BoolProperty(default=False)
+    SN.axis_roll = StringProperty()
 
-
-# '_UL_' recommended infix
+    SN.loop_frames = BoolProperty(default=False)
 
 
 classes = [
     # keep the order to not break anything
-
     TestSettings,
 ]
 

@@ -86,12 +86,6 @@ class VIEW3D_PT_color(Panel):
                                "diffuse_color", text="")
                 LYT.row().template_ID(OB, "active_material",
                                       new="material.new")
-                # if bpy.data.materials:
-                #     last_material = bpy.data.materials[-1]
-                #     if OB.data.materials:
-                #         OB.data.materials[0] = last_material
-                #     else:
-                #         ob.data.materials.append(last_material)
             else:
                 LYT.row().label(text="No Material Found")
                 row = LYT.row(align=True)
