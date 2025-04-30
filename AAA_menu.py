@@ -53,7 +53,7 @@ class VIEW3D_MT_RENDERER(Menu):
     bl_label = ""
 
     def draw(self, context):
-        OP = "aaa.renderer_switch"        
+        OP = "aaa.switch_renderer"        
         LYT = self.layout
 
         LYT.operator(OP, text="A - EEVEE").mode = "BLENDER_EEVEE"
@@ -240,23 +240,23 @@ class VIEW3D_MT_PIVOT_POINT(Menu):
         LYT = self.layout
         TPV = "bpy.context.scene.tool_settings.transform_pivot_point"
 
-        OP = LYT.operator("aaa.value_switcher", text="Q - Bounding Box")
+        OP = LYT.operator("aaa.switch_value", text="Q - Bounding Box")
         OP.val_a = TPV
         OP.val_b = "BOUNDING_BOX_CENTER"
 
-        OP = LYT.operator("aaa.value_switcher", text="W - Active Element")
+        OP = LYT.operator("aaa.switch_value", text="W - Active Element")
         OP.val_a = TPV
         OP.val_b = "ACTIVE_ELEMENT"
 
-        OP = LYT.operator("aaa.value_switcher", text="A - Individual Origins")
+        OP = LYT.operator("aaa.switch_value", text="A - Individual Origins")
         OP.val_a = TPV
         OP.val_b = "INDIVIDUAL_ORIGINS"
 
-        OP = LYT.operator("aaa.value_switcher", text="S - Median Point")
+        OP = LYT.operator("aaa.switch_value", text="S - Median Point")
         OP.val_a = TPV
         OP.val_b = "MEDIAN_POINT"
 
-        OP = LYT.operator("aaa.value_switcher", text="D - 3D Cursor")
+        OP = LYT.operator("aaa.switch_value", text="D - 3D Cursor")
         OP.val_a = TPV
         OP.val_b = "CURSOR"
 

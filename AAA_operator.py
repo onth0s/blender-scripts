@@ -340,9 +340,9 @@ class AddMaterial(Operator):
         return {'FINISHED'}
 
 
-class CONDITIONS_SWITCHER(Operator):
-    bl_idname = "aaa.conditions_switcher"
-    bl_label = "CONDITIONS_SWITCHER"
+class SWITCH_CONDITION(Operator):
+    bl_idname = "aaa.switch_condition"
+    bl_label = "SWITCH_CONDITION"
     bl_options = {'REGISTER'}
 
     cond: bpy.props.StringProperty()  # type: ignore
@@ -353,9 +353,9 @@ class CONDITIONS_SWITCHER(Operator):
         return {'FINISHED'}
 
 
-class VALUE_SWITCHER(Operator):
-    bl_idname = "aaa.value_switcher"
-    bl_label = "VALUE_SWITCHER"
+class SWITCH_VALUE(Operator):
+    bl_idname = "aaa.switch_value"
+    bl_label = "SWITCH_VALUE"
     bl_options = {'REGISTER'}
 
     val_a: bpy.props.StringProperty()  # type: ignore
@@ -539,8 +539,8 @@ classes = (
 
     AddMaterial,
 
-    CONDITIONS_SWITCHER,
-    VALUE_SWITCHER,
+    SWITCH_CONDITION,
+    SWITCH_VALUE,
 
     GLOBAL_Q,
     GLOBAL_W,

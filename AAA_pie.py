@@ -142,7 +142,7 @@ class VIEW3D_MT_SHADING_PIE(Menu):
             .name = "VIEW3D_MT_VIEWPORT_DISPLAY"
         
         pie.operator(MN, text="Rendered").name = "VIEW3D_MT_RENDERER"
-        
+
         pie.operator(PT, text="MatCap").name = "VIEW3D_PT_matcap"
         pie.operator(PT, text="Background").name = "VIEW3D_PT_background"
         pie.operator(MN, text="")
@@ -157,19 +157,19 @@ class PIE_MT_KEY_CONDITIONS(Menu):
     bl_label = "Conditions"
 
     def draw(self, context):
-        FN = "aaa.conditions_switcher"
+        OP = "aaa.switch_condition"
         pie = self.layout.menu_pie()
 
         pie.operator("wm.call_panel", text="Frame Range") \
             .name = "VIEW3D_PT_frame_range"
 
-        pie.operator(FN, text="Transform").cond = "TRANSFORM"
-        pie.operator(FN, text="").cond = ""
-        pie.operator(FN, text="").cond = ""
-        pie.operator(FN, text="").cond = ""
-        pie.operator(FN, text="").cond = ""
-        pie.operator(FN, text="").cond = ""
-        pie.operator(FN, text="Timeline").cond = "TIMELINE"
+        pie.operator(OP, text="Transform").cond = "TRANSFORM"
+        pie.operator(OP, text="").cond = ""
+        pie.operator(OP, text="").cond = ""
+        pie.operator(OP, text="").cond = ""
+        pie.operator(OP, text="").cond = ""
+        pie.operator(OP, text="").cond = ""
+        pie.operator(OP, text="Timeline").cond = "TIMELINE"
 
 
 class PIE_MT_SAVE_N_STUFF(Menu):
