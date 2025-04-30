@@ -30,7 +30,7 @@ class VIEW3D_MT_MODE(Menu):
 
         LYT = self.layout
 
-        if OBT == 'MESH':
+        if OBT == TMH:
             LYT.operator(MS, text="A - Object Mode").mode = 'OBJECT'
             LYT.operator(MS, text="S - Edit Mode").mode = 'EDIT'
 
@@ -47,6 +47,19 @@ class VIEW3D_MT_VIEWPORT_DISPLAY(Menu):
         LYT.separator()
         LYT.operator("aaa.toggle_prop", text="Z - Face Orientation") \
             .prop = "context.space_data.overlay.show_face_orientation"
+
+
+class VIEW3D_MT_RENDERER(Menu):
+    bl_label = ""
+
+    def draw(self, context):
+        OP = "aaa.renderer_switch"        
+        LYT = self.layout
+
+        LYT.operator(OP, text="A - EEVEE").mode = "BLENDER_EEVEE"
+        LYT.operator(OP, text="S - Workbench").mode = "BLENDER_WORKBENCH"
+        LYT.operator(OP, text="D - Cycles").mode = "CYCLES"
+        LYT.operator(OP, text="W - LookDev").mode = "MATERIAL"
 
 
 class VIEW3D_MT_VIEW(Menu):
@@ -384,6 +397,7 @@ classes = (
     VIEW3D_MT_MODE,
 
     VIEW3D_MT_VIEWPORT_DISPLAY,
+    VIEW3D_MT_RENDERER,
 
     VIEW3D_MT_VIEW,
     VIEW3D_MT_VIEW_ALIGN,
