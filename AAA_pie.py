@@ -61,7 +61,7 @@ class PIE_MT_SPACE(Menu):
         # ------------------------   TOP-RIGHT   ---------------------------- #
         if M in (OBJ):
             pie.operator(MN, text="Object Operations") \
-                .name = "VIEW3D_MT_OBJECT_OPERATIONS"
+                .name = "VIEW3D_MT_STD_TOOLS"
         if M in (MHE):
             pie.operator(MN, text="Select Mode") \
                 .name = "VIEW3D_MT_MHE_MODE"

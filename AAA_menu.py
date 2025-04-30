@@ -188,6 +188,24 @@ class VIEW3D_MT_SELECT_MODE(Menu):
         LYT.operator(TL, text="E - Cursor").name = "builtin.cursor"
 
 
+class VIEW3D_MT_CURSOR_POSITION(Menu):
+    bl_label = "Cursor Position"
+
+    def draw(self, context):
+        M = context.mode
+        layout = self.layout
+
+        if M in (OBJ, MHE):
+            layout.operator("view3d.snap_cursor_to_center",
+                            text="A - Cursor to Center")
+            layout.operator("view3d.snap_cursor_to_selected",
+                            text="D - Cursor to Selection")
+            layout.operator("view3d.snap_cursor_to_active",
+                            text="W - Cursor to Active")
+            layout.operator("view3d.snap_selected_to_cursor",
+                            text="S - Selection with Offset").use_offset = True
+
+
 class VIEW3D_MT_PIVOT_POINT(Menu):
     bl_label = "Pivot Point test"
 
@@ -233,18 +251,6 @@ class VIEW3D_MT_PIVOT_POINT(Menu):
                 .prop = TS2 + ".use_transform_pivot_point_align"
 
 
-class VIEW3D_MT_OBJECT_OPERATIONS(Menu):
-    bl_label = "Object Operations"
-
-    def draw(self, context):
-        LYT = self.layout
-
-        LYT.operator("object.parent_set", text="E - Parent Object") \
-            .type = 'OBJECT'
-        LYT.operator("object.parent_clear", text="Q - Clear Parent")\
-            .type = 'CLEAR'
-
-
 class VIEW3D_MT_MHE_MODE(Menu):
     bl_label = "Select Mode"
 
@@ -263,28 +269,36 @@ class VIEW3D_MT_STD_TOOLS(Menu):
     bl_label = "Standard Tools"
 
     def draw(self, context):
-        layout = self.layout
-        layout.operator_context = 'INVOKE_DEFAULT'
+        LYT = self.layout
+        M = context.mode
 
-        layout.operator("mesh.duplicate_move", text="Q - Duplicate")
-        layout.operator("mesh.inset", text="W - Inset")
-        layout.operator("mesh.vert_connect_path", text="E - Connect Path")
-        layout.operator("mesh.split", text="R - Split")
+        if M in (MHE):
+            LYT.operator_context = 'INVOKE_DEFAULT'
 
-        layout.separator()
-        layout.operator("mesh.extrude_region_move", text="S - Extrude")
-        layout.operator("mesh.bevel", text="D - Bevel")
+            LYT.operator("mesh.duplicate_move", text="Q - Duplicate")
+            LYT.operator("mesh.inset", text="W - Inset")
+            LYT.operator("mesh.vert_connect_path", text="E - Connect Path")
+            LYT.operator("mesh.split", text="R - Split")
 
-        # custom built-in operator call to make sure the active tool switches
-        # from the selection ones to the spin tool
-        layout.operator("aaa.std_tools", text="F - Spin") \
-            .name = "SPIN_TOOL"
+            LYT.separator()
+            LYT.operator("mesh.extrude_region_move", text="S - Extrude")
+            LYT.operator("mesh.bevel", text="D - Bevel")
 
-        layout.separator()
-        layout.operator("mesh.remove_doubles", text="Z - Remove Doubles")
-        layout.operator("mesh.subdivide", text="X - Subdivide")
-        layout.operator("wm.call_menu", text="C - Merge") \
-            .name = "VIEW3D_MT_edit_mesh_merge"
+            # custom built-in operator call to make sure the active tool switches
+            # from the selection ones to the spin tool
+            LYT.operator("aaa.std_tools", text="F - Spin") \
+                .name = "SPIN_TOOL"
+
+            LYT.separator()
+            LYT.operator("mesh.remove_doubles", text="Z - Remove Doubles")
+            LYT.operator("mesh.subdivide", text="X - Subdivide")
+            LYT.operator("wm.call_menu", text="C - Merge") \
+                .name = "VIEW3D_MT_edit_mesh_merge"
+        elif M in (OBJ):
+            LYT.operator("object.parent_set", text="E - Parent Object") \
+                .type = 'OBJECT'
+            LYT.operator("object.parent_clear", text="Q - Clear Parent") \
+                .type = 'CLEAR'
 
 
 class VIEW3D_MT_APPLY_CLEAR(Menu):
@@ -365,9 +379,9 @@ classes = (
     VIEW3D_MT_SELECT,
     VIEW3D_MT_SELECT_MODE,
 
-    VIEW3D_MT_PIVOT_POINT,
+    VIEW3D_MT_CURSOR_POSITION,
 
-    VIEW3D_MT_OBJECT_OPERATIONS,
+    VIEW3D_MT_PIVOT_POINT,
 
     VIEW3D_MT_MHE_MODE,
     VIEW3D_MT_STD_TOOLS,
