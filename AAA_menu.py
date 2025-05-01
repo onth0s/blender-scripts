@@ -64,6 +64,34 @@ class VIEW3D_MT_SHADING_OPTIONS(Menu):
             .name = "VIEW3D_MT_SHADING_OPTIONS_CAVITY"
 
 
+class VIEW3D_MT_SHADING_OPTIONS_CAVITY(Menu):
+    bl_label = "Cavity Options"
+
+    def draw(self, context):
+        global cavity_state
+        LYT = self.layout
+
+        cavity_state = "Disable" if context.space_data.shading.show_cavity \
+            else "Enable"
+
+        LYT.operator("aaa.toggle_prop", text="W - " + cavity_state) \
+            .prop = "context.space_data.shading.show_cavity"
+
+        TEMP = "context.space_data.shading.cavity_type"
+        LYT.separator()
+        OP = LYT.operator("aaa.switch_value", text="A - World")
+        OP.val_a = TEMP
+        OP.val_b = "WORLD"
+
+        OP = LYT.operator("aaa.switch_value", text="S - Screen")
+        OP.val_a = TEMP
+        OP.val_b = "SCREEN"
+        
+        OP = LYT.operator("aaa.switch_value", text="D - Both")
+        OP.val_a = TEMP
+        OP.val_b = "BOTH"
+
+
 class VIEW3D_MT_RENDERER(Menu):
     bl_label = ""
 
@@ -414,6 +442,7 @@ classes = (
 
     VIEW3D_MT_VIEWPORT_DISPLAY,
     VIEW3D_MT_SHADING_OPTIONS,
+    VIEW3D_MT_SHADING_OPTIONS_CAVITY,
     VIEW3D_MT_RENDERER,
 
     VIEW3D_MT_VIEW,
