@@ -188,30 +188,17 @@ class VIEW3D_PT_background_color(Panel):
     bl_label = "Background Color"
 
     def draw(self, context):
-        layout = self.layout
+        LYT = self.layout
         shading = context.space_data.shading
 
-        row = layout.row()
-        row.label(text="Background")
-
-        row = layout.row()
-        row.prop(shading, "background_type", expand=True)
+        LYT.row().label(text="Background")
+        LYT.row().prop(shading, "background_type", expand=True)
 
         if shading.background_type == 'VIEWPORT':
-            row = layout.row()
-            row.prop(shading, "background_color", text="")
-
-            row = layout.row(align=True)
-            row.menu("VIEW3D_MT_PRESETS_BACKGROUND", text="Background Presets")
-            row.operator("aaa.preset_background", text="", icon='ADD')
-            row.operator("aaa.preset_background", text="",
-                         icon='REMOVE').remove_active = True
+            LYT.row().prop(shading, "background_color", text="")
 
         if shading.background_type == 'WORLD':
-            row = layout.row()
-            row.prop(context.scene.world, "color", text="")
-
-        # row.operator_menu_enum("object.modifier_add", "type")
+            LYT.row().prop(context.scene.world, "color", text="")
 
 
 class AAA_BASE_PANEL():
