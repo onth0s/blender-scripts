@@ -487,7 +487,7 @@ class GLOBAL_E(Operator):
 
 class ToggleProp(Operator):
     bl_idname = "aaa.toggle_prop"
-    bl_label = ""
+    bl_label = "Toggle Property"
     bl_options = {'REGISTER', 'UNDO'}
 
     prop: bpy.props.StringProperty()  # type: ignore
@@ -531,8 +531,9 @@ class TestContextDebugger(Operator):
         print("""\n  >>> context.active_object:
     Active Object:""", context.active_object)
 
-        print("""\n  >>> context.selected_objects:
-    Selected Objects:""", context.selected_objects)
+        print(f"""\n  >>> context.selected_objects:
+    Selected Objects ({len(context.selected_objects)}):""",
+              context.selected_objects)
 
         print("""\n  >>> context.mode:
     Mode:""", context.mode)

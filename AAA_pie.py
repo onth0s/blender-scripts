@@ -144,7 +144,7 @@ class VIEW3D_MT_SHADING_PIE(Menu):
         pie.operator(MN, text="Rendered").name = "VIEW3D_MT_RENDERER"
 
         pie.operator(PT, text="MatCap").name = "VIEW3D_PT_matcap"
-        pie.operator(PT, text="Background").name = "VIEW3D_PT_background"
+        pie.operator(PT, text="Background").name = "VIEW3D_PT_background_color"
         pie.operator(MN, text="")
         pie.operator(MN, text="")
 

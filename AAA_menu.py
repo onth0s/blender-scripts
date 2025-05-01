@@ -49,11 +49,26 @@ class VIEW3D_MT_VIEWPORT_DISPLAY(Menu):
             .prop = "context.space_data.overlay.show_face_orientation"
 
 
+class VIEW3D_MT_SHADING_OPTIONS(Menu):
+    bl_label = "Shading Options"
+
+    def draw(self, context):
+        LYT = self.layout
+        if context.object.type == 'MESH':
+            LYT.operator("object.shade_flat", text="A - Flat")
+            LYT.operator("object.shade_smooth", text="S - Smooth")
+            LYT.operator("object.shade_auto_smooth", text="D - Autosmooth")
+
+        LYT.separator()
+        LYT.operator("wm.call_menu", text="C - Cavity Type") \
+            .name = "VIEW3D_MT_SHADING_OPTIONS_CAVITY"
+
+
 class VIEW3D_MT_RENDERER(Menu):
     bl_label = ""
 
     def draw(self, context):
-        OP = "aaa.switch_renderer"        
+        OP = "aaa.switch_renderer"
         LYT = self.layout
 
         LYT.operator(OP, text="W - LookDev").mode = "MATERIAL"
@@ -398,6 +413,7 @@ classes = (
     VIEW3D_MT_MODE,
 
     VIEW3D_MT_VIEWPORT_DISPLAY,
+    VIEW3D_MT_SHADING_OPTIONS,
     VIEW3D_MT_RENDERER,
 
     VIEW3D_MT_VIEW,

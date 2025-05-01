@@ -95,6 +95,125 @@ class VIEW3D_PT_object_color(Panel):
                         .mode = "LAST"
 
 
+class VIEW3D_PT_matcap(Panel):
+    bl_space_type = 'VIEW_3D'
+    bl_region_type = 'WINDOW'
+    bl_label = "MatCap"
+    is_popover = True
+
+    def draw(self, context):
+        layout = self.layout
+        shading = context.space_data.shading
+
+        col = layout.column()
+        split = col.split(factor=0.9)
+
+        if shading.type == 'SOLID':
+            split.row().prop(shading, "light", expand=True)
+            col = split.column()
+
+            split = layout.split(factor=0.9)
+            col = split.column()
+            sub = col.row()
+
+            if shading.light == 'STUDIO':
+                prefs = context.preferences
+                system = prefs.system
+
+                if not system.use_studio_light_edit:
+                    sub.scale_y = 0.6  # smaller studiolight preview
+                    sub.template_icon_view(
+                        shading, "studio_light", scale_popup=3.0)
+                else:
+                    sub.prop(system, "use_studio_light_edit",
+                             text="Disable Studio Light Edit", icon='NONE', toggle=True)
+
+                col = split.column()
+                col.operator("wm.studiolight_userpref_show",
+                             emboss=False, text="", icon='PREFERENCES')
+
+                split = layout.split(factor=0.9)
+                col = split.column()
+
+                row = col.row()
+                row.prop(shading, "use_world_space_lighting",
+                         text="", icon='WORLD', toggle=True)
+                row = row.row()
+                row.active = shading.use_world_space_lighting
+                row.prop(shading, "studiolight_rotate_z", text="Rotation")
+                col = split.column()  # to align properly with above
+            elif shading.light == 'MATCAP':
+                sub.scale_y = 0.6  # smaller matcap preview
+
+                sub.template_icon_view(
+                    shading, "studio_light", scale_popup=2.4)
+
+                col = split.column()
+                col.operator("wm.studiolight_userpref_show",
+                             emboss=False, text="", icon='PREFERENCES')
+                col.operator("view3d.toggle_matcap_flip",
+                             emboss=False, text="", icon='ARROW_LEFTRIGHT')
+
+        # LookDev is called 'MATERIAL' for some reason
+        elif shading.type == 'MATERIAL':
+            col.prop(shading, "use_scene_lights")
+            col.prop(shading, "use_scene_world")
+
+            if not shading.use_scene_world:
+                col = layout.column()
+                split = col.split(factor=0.9)
+
+                col = split.column()
+                sub = col.row()
+                sub.scale_y = 0.6
+                sub.template_icon_view(shading, "studio_light", scale_popup=3)
+
+                # col = split.column()
+                # col.operator("wm.studiolight_userpref_show", emboss=False, text="", icon='PREFERENCES')
+
+                if shading.selected_studio_light.type == 'WORLD':
+                    split = layout.split(factor=0.9)
+                    col = split.column()
+                    col.prop(shading, "studiolight_rotate_z", text="Rotation")
+                    col.prop(shading, "studiolight_background_alpha")
+                    col = split.column()  # to align properly with above
+        else:
+            layout.label(text="Just press the button below")
+            layout.operator("aaa.toggle_solid_wireframe", text="Solid Shading")
+
+
+class VIEW3D_PT_background_color(Panel):
+    bl_space_type = 'VIEW_3D'
+    bl_region_type = 'WINDOW'
+    bl_label = "Background Color"
+
+    def draw(self, context):
+        layout = self.layout
+        shading = context.space_data.shading
+
+        row = layout.row()
+        row.label(text="Background")
+
+        row = layout.row()
+        row.prop(shading, "background_type", expand=True)
+
+        if shading.background_type == 'VIEWPORT':
+            row = layout.row()
+            row.prop(shading, "background_color", text="")
+
+            row = layout.row(align=True)
+            row.menu("VIEW3D_MT_PRESETS_BACKGROUND", text="Background Presets")
+            row.operator("aaa.preset_background", text="", icon='ADD')
+            row.operator("aaa.preset_background", text="",
+                         icon='REMOVE').remove_active = True
+
+        if shading.background_type == 'WORLD':
+            row = layout.row()
+            row.prop(context.scene.world, "color", text="")
+
+        # row.operator_menu_enum("object.modifier_add", "type")
+
+
 class AAA_BASE_PANEL():
     bl_space_type = 'VIEW_3D'
     bl_region_type = 'UI'
@@ -295,6 +414,8 @@ classes = (
     VIEW3D_PT_frame_range,
 
     VIEW3D_PT_object_color,
+    VIEW3D_PT_matcap,
+    VIEW3D_PT_background_color,
 
     VIEW3D_PT_INFO,
     VIEW3D_PT_INFO_SHOW,

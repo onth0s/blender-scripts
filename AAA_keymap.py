@@ -44,9 +44,7 @@ region_types = [
 
 
 def global_keymap():
-    C = bpy.context
-
-    kc = C.window_manager.keyconfigs.addon
+    kc = bpy.context.window_manager.keyconfigs.addon
     pie = "wm.call_menu_pie"
 
     ################################# GLOBAL ##################################
