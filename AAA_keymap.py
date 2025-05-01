@@ -94,16 +94,24 @@ def global_keymap():
 
     ################################ OVERRIDES ################################
     # General keymaps for operators that already exist on Blender by default,
-    # but that's it's convenient add them here so you only have to disable
-    # the default key bindings that could collide to use this ones
+    # but that's it's convenient to add them here so you only have to disable
+    # the default key bindings that could collide to use this ones.
+    # You can probaly handle the collision programatically, but I don't know
+    # how yet.
 
     km = kc.keymaps.new('3D View', space_type='VIEW_3D', region_type='WINDOW')
 
-    km.keymap_items.new(
-        'view3d.view_selected', 'MIDDLEMOUSE', 'PRESS', shift=True, ctrl=True)
-    km.keymap_items.new(
-        "view3d.view_center_pick", 'MIDDLEMOUSE', 'CLICK',
-        ctrl=True, alt=True)
+    km.keymap_items.new('view3d.view_selected', 'MIDDLEMOUSE',
+                        'PRESS', shift=True, ctrl=True)
+    km.keymap_items.new("view3d.view_center_pick", 'MIDDLEMOUSE', 'CLICK',
+                        ctrl=True, alt=True)
+
+    km = kc.keymaps.new('Image', space_type='IMAGE_EDITOR',
+                        region_type='WINDOW')
+
+    kmi = km.keymap_items.new('image.view_zoom_ratio', 'MIDDLEMOUSE',
+                              'PRESS', shift=True, ctrl=True)
+    kmi.properties.ratio = 1
 
 
 def register():

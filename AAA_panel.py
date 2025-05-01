@@ -20,7 +20,11 @@ class VIEW3D_PT_proportional_edit_2(Panel):
         layout.label(text="Proportional Editing")
 
         row = layout.row()
-        row.prop(tool_settings, "use_proportional_edit_objects", text="")
+        if context.mode == OBJ:
+            row.prop(tool_settings, "use_proportional_edit_objects", text="")
+        elif context.mode == MHE:
+            row.prop(tool_settings, "use_proportional_edit", text="")
+
         row.prop(tool_settings, "proportional_distance",
                  text="Distance")
 
