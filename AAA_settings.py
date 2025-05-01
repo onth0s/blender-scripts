@@ -30,6 +30,9 @@ class TestSettings(PropertyGroup):
 
     SN.loop_frames = BoolProperty(default=False)
 
+    SN.already_saved_counter = IntProperty()
+
+
 
 classes = [
     # keep the order to not break anything

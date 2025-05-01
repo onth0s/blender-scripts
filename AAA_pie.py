@@ -140,11 +140,16 @@ class VIEW3D_MT_SHADING_PIE(Menu):
         pie.operator(PT, text="Object Color").name = "VIEW3D_PT_object_color"
         pie.operator(MN, text="Display") \
             .name = "VIEW3D_MT_VIEWPORT_DISPLAY"
-        
+
         pie.operator(MN, text="Renderer").name = "VIEW3D_MT_RENDERER"
 
-        pie.operator(PT, text="MatCap").name = "VIEW3D_PT_matcap"
-        pie.operator(PT, text="Background Color").name = "VIEW3D_PT_background_color"
+        if context.scene.render.engine != 'BLENDER_WORKBENCH':
+            pie.operator(PT, text="MatCap").name = "VIEW3D_PT_matcap"
+        else:
+            pie.operator(MN, text="")
+
+        pie.operator(
+            PT, text="Background Color").name = "VIEW3D_PT_background_color"
         pie.operator(MN, text="")
         pie.operator(MN, text="")
 

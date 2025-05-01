@@ -4,6 +4,8 @@ from bpy.types import (Menu, Operator)  # type: ignore
 
 from AAA_utils import *
 
+# TODO
+# flow.prop(context.preferences.inputs, "drag_threshold_tablet")
 
 class VIEW3D_MT_WORKSPACE(Menu):
     bl_label = "Workspace"
