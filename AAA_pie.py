@@ -144,7 +144,7 @@ class VIEW3D_MT_SHADING_PIE(Menu):
         pie.operator(MN, text="Renderer").name = "VIEW3D_MT_RENDERER"
 
         if context.scene.render.engine != 'BLENDER_WORKBENCH':
-            pie.operator(PT, text="MatCap").name = "VIEW3D_PT_matcap"
+            pie.operator(PT, text="Lighting").name = "VIEW3D_PT_lighting"
         else:
             pie.operator(MN, text="")
 

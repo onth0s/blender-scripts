@@ -95,24 +95,24 @@ class VIEW3D_PT_object_color(Panel):
                         .mode = "LAST"
 
 
-class VIEW3D_PT_matcap(Panel):
+class VIEW3D_PT_lighting(Panel):
     bl_space_type = 'VIEW_3D'
     bl_region_type = 'WINDOW'
-    bl_label = "MatCap"
+    bl_label = "Lighting"
     is_popover = True
 
     def draw(self, context):
-        layout = self.layout
+        LYT = self.layout
         shading = context.space_data.shading
 
-        col = layout.column()
-        split = col.split(factor=0.9)
+        col = LYT.column()
+        split = col.split(factor=1)
 
         if shading.type == 'SOLID':
             split.row().prop(shading, "light", expand=True)
             col = split.column()
 
-            split = layout.split(factor=0.9)
+            split = LYT.split(factor=0.96)
             col = split.column()
             sub = col.row()
 
@@ -126,13 +126,10 @@ class VIEW3D_PT_matcap(Panel):
                         shading, "studio_light", scale_popup=3.0)
                 else:
                     sub.prop(system, "use_studio_light_edit",
-                             text="Disable Studio Light Edit", icon='NONE', toggle=True)
+                             text="Disable Studio Light Edit",
+                             icon='NONE', toggle=True)
 
-                col = split.column()
-                col.operator("wm.studiolight_userpref_show",
-                             emboss=False, text="", icon='PREFERENCES')
-
-                split = layout.split(factor=0.9)
+                split = LYT.split(factor=1)
                 col = split.column()
 
                 row = col.row()
@@ -141,15 +138,17 @@ class VIEW3D_PT_matcap(Panel):
                 row = row.row()
                 row.active = shading.use_world_space_lighting
                 row.prop(shading, "studiolight_rotate_z", text="Rotation")
-                col = split.column()  # to align properly with above
+                col = split.column()
             elif shading.light == 'MATCAP':
                 sub.scale_y = 0.6  # smaller matcap preview
 
                 sub.template_icon_view(
                     shading, "studio_light", scale_popup=2.4)
+                
+                row = LYT.row()
+                row.operator("view3d.toggle_matcap_flip", emboss=True, text="", icon='ARROW_LEFTRIGHT')
+                row.label(text="Flip Matcap")
 
-        # LookDev is called 'MATERIAL' for some reason
-        # elif shading.type == 'MATERIAL':
         elif context.scene.render.engine != 'BLENDER_WORKBENCH':
             if shading.type == 'MATERIAL':
                 col.prop(shading, "use_scene_lights")
@@ -158,11 +157,8 @@ class VIEW3D_PT_matcap(Panel):
                 col.prop(shading, "use_scene_lights_render")
                 col.prop(shading, "use_scene_world_render")
 
-            # bpy.context.space_data.shading.use_scene_lights_render = True
-            # bpy.context.space_data.shading.use_scene_world_render = True
-
             if not shading.use_scene_world:
-                col = layout.column()
+                col = LYT.column()
                 split = col.split(factor=0.9)
 
                 col = split.column()
@@ -170,11 +166,8 @@ class VIEW3D_PT_matcap(Panel):
                 sub.scale_y = 0.6
                 sub.template_icon_view(shading, "studio_light", scale_popup=3)
 
-                # col = split.column()
-                # col.operator("wm.studiolight_userpref_show", emboss=False, text="", icon='PREFERENCES')
-
                 if shading.selected_studio_light.type == 'WORLD':
-                    split = layout.split(factor=0.9)
+                    split = LYT.split(factor=0.9)
                     col = split.column()
                     col.prop(shading, "studiolight_rotate_z", text="Rotation")
                     col.prop(shading, "studiolight_background_alpha")
@@ -217,7 +210,7 @@ classes = (
     VIEW3D_PT_frame_range,
 
     VIEW3D_PT_object_color,
-    VIEW3D_PT_matcap,
+    VIEW3D_PT_lighting,
     VIEW3D_PT_background_color,
 )
 
