@@ -138,17 +138,16 @@ class VIEW3D_MT_SHADING_PIE(Menu):
         PT = "wm.call_panel"
 
         pie.operator(PT, text="Object Color").name = "VIEW3D_PT_object_color"
-        pie.operator(MN, text="Viewport Display") \
+        pie.operator(MN, text="Display") \
             .name = "VIEW3D_MT_VIEWPORT_DISPLAY"
         
-        pie.operator(MN, text="Rendered").name = "VIEW3D_MT_RENDERER"
+        pie.operator(MN, text="Renderer").name = "VIEW3D_MT_RENDERER"
 
         pie.operator(PT, text="MatCap").name = "VIEW3D_PT_matcap"
-        pie.operator(PT, text="Background").name = "VIEW3D_PT_background_color"
+        pie.operator(PT, text="Background Color").name = "VIEW3D_PT_background_color"
         pie.operator(MN, text="")
         pie.operator(MN, text="")
 
-        # This probably should be in 'Overlays', not 'Shading'
         pie.operator(MN, text="Options").name = "VIEW3D_MT_SHADING_OPTIONS"
 
 
