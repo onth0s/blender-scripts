@@ -56,7 +56,9 @@ class VIEW3D_MT_SHADING_OPTIONS(Menu):
 
     def draw(self, context):
         LYT = self.layout
-        if context.object.type == 'MESH':
+        OBT = context.object.type
+
+        if OBT == TMH and OBT != None:
             LYT.operator("object.shade_flat", text="A - Flat")
             LYT.operator("object.shade_smooth", text="S - Smooth")
             LYT.operator("object.shade_auto_smooth", text="D - Autosmooth")

@@ -143,15 +143,17 @@ class VIEW3D_PT_lighting(Panel):
                 row.active = shading.use_world_space_lighting
                 row.prop(shading, "studiolight_rotate_z", text="Rotation")
                 col = split.column()
+
             elif shading.light == 'MATCAP':
                 sub.scale_y = 0.6  # smaller matcap preview
-
+                
                 sub.template_icon_view(
                     shading, "studio_light", scale_popup=2.4)
-                
+
                 row = LYT.row()
-                row.operator("view3d.toggle_matcap_flip", emboss=True, text="", icon='ARROW_LEFTRIGHT')
-                row.label(text="Flip Matcap")
+                row.operator("view3d.toggle_matcap_flip",
+                             emboss=True, text="", icon='ARROW_LEFTRIGHT')
+                row.label(text="Flip MatCap")
 
         elif context.scene.render.engine != 'BLENDER_WORKBENCH':
             if shading.type == 'MATERIAL':
