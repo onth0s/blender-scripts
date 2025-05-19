@@ -35,6 +35,8 @@ class VIEW3D_MT_MODE(Menu):
         if OBT == TMH:
             LYT.operator(MS, text="A - Object Mode").mode = 'OBJECT'
             LYT.operator(MS, text="S - Edit Mode").mode = 'EDIT'
+        else: 
+            LYT.label(text="No valid object selected")
 
 
 class VIEW3D_MT_VIEWPORT_DISPLAY(Menu):
@@ -56,7 +58,7 @@ class VIEW3D_MT_SHADING_OPTIONS(Menu):
 
     def draw(self, context):
         LYT = self.layout
-        OBT = context.object.type
+        OBT = None if context.object is None else context.object.type
 
         if OBT == TMH and OBT != None:
             LYT.operator("object.shade_flat", text="A - Flat")
@@ -366,9 +368,9 @@ class VIEW3D_MT_STD_TOOLS(Menu):
 
             LYT.separator()
             LYT.operator("mesh.remove_doubles", text="Z - Remove Doubles")
-            LYT.operator("mesh.subdivide", text="X - Subdivide")
             LYT.operator("wm.call_menu", text="C - Merge") \
                 .name = "VIEW3D_MT_edit_mesh_merge"
+            LYT.operator("mesh.subdivide", text="v - Subdivide")
         elif M in (OBJ):
             LYT.operator("object.parent_set", text="E - Parent Object") \
                 .type = 'OBJECT'

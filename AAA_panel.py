@@ -142,11 +142,12 @@ class VIEW3D_PT_lighting(Panel):
                 row = row.row()
                 row.active = shading.use_world_space_lighting
                 row.prop(shading, "studiolight_rotate_z", text="Rotation")
+
                 col = split.column()
 
             elif shading.light == 'MATCAP':
                 sub.scale_y = 0.6  # smaller matcap preview
-                
+
                 sub.template_icon_view(
                     shading, "studio_light", scale_popup=2.4)
 
@@ -177,6 +178,10 @@ class VIEW3D_PT_lighting(Panel):
                     col = split.column()
                     col.prop(shading, "studiolight_rotate_z", text="Rotation")
                     col.prop(shading, "studiolight_background_alpha")
+
+                    row = col.row()
+                    row.prop(shading, "studiolight_intensity", text="Strength")
+
                     col = split.column()  # to align properly with above
 
 
