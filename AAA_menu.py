@@ -35,6 +35,7 @@ class VIEW3D_MT_MODE(Menu):
         if OBT == TMH:
             LYT.operator(MS, text="A - Object Mode").mode = 'OBJECT'
             LYT.operator(MS, text="S - Edit Mode").mode = 'EDIT'
+            LYT.operator(MS, text="D - Sculpt Mode").mode = 'SCULPT'
         else: 
             LYT.label(text="No valid object selected")
 
