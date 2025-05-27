@@ -94,7 +94,7 @@ class PIE_MT_S(Menu):
         else:
             pie.operator(MT, text="").name = ""
         # ------------------------   RIGHT   -------------------------------- #
-        if M in (MHE):
+        if M in (MHE, MHS):
             pie.operator(MT, text="Tools") \
                 .name = "VIEW3D_MT_STD_TOOLS"
         else:

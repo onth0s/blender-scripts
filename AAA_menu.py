@@ -377,7 +377,30 @@ class VIEW3D_MT_STD_TOOLS(Menu):
                 .type = 'OBJECT'
             LYT.operator("object.parent_clear", text="Q - Clear Parent") \
                 .type = 'CLEAR'
+        elif M in (MHS):
+            LYT.label(text="Here will go some sculpting brushes.")
+            # LYT.operator("object.parent_clear", text="Q - Clear Parent") \
+            #     .type = 'CLEAR'
+            
+            LYT.operator_context = 'INVOKE_DEFAULT'
 
+            # OP = LYT.operator("brush.asset_activate", text="C - Crease")
+            # OP.asset_library_type = "ESSENTIALS"
+            # OP.asset_library_identifier = "Crease Sharp"
+            # OP.relative_asset_identifier = "brushes\\essentials_brushes-mesh_sculpt.blend\\Brush\\Crease"
+
+
+            # bpy.ops.brush.asset_activate(asset_library_type='ESSENTIALS', asset_library_identifier="", relative_asset_identifier="")
+
+            OP = LYT.operator("brush.asset_activate", text="S - Clay Strips")
+            OP.asset_library_type = "ESSENTIALS"
+            OP.asset_library_identifier = "Clay Strips"
+            OP.relative_asset_identifier = "brushes\\essentials_brushes-mesh_sculpt.blend\\Brush\\Clay Strips"
+
+
+            
+
+            # bpy.ops.brush.asset_activate(asset_library_type='ESSENTIALS', asset_library_identifier="", relative_asset_identifier="brushes\\essentials_brushes-mesh_sculpt.blend\\Brush\\Crease Sharp")
 
 class VIEW3D_MT_APPLY_CLEAR(Menu):
     bl_label = "Apply or Clear"
