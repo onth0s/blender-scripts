@@ -72,7 +72,7 @@ class SaveIncremental(Operator):
             # self.add_path_to_recent_files(save_path)
             if os.path.exists(save_path):
                 self.report(
-                    {'INFO'}, "File '%s' exists already!\nBlend has NOT been saved incrementally!" % (save_path))
+                    {'WARNING'}, "File '%s' exists already!\nBlend has NOT been saved incrementally!" % (save_path))
             else:
                 bpy.ops.wm.save_as_mainfile(filepath=save_path)
                 self.report({'INFO'}, "Saved blend incrementally:" + save_path)
