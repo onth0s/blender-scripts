@@ -143,18 +143,20 @@ class SwitchWorkspace(Operator):
 class ModeSet(Operator):
     bl_idname = "aaa.mode_set"
     bl_label = ""
-    bl_options = {'UNDO'}
+    # bl_options = {'UNDO'}
     # bl_options = {'REGISTER', 'UNDO'}
 
     mode: StringProperty()  # type: ignore
 
     def execute(self, context):
-        bpy.ops.object.mode_set(mode=self.mode)
-
-        if self.mode in (MHE, MHS):
+        if self.mode in (MHE):
+            context.space_data.shading.cavity_type = 'WORLD'
+        elif self.mode == (MHS, MHV):
             context.space_data.shading.cavity_type = 'WORLD'
         elif self.mode == OBJ:
             context.space_data.shading.cavity_type = 'BOTH'
+
+        bpy.ops.object.mode_set(mode=self.mode)
         return {'FINISHED'}
 
 
