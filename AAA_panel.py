@@ -11,43 +11,58 @@ class VIEW3D_PT_manage_modifiers(Panel):
     bl_space_type = 'VIEW_3D'
     bl_region_type = 'WINDOW'
     bl_label = "Manage Modifiers"
-    bl_ui_units_x = 24
+    bl_ui_units_x = 16
 
     def draw(self, context):
         OBJ = bpy.context.active_object
         SCN = context.scene
         LYT = self.layout
 
-        # if OBJ and OBJ.modifiers:
-        #     for mod in OBJ.modifiers:
-        #         box = LYT.box()
-        #         box.label(text=f"{mod.name} ({mod.type})")
-        # else:
-        #     LYT.label(text="No modifiers found.")
+        if OBJ and OBJ.modifiers:
+            for mod in OBJ.modifiers:
+                row = LYT.row(align=True)
 
-        if not OBJ or not OBJ.modifiers:
+                row.label(text=f"{mod.name} ({mod.type})")
+
+                col = LYT.column()
+                OPS = col.operator("aaa.reorder_modifiers", text="↑↑")
+                OPS.where = "TOP"
+                OPS.name = mod.name
+
+                col = LYT.column()
+                OPS = col.operator("aaa.reorder_modifiers", text="↑↑")
+                OPS.where = "TOP"
+                OPS.name = mod.name
+
+                # row.operator("aaa.reorder_modifiers", text="↑").how="UP"
+                # row.operator("object.editmode_toggle", text="↑")
+
+        else:
             LYT.label(text="No modifiers found.")
-            return
 
-        for mod in OBJ.modifiers:
-            box = LYT.box()
-            box.label(text=f"{mod.name} ({mod.type})")
+        # if not OBJ or not OBJ.modifiers:
+        #     LYT.label(text="No modifiers found.")
+        #     return
 
-            # Draw common modifier toggles
-            row = box.row()
-            row.prop(mod, "show_viewport", text="Viewport")
-            row.prop(mod, "show_render", text="Render")
-            row.prop(mod, "show_in_editmode", text="Edit Mode")
+        # for mod in OBJ.modifiers:
+        #     box = LYT.box()
+        #     box.label(text=f"{mod.name} ({mod.type})")
 
-            # Dynamically draw other properties
-            exclude = {'name', 'type', 'rna_type',
-                       'show_viewport', 'show_render', 'show_in_editmode'}
-            for prop in mod.bl_rna.properties:
-                if prop.identifier not in exclude and not prop.is_readonly:
-                    try:
-                        box.prop(mod, prop.identifier)
-                    except:
-                        pass  # Some properties may not be drawable directly
+        #     # Draw common modifier toggles
+        #     row = box.row()
+        #     row.prop(mod, "show_viewport", text="Viewport")
+        #     row.prop(mod, "show_render", text="Render")
+        #     row.prop(mod, "show_in_editmode", text="Edit Mode")
+
+        #     # Dynamically draw other properties
+        #     exclude = {'name', 'type', 'rna_type',
+        #                'show_viewport', 'show_render', 'show_in_editmode'}
+        #     for prop in mod.bl_rna.properties:
+        #         if prop.identifier not in exclude and not prop.is_readonly:
+        #             try:
+        #                 box.prop(mod, prop.identifier)
+        #             except:
+        #                 pass  # Some properties may not be drawable directly
 
 
 class VIEW3D_PT_proportional_edit_2(Panel):

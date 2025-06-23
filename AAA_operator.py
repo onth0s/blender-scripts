@@ -320,6 +320,46 @@ class STDTools(Operator):
         return {'FINISHED'}
 
 
+class ReorderModifiers(Operator):
+    bl_idname = "aaa.reorder_modifiers"
+    bl_label = "Reorder Modifiers"
+    bl_options = {'REGISTER'}
+
+    name: bpy.props.StringProperty()  # type: ignore
+    where: bpy.props.StringProperty()  # type: ignore
+
+    def execute(self, context):
+        OBJ = context.active_object
+        mods = OBJ.modifiers
+        print(">> mods:")
+        print(mods)
+        # index = mods.find(self.modifier_name)
+
+        # print(f">> moving modifier[{self.modifier_name}]...")
+        print(f">> moving modifier..")
+
+        # if index == -1:
+        #     return {'CANCELLED'}
+
+        if self.where == 'UP':
+            # new_index = index - 1
+            # print(">> MOVING UP")
+            pass
+        elif self.where == 'DOWN':
+            # index + 1
+            pass
+        elif self.where == 'TOP':
+            bpy.ops.object.modifier_move_to_index(modifier=self.name, index=0)
+        elif self.where == 'BOTTOM':
+            bpy.ops.object.modifier_move_to_index(modifier=self.name, index=1)
+
+
+        # if 0 <= new_index < len(mods):
+        #     mods.move(index, new_index)
+
+        return {'FINISHED'}
+
+
 class AddMaterial(Operator):
     bl_idname = "aaa.add_material"
     bl_label = "Add Material"
@@ -564,6 +604,8 @@ classes = (
     RollAxis,
 
     STDTools,
+
+    ReorderModifiers,
 
     AddMaterial,
     SwitchRenderer,
