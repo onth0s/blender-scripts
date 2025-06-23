@@ -327,29 +327,25 @@ class ReorderModifiers(Operator):
 
     name: bpy.props.StringProperty()  # type: ignore
     where: bpy.props.StringProperty()  # type: ignore
+    index: bpy.props.IntProperty()  # type: ignore
 
     def execute(self, context):
         OBJ = context.active_object
         mods = OBJ.modifiers
 
-        # if index == -1:
-        #     return {'CANCELLED'}
+        print(">> self.index:")
+        print(self.index)
 
-        if self.where == 'UP':
-            # new_index = index - 1
-            # print(">> MOVING UP")
-            pass
-        elif self.where == 'DOWN':
-            # index + 1
-            pass
+        if self.where == 'UP' and self.index > 0:
+            mods.move(self.index, self.index - 1)
+        elif self.where == 'DOWN' and self.index < len(mods) - 1:
+            mods.move(self.index, self.index + 1)
+
         elif self.where == 'TOP':
             bpy.ops.object.modifier_move_to_index(modifier=self.name, index=0)
         elif self.where == 'BOTTOM':
             bpy.ops.object.modifier_move_to_index(
                 modifier=self.name, index=len(mods) - 1)
-
-        # if 0 <= new_index < len(mods):
-        #     mods.move(index, new_index)
 
         return {'FINISHED'}
 

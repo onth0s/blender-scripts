@@ -11,15 +11,15 @@ class VIEW3D_PT_manage_modifiers(Panel):
     bl_space_type = 'VIEW_3D'
     bl_region_type = 'WINDOW'
     bl_label = "Manage Modifiers"
-    bl_ui_units_x = 16
+    bl_ui_units_x = 14
 
     def draw(self, context):
         OBJ = bpy.context.active_object
         LYT = self.layout
         
         if OBJ and OBJ.modifiers:
-            for mod in OBJ.modifiers:
-                split = LYT.row().split(factor=0.65)  # 80% for label, 20% for buttons
+            for index, mod in enumerate(OBJ.modifiers):
+                split = LYT.row().split(factor=0.6)  
 
                 # Left side: label
                 split.label(text=f"{mod.name} ({mod.type})")
@@ -32,6 +32,7 @@ class VIEW3D_PT_manage_modifiers(Panel):
                         "aaa.reorder_modifiers", text=label)
                     op.name = mod.name
                     op.where = direction
+                    op.index = index
 
         else:
             LYT.label(text="No modifiers found.")
