@@ -151,7 +151,9 @@ class ModeSet(Operator):
     def execute(self, context):
         if self.mode in (MHE):
             context.space_data.shading.cavity_type = 'WORLD'
-        elif self.mode == (MHS, MHV):
+        elif self.mode == (MHS):
+            context.space_data.shading.cavity_type = 'WORLD'
+        elif self.mode == (MHV):
             context.space_data.shading.cavity_type = 'WORLD'
         elif self.mode == OBJ:
             context.space_data.shading.cavity_type = 'BOTH'
