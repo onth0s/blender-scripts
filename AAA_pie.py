@@ -114,7 +114,7 @@ class PIE_MT_S(Menu):
             pie.operator(MT, text="").name = ""
         # ------------------------   TOP-RIGHT   ---------------------------- #
         if M in (ALL):
-            pie.operator(MT, text="").name = ""
+            pie.operator(MT, text="Modifiers").name = "VIEW3D_MT_MODIFIERS"
         # ------------------------   BOTTOM-LEFT   -------------------------- #
         if M in (OBJ, MHE):
             pie.operator(PT, text="Proportional") \

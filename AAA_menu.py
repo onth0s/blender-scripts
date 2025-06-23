@@ -395,6 +395,19 @@ class VIEW3D_MT_STD_TOOLS(Menu):
             OP.relative_asset_identifier = "brushes\\essentials_brushes-mesh_sculpt.blend\\Brush\\Grab"
 
 
+class VIEW3D_MT_MODIFIERS(Menu):
+    bl_label = "Modifiers"
+
+    def draw(self, context):
+        LYT = self.layout
+        M = context.mode
+
+        LYT.operator("wm.call_panel", text="D - Manage").name='VIEW3D_PT_lighting'
+        LYT.separator()
+
+        LYT.operator("object.modifier_add", text="S - Subsurf").type='SUBSURF'
+        LYT.operator("object.modifier_add", text="T - Mirror").type='MIRROR'
+
 class VIEW3D_MT_APPLY_CLEAR(Menu):
     bl_label = "Apply or Clear"
 
@@ -484,6 +497,7 @@ classes = (
 
     VIEW3D_MT_MHE_MODE,
     VIEW3D_MT_STD_TOOLS,
+    VIEW3D_MT_MODIFIERS,
 
     VIEW3D_MT_APPLY_CLEAR,
     VIEW3D_MT_APPLY,
