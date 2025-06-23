@@ -15,27 +15,23 @@ class VIEW3D_PT_manage_modifiers(Panel):
 
     def draw(self, context):
         OBJ = bpy.context.active_object
-        SCN = context.scene
         LYT = self.layout
-
+        
         if OBJ and OBJ.modifiers:
             for mod in OBJ.modifiers:
-                row = LYT.row(align=True)
+                split = LYT.row().split(factor=0.65)  # 80% for label, 20% for buttons
 
-                row.label(text=f"{mod.name} ({mod.type})")
+                # Left side: label
+                split.label(text=f"{mod.name} ({mod.type})")
 
-                col = LYT.column()
-                OPS = col.operator("aaa.reorder_modifiers", text="↑↑")
-                OPS.where = "TOP"
-                OPS.name = mod.name
-
-                col = LYT.column()
-                OPS = col.operator("aaa.reorder_modifiers", text="↑↑")
-                OPS.where = "TOP"
-                OPS.name = mod.name
-
-                # row.operator("aaa.reorder_modifiers", text="↑").how="UP"
-                # row.operator("object.editmode_toggle", text="↑")
+                # Right side: buttons in a tight row
+                button_row = split.row(align=True)
+                for label, direction in [("↓", "DOWN"), ("↑", "UP"),
+                                         ("↓↓", "BOTTOM"), ("↑↑", "TOP")]:
+                    op = button_row.operator(
+                        "aaa.reorder_modifiers", text=label)
+                    op.name = mod.name
+                    op.where = direction
 
         else:
             LYT.label(text="No modifiers found.")

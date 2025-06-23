@@ -331,12 +331,6 @@ class ReorderModifiers(Operator):
     def execute(self, context):
         OBJ = context.active_object
         mods = OBJ.modifiers
-        print(">> mods:")
-        print(mods)
-        # index = mods.find(self.modifier_name)
-
-        # print(f">> moving modifier[{self.modifier_name}]...")
-        print(f">> moving modifier..")
 
         # if index == -1:
         #     return {'CANCELLED'}
@@ -351,8 +345,8 @@ class ReorderModifiers(Operator):
         elif self.where == 'TOP':
             bpy.ops.object.modifier_move_to_index(modifier=self.name, index=0)
         elif self.where == 'BOTTOM':
-            bpy.ops.object.modifier_move_to_index(modifier=self.name, index=1)
-
+            bpy.ops.object.modifier_move_to_index(
+                modifier=self.name, index=len(mods) - 1)
 
         # if 0 <= new_index < len(mods):
         #     mods.move(index, new_index)
