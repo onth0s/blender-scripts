@@ -402,7 +402,7 @@ class VIEW3D_MT_MODIFIERS(Menu):
         LYT = self.layout
         M = context.mode
 
-        LYT.operator("wm.call_panel", text="D - Manage").name='VIEW3D_PT_lighting'
+        LYT.operator("wm.call_panel", text="D - Manage").name='VIEW3D_PT_manage_modifiers'
         LYT.separator()
 
         LYT.operator("object.modifier_add", text="S - Subsurf").type='SUBSURF'

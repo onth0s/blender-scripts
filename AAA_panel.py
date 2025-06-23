@@ -7,6 +7,49 @@ from AAA_utils import *
 
 
 # the '_2' is there to not collide with the built-in Panel
+class VIEW3D_PT_manage_modifiers(Panel):
+    bl_space_type = 'VIEW_3D'
+    bl_region_type = 'WINDOW'
+    bl_label = "Manage Modifiers"
+    bl_ui_units_x = 24
+
+    def draw(self, context):
+        OBJ = bpy.context.active_object
+        SCN = context.scene
+        LYT = self.layout
+
+        # if OBJ and OBJ.modifiers:
+        #     for mod in OBJ.modifiers:
+        #         box = LYT.box()
+        #         box.label(text=f"{mod.name} ({mod.type})")
+        # else:
+        #     LYT.label(text="No modifiers found.")
+
+        if not OBJ or not OBJ.modifiers:
+            LYT.label(text="No modifiers found.")
+            return
+
+        for mod in OBJ.modifiers:
+            box = LYT.box()
+            box.label(text=f"{mod.name} ({mod.type})")
+
+            # Draw common modifier toggles
+            row = box.row()
+            row.prop(mod, "show_viewport", text="Viewport")
+            row.prop(mod, "show_render", text="Render")
+            row.prop(mod, "show_in_editmode", text="Edit Mode")
+
+            # Dynamically draw other properties
+            exclude = {'name', 'type', 'rna_type',
+                       'show_viewport', 'show_render', 'show_in_editmode'}
+            for prop in mod.bl_rna.properties:
+                if prop.identifier not in exclude and not prop.is_readonly:
+                    try:
+                        box.prop(mod, prop.identifier)
+                    except:
+                        pass  # Some properties may not be drawable directly
+
+
 class VIEW3D_PT_proportional_edit_2(Panel):
     bl_space_type = 'VIEW_3D'
     bl_region_type = 'HEADER'
@@ -205,7 +248,7 @@ class VIEW3D_PT_background_color(Panel):
 
 
 ''' Panel Preset
-class VIEW3D_PT_test(Panel):
+class VIEW3D_PT_manage_modifiers(Panel):
     bl_space_type = 'VIEW_3D'
     bl_region_type = 'WINDOW'
     bl_label = "test"
@@ -216,6 +259,8 @@ class VIEW3D_PT_test(Panel):
 '''
 
 classes = (
+    VIEW3D_PT_manage_modifiers,
+
     VIEW3D_PT_proportional_edit_2,
 
     VIEW3D_PT_frame_range,
