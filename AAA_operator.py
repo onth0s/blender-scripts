@@ -167,15 +167,23 @@ class ToggleOverlays(Operator):
     bl_label = "Toggle Overlays"
     bl_options = {'REGISTER'}
 
-    header: bpy.props.BoolProperty()  # type: ignore
+    header: bpy.props.StringProperty()  # type: ignore
 
     def execute(self, context):
         SD = context.space_data
         SN = context.scene
 
-        if self.header:
+        if self.header == 'HEADER':
             SD.show_region_header = not SD.show_region_header
-        else:
+        elif self.header == 'FLOOR':
+            temp = SD.overlay.show_axis_y or SD.overlay.show_axis_x \
+                or SD.overlay.show_floor
+
+            SD.overlay.show_axis_y = not temp
+            SD.overlay.show_axis_x = not temp
+            SD.overlay.show_floor = not temp
+
+        elif self.header == 'OVERLAYS':
             if not SN.show_bool_toggle:
                 SN.show_overlays = SD.overlay.show_overlays
                 SN.show_gizmo = SD.show_gizmo
@@ -193,6 +201,7 @@ class ToggleOverlays(Operator):
                 SD.show_region_toolbar = SN.show_n_menu
 
             SN.show_bool_toggle = not SN.show_bool_toggle
+
 
         return {'FINISHED'}
 

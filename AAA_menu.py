@@ -48,8 +48,9 @@ class VIEW3D_MT_VIEWPORT_DISPLAY(Menu):
     def draw(self, context):
         LYT = self.layout
 
-        LYT.operator("aaa.toggle_overlays", text="Q - Header").header = True
-        LYT.operator("aaa.toggle_overlays", text="A - Overlays").header = False
+        LYT.operator("aaa.toggle_overlays", text="Q - Header").header = 'HEADER'
+        LYT.operator("aaa.toggle_overlays", text="A - Overlays").header = 'OVERLAYS'
+        LYT.operator("aaa.toggle_overlays", text="F - Floor").header = "FLOOR"
 
         LYT.separator()
         LYT.operator("aaa.toggle_prop", text="Z - Face Orientation") \
@@ -393,6 +394,10 @@ class VIEW3D_MT_STD_TOOLS(Menu):
             OP = LYT.operator("brush.asset_activate", text="D - Grab")
             OP.asset_library_type = "ESSENTIALS"
             OP.relative_asset_identifier = "brushes\\essentials_brushes-mesh_sculpt.blend\\Brush\\Grab"
+
+            OP = LYT.operator("brush.asset_activate", text="R - Smooth")
+            OP.asset_library_type = "ESSENTIALS"
+            OP.relative_asset_identifier = "brushes\\essentials_brushes-mesh_sculpt.blend\\Brush\\Smooth"
 
 
 class VIEW3D_MT_MODIFIERS(Menu):
