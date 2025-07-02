@@ -48,8 +48,10 @@ class VIEW3D_MT_VIEWPORT_DISPLAY(Menu):
     def draw(self, context):
         LYT = self.layout
 
-        LYT.operator("aaa.toggle_overlays", text="Q - Header").header = 'HEADER'
-        LYT.operator("aaa.toggle_overlays", text="A - Overlays").header = 'OVERLAYS'
+        LYT.operator("aaa.toggle_overlays",
+                     text="Q - Header").header = 'HEADER'
+        LYT.operator("aaa.toggle_overlays",
+                     text="A - Overlays").header = 'OVERLAYS'
         LYT.operator("aaa.toggle_overlays", text="F - Floor").header = "FLOOR"
 
         LYT.separator()
@@ -223,32 +225,39 @@ class VIEW3D_MT_SELECT(Menu):
         AT = context.area.type
         M = context.mode
 
-        layout = self.layout
+        LYT = self.layout
 
         if AT == 'VIEW_3D':
             if M in OBJ:
-                layout.operator("object.select_all", text="A - All") \
+                LYT.operator("object.select_all", text="A - All") \
                     .action = 'SELECT'
-                layout.operator("object.select_all", text="S - None") \
+                LYT.operator("object.select_all", text="S - None") \
                     .action = 'DESELECT'
-                layout.operator("object.select_all", text="D - Invert") \
+                LYT.operator("object.select_all", text="D - Invert") \
                     .action = 'INVERT'
-                layout.operator("object.select_grouped",
+                LYT.operator("object.select_grouped",
                                 text="Q - Select Grouped").type = 'PARENT'
-            if M in MHE:
-                layout.operator("mesh.select_all", text="A - All") \
+            elif M in MHE:
+                LYT.operator("mesh.select_all", text="A - All") \
                     .action = 'SELECT'
-                layout.operator("mesh.select_all", text="S - None") \
+                LYT.operator("mesh.select_all", text="S - None") \
                     .action = 'DESELECT'
-                layout.operator("mesh.select_all", text="D - Invert") \
+                LYT.operator("mesh.select_all", text="D - Invert") \
                     .action = 'INVERT'
 
-                layout.separator()
-                layout.operator("mesh.select_linked", text="Q - Linked")
+                LYT.separator()
+                LYT.operator("mesh.select_linked", text="Q - Linked")
 
-                layout.separator()
-                layout.operator("mesh.loop_to_region", text="E - Inner Region")
-                layout.operator("mesh.region_to_loop", text="F - Boundary")
+                LYT.separator()
+                LYT.operator("mesh.loop_to_region", text="E - Inner Region")
+                LYT.operator("mesh.region_to_loop", text="F - Boundary")
+            elif M in MHS:
+                OP = LYT.operator("paint.mask_flood_fill", text="S - Clear")
+                OP.mode = 'VALUE'
+                OP.value = 0
+
+                OP = LYT.operator("paint.mask_flood_fill", text="D - Invert")
+                OP.mode = 'INVERT'
 
 
 class VIEW3D_MT_SELECT_MODE(Menu):
@@ -353,6 +362,8 @@ class VIEW3D_MT_STD_TOOLS(Menu):
         LYT = self.layout
         M = context.mode
 
+        BRUSH = "brushes\\essentials_brushes-mesh_sculpt.blend\\Brush\\"
+
         if M in (MHE):
             LYT.operator_context = 'INVOKE_DEFAULT'
 
@@ -381,23 +392,37 @@ class VIEW3D_MT_STD_TOOLS(Menu):
             LYT.operator("object.parent_clear", text="Q - Clear Parent") \
                 .type = 'CLEAR'
         elif M in (MHS):
-            LYT.label(text="Mesh Sculpt")
+            OP = LYT.operator("brush.asset_activate", text="R - Smooth")
+            OP.asset_library_type = "ESSENTIALS"
+            OP.relative_asset_identifier = BRUSH + "Smooth"
 
             OP = LYT.operator("brush.asset_activate", text="S - Clay Strips")
             OP.asset_library_type = "ESSENTIALS"
-            OP.relative_asset_identifier = "brushes\\essentials_brushes-mesh_sculpt.blend\\Brush\\Clay Strips"
+            OP.relative_asset_identifier = BRUSH + "Clay Strips"
 
             OP = LYT.operator("brush.asset_activate", text="C - Crease")
             OP.asset_library_type = "ESSENTIALS"
-            OP.relative_asset_identifier = "brushes\\essentials_brushes-mesh_sculpt.blend\\Brush\\Crease Sharp"
+            OP.relative_asset_identifier = BRUSH + "Crease Sharp"
 
             OP = LYT.operator("brush.asset_activate", text="D - Grab")
             OP.asset_library_type = "ESSENTIALS"
-            OP.relative_asset_identifier = "brushes\\essentials_brushes-mesh_sculpt.blend\\Brush\\Grab"
+            OP.relative_asset_identifier = BRUSH + "Grab"
 
-            OP = LYT.operator("brush.asset_activate", text="R - Smooth")
+            OP = LYT.operator("brush.asset_activate", text="B - Blob")
             OP.asset_library_type = "ESSENTIALS"
-            OP.relative_asset_identifier = "brushes\\essentials_brushes-mesh_sculpt.blend\\Brush\\Smooth"
+            OP.relative_asset_identifier = BRUSH + "Blob"
+
+            OP = LYT.operator("brush.asset_activate", text="Q - Inflate")
+            OP.asset_library_type = "ESSENTIALS"
+            OP.relative_asset_identifier = BRUSH + "Inflate/Deflate"
+
+            OP = LYT.operator("brush.asset_activate", text="T - Fill")
+            OP.asset_library_type = "ESSENTIALS"
+            OP.relative_asset_identifier = BRUSH + "Fill/Deepen"
+
+            LYT.separator()
+            LYT.operator("wm.tool_set_by_id", text="Z - Mask") \
+                .name = "builtin_brush.mask"
 
 
 class VIEW3D_MT_MODIFIERS(Menu):
@@ -407,11 +432,14 @@ class VIEW3D_MT_MODIFIERS(Menu):
         LYT = self.layout
         M = context.mode
 
-        LYT.operator("wm.call_panel", text="D - Manage").name='VIEW3D_PT_manage_modifiers'
+        LYT.operator("wm.call_panel",
+                     text="D - Manage").name = 'VIEW3D_PT_manage_modifiers'
         LYT.separator()
 
-        LYT.operator("object.modifier_add", text="S - Subsurf").type='SUBSURF'
-        LYT.operator("object.modifier_add", text="T - Mirror").type='MIRROR'
+        LYT.operator("object.modifier_add",
+                     text="S - Subsurf").type = 'SUBSURF'
+        LYT.operator("object.modifier_add", text="T - Mirror").type = 'MIRROR'
+
 
 class VIEW3D_MT_APPLY_CLEAR(Menu):
     bl_label = "Apply or Clear"

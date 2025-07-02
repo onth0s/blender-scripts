@@ -36,14 +36,14 @@ class PIE_MT_SPACE(Menu):
         # ------------------------   LEFT   --------------------------------- #
         if M in (OBJ, MHT, MHW, MHV):
             pie.operator("aaa.test_operator", text="TEST OPERATOR")
-        if M in (MHE, MHS):
+        elif M in (MHE, MHS):
             pie.operator(MN, text="").name = ""
 
         # ------------------------   RIGHT   -------------------------------- #
         if M in (OBJ, MHE):
             pie.operator(MN, text="Transform Gizmo")\
                 .name = "VIEW3D_MT_TRANSFORM_GIZMO"
-        if M in (MHS, MHT, MHW, MHV):
+        elif M in (MHS, MHT, MHW, MHV):
             pie.operator(MN, text="").name = ""
 
         # ------------------------   BOTTOM   ------------------------------- #
@@ -62,17 +62,22 @@ class PIE_MT_SPACE(Menu):
         if M in (OBJ):
             pie.operator(MN, text="Object Operations") \
                 .name = "VIEW3D_MT_STD_TOOLS"
-        if M in (MHE):
+        elif M in (MHE):
             pie.operator(MN, text="Select Mode") \
                 .name = "VIEW3D_MT_MHE_MODE"
+        elif M in (MHS):
+            pie.operator(MN, text="").name = ""
 
         # ------------------------   BOTTOM-LEFT   -------------------------- #
-        if M in (ALL):
+        if M in (OBJ, MHE, MHS):
             pie.operator(MN, text="Select").name = "VIEW3D_MT_SELECT"
-
+        else:
+            pie.operator(MN, text="").name = ""
         # ------------------------   BOTTOM-RIGHT   ------------------------- #
         if M in (OBJ, MHE):
             pie.operator(MN, text="Select Mode").name = "VIEW3D_MT_SELECT_MODE"
+        else:
+            pie.operator(MN, text="").name = ""
 
 
 class PIE_MT_S(Menu):
