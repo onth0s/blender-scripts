@@ -385,7 +385,7 @@ class VIEW3D_MT_STD_TOOLS(Menu):
             LYT.operator("mesh.remove_doubles", text="Z - Remove Doubles")
             LYT.operator("wm.call_menu", text="C - Merge") \
                 .name = "VIEW3D_MT_edit_mesh_merge"
-            LYT.operator("mesh.subdivide", text="v - Subdivide")
+            LYT.operator("mesh.subdivide", text="V - Subdivide")
         elif M in (OBJ):
             LYT.operator("object.parent_set", text="E - Parent Object") \
                 .type = 'OBJECT'
