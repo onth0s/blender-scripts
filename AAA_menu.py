@@ -236,7 +236,7 @@ class VIEW3D_MT_SELECT(Menu):
                 LYT.operator("object.select_all", text="D - Invert") \
                     .action = 'INVERT'
                 LYT.operator("object.select_grouped",
-                                text="Q - Select Grouped").type = 'PARENT'
+                             text="Q - Select Grouped").type = 'PARENT'
             elif M in MHE:
                 LYT.operator("mesh.select_all", text="A - All") \
                     .action = 'SELECT'
@@ -437,7 +437,8 @@ class VIEW3D_MT_MODIFIERS(Menu):
         LYT.separator()
 
         LYT.operator("object.modifier_add",
-                     text="S - Subsurf").type = 'SUBSURF'
+                         text="S - Subsurf").type = 'SUBSURF'
+            
         LYT.operator("object.modifier_add", text="T - Mirror").type = 'MIRROR'
 
 
