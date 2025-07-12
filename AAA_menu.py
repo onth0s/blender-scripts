@@ -37,7 +37,7 @@ class VIEW3D_MT_MODE(Menu):
             LYT.operator(MS, text="A - Object Mode").mode = 'OBJECT'
             LYT.operator(MS, text="S - Edit Mode").mode = 'EDIT'
             LYT.operator(MS, text="D - Sculpt Mode").mode = 'SCULPT'
-            LYT.operator(MS, text="E - Vertex Paint").mode = 'PAINT_VERTEX'
+            LYT.operator(MS, text="E - Vertex Paint").mode = 'VERTEX_PAINT'
         else:
             LYT.label(text="No valid object selected")
 
@@ -437,9 +437,12 @@ class VIEW3D_MT_MODIFIERS(Menu):
         LYT.separator()
 
         LYT.operator("object.modifier_add",
-                         text="S - Subsurf").type = 'SUBSURF'
-            
+                     text="S - Subsurf").type = 'SUBSURF'
+
         LYT.operator("object.modifier_add", text="T - Mirror").type = 'MIRROR'
+
+        LYT.operator("object.modifier_add",
+                     text="V - Solidify").type = 'SOLIDIFY'
 
 
 class VIEW3D_MT_APPLY_CLEAR(Menu):
