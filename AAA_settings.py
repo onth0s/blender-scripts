@@ -24,6 +24,7 @@ class TestSettings(PropertyGroup):
     SN.show_gizmo = BoolProperty(default=False, update=dummy_update)
     SN.show_t_menu = BoolProperty(default=False, update=dummy_update)
     SN.show_n_menu = BoolProperty(default=False, update=dummy_update)
+    SN.show_region_asset_shelf = BoolProperty(default=False, update=dummy_update)
     SN.show_bool_toggle = BoolProperty(default=False, update=dummy_update)
 
     SN.axis_roll = StringProperty()

@@ -376,8 +376,8 @@ class VIEW3D_MT_STD_TOOLS(Menu):
             LYT.operator("mesh.extrude_region_move", text="S - Extrude")
             LYT.operator("mesh.bevel", text="D - Bevel")
 
-            # custom built-in operator call to make sure the active tool switches
-            # from the selection ones to the spin tool
+            # custom built-in operator call to make sure the active tool 
+            # switches from the selection ones to the spin tool
             LYT.operator("aaa.std_tools", text="F - Spin") \
                 .name = "SPIN_TOOL"
 
@@ -400,9 +400,13 @@ class VIEW3D_MT_STD_TOOLS(Menu):
             OP.asset_library_type = "ESSENTIALS"
             OP.relative_asset_identifier = BRUSH + "Clay Strips"
 
-            OP = LYT.operator("brush.asset_activate", text="C - Crease")
+            OP = LYT.operator("brush.asset_activate", text="C - Crease Sharp")
             OP.asset_library_type = "ESSENTIALS"
             OP.relative_asset_identifier = BRUSH + "Crease Sharp"
+
+            OP = LYT.operator("brush.asset_activate", text="F - Crease Polish")
+            OP.asset_library_type = "ESSENTIALS"
+            OP.relative_asset_identifier = BRUSH + "Crease Polish"
 
             OP = LYT.operator("brush.asset_activate", text="D - Grab")
             OP.asset_library_type = "ESSENTIALS"
