@@ -195,13 +195,15 @@ class ToggleOverlays(Operator):
                 SD.show_gizmo              = False
                 SD.show_region_ui          = False
                 SD.show_region_toolbar     = False
-                SD.show_region_asset_shelf = False
+                if context.mode == MHS:
+                    SD.show_region_asset_shelf = False
             else:
                 SD.overlay.show_overlays = SN.show_overlays
                 SD.show_gizmo = SN.show_gizmo
                 SD.show_region_ui = SN.show_t_menu
                 SD.show_region_toolbar = SN.show_n_menu
-                SD.show_region_asset_shelf = SN.show_region_asset_shelf
+                if context.mode == MHS:
+                    SD.show_region_asset_shelf = SN.show_region_asset_shelf
 
             SN.show_bool_toggle = not SN.show_bool_toggle
 
