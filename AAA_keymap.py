@@ -103,7 +103,7 @@ def global_keymap():
 
     km.keymap_items.new('view3d.view_selected', 'MIDDLEMOUSE',
                         'PRESS', shift=True, ctrl=True)
-    km.keymap_items.new("view3d.view_center_pick", 'MIDDLEMOUSE', 'CLICK',
+    km.keymap_items.new("view3d.view_center_pick", 'MIDDLEMOUSE', 'PRESS',
                         ctrl=True, alt=True)
 
     km = kc.keymaps.new('Image', space_type='IMAGE_EDITOR',

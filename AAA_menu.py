@@ -341,6 +341,20 @@ class VIEW3D_MT_PIVOT_POINT(Menu):
                 .prop = TS2 + ".use_transform_pivot_point_align"
 
 
+class VIEW3D_MT_FACE_SETS(Menu):
+    bl_label = "Face Sets"
+
+    def draw(self, context):
+        LYT = self.layout
+
+        LYT.operator("sculpt.face_sets_create",
+                     text="A - From Masked").mode = "MASKED"
+        LYT.operator("sculpt.face_sets_create",
+                     text="S - From Visible").mode = "VISIBLE"
+        LYT.operator("sculpt.face_sets_create",
+                     text="D - From Selection").mode = "SELECTION"
+
+
 class VIEW3D_MT_MHE_MODE(Menu):
     bl_label = "Select Mode"
 
@@ -376,7 +390,7 @@ class VIEW3D_MT_STD_TOOLS(Menu):
             LYT.operator("mesh.extrude_region_move", text="S - Extrude")
             LYT.operator("mesh.bevel", text="D - Bevel")
 
-            # custom built-in operator call to make sure the active tool 
+            # custom built-in operator call to make sure the active tool
             # switches from the selection ones to the spin tool
             LYT.operator("aaa.std_tools", text="F - Spin") \
                 .name = "SPIN_TOOL"
@@ -539,6 +553,8 @@ classes = (
     VIEW3D_MT_CURSOR_POSITION,
 
     VIEW3D_MT_PIVOT_POINT,
+
+    VIEW3D_MT_FACE_SETS,
 
     VIEW3D_MT_MHE_MODE,
     VIEW3D_MT_STD_TOOLS,

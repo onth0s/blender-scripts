@@ -66,7 +66,7 @@ class PIE_MT_SPACE(Menu):
             pie.operator(MN, text="Select Mode") \
                 .name = "VIEW3D_MT_MHE_MODE"
         elif M in (MHS):
-            pie.operator(MN, text="").name = ""
+            pie.operator(MN, text="Face Sets").name = "VIEW3D_MT_FACE_SETS"
 
         # ------------------------   BOTTOM-LEFT   -------------------------- #
         if M in (OBJ, MHE, MHS):
