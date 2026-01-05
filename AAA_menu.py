@@ -437,6 +437,10 @@ class VIEW3D_MT_STD_TOOLS(Menu):
             OP = LYT.operator("brush.asset_activate", text="T - Fill")
             OP.asset_library_type = "ESSENTIALS"
             OP.relative_asset_identifier = BRUSH + "Fill/Deepen"
+            
+            OP = LYT.operator("brush.asset_activate", text="E - Flatten")
+            OP.asset_library_type = "ESSENTIALS"
+            OP.relative_asset_identifier = BRUSH + "Flatten/Contrast"
 
             LYT.separator()
             LYT.operator("wm.tool_set_by_id", text="Z - Mask") \
