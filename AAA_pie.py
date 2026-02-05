@@ -149,13 +149,13 @@ class PIE_MT_ANIMATION(Menu):
 
         pie.operator("wm.call_menu", text="")
         pie.operator("wm.call_menu",
-                     text="Range").name = "VIEW3D_MT_ABOUT_FRAMES"
+                     text="Timeline").name = "VIEW3D_MT_ANIMATION_PLAYBACK"
         pie.operator("wm.call_menu", text="")
         pie.operator("wm.call_menu", text="")
         pie.operator("wm.call_menu", text="")
         pie.operator("wm.call_menu", text="")
         pie.operator("wm.call_menu",
-                     text="Timeline").name = "VIEW3D_MT_ANIMATION_PLAYBACK"
+                     text="Range").name = "VIEW3D_MT_ABOUT_FRAMES"
         pie.operator("wm.call_menu", text="")
 
 
