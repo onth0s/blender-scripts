@@ -4,6 +4,10 @@ from bpy.types import Panel  # type: ignore
 
 from AAA_utils import *
 
+# -------------------------------------------------------
+# DON'T FORGET TO ADD THIS SHIT OR IT WON'T WORK
+# bl_label = ""
+# -------------------------------------------------------
 
 # class BasePT():
 #     bl_space_type = 'VIEW_3D'
@@ -268,20 +272,21 @@ class VIEW3D_PT_FRAME_RATE(Panel):
     bl_space_type = 'VIEW_3D'
     bl_region_type = 'WINDOW'
     bl_ui_units_x = 12
+    bl_label = ""
 
     def draw(self, context):
         LYT = self.layout
 
-        fps_label_text = context.scene.render.fps * context.scene.fps_base
-        fps_label_text = "%.2f" % round(fps_label_text, 2) + " FPS"
+        # fps_label_text = context.scene.render.fps * context.scene.fps_base
+        # fps_label_text = "%.2f" % round(fps_label_text, 2) + " FPS"
 
-        LYT.menu("RENDER_MT_framerate_presets", text=str(fps_label_text))
+        # LYT.menu("RENDER_MT_framerate_presets", text=str(fps_label_text))
 
         LYT.prop(context.scene.render, "fps")
-        LYT.prop(bpy.data.scenes[0], "fps_base",
-                 text="Playback Speed", slider=True)
+        # LYT.prop(bpy.data.scenes[0], "fps_base",
+        #          text="Playback Speed", slider=True)
 
-        LYT.prop(context.scene, "fps_base_enum", expand=True)
+        # LYT.prop(context.scene, "fps_base_enum", expand=True)
 
 
 ''' Panel Preset
