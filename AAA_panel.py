@@ -1,12 +1,17 @@
 import bpy  # type: ignore
 from bpy.props import *  # type: ignore
 from bpy.types import Panel  # type: ignore
-from bl_ui.utils import PresetPanel
 
 from AAA_utils import *
 
 
+# class BasePT():
+#     bl_space_type = 'VIEW_3D'
+#     bl_region_type = 'UI'
+
 # the '_2' is there to not collide with the built-in Panel
+
+
 class VIEW3D_PT_manage_modifiers(Panel):
     bl_space_type = 'VIEW_3D'
     bl_region_type = 'WINDOW'
@@ -16,10 +21,10 @@ class VIEW3D_PT_manage_modifiers(Panel):
     def draw(self, context):
         OBJ = bpy.context.active_object
         LYT = self.layout
-        
+
         if OBJ and OBJ.modifiers:
             for index, mod in enumerate(OBJ.modifiers):
-                split = LYT.row().split(factor=0.6)  
+                split = LYT.row().split(factor=0.6)
 
                 # Left side: label
                 split.label(text=f"{mod.name} ({mod.type})")
@@ -259,6 +264,26 @@ class VIEW3D_PT_background_color(Panel):
             LYT.row().prop(context.scene.world, "color", text="")
 
 
+class VIEW3D_PT_FRAME_RATE(Panel):
+    bl_space_type = 'VIEW_3D'
+    bl_region_type = 'WINDOW'
+    bl_ui_units_x = 12
+
+    def draw(self, context):
+        LYT = self.layout
+
+        fps_label_text = context.scene.render.fps * context.scene.fps_base
+        fps_label_text = "%.2f" % round(fps_label_text, 2) + " FPS"
+
+        LYT.menu("RENDER_MT_framerate_presets", text=str(fps_label_text))
+
+        LYT.prop(context.scene.render, "fps")
+        LYT.prop(bpy.data.scenes[0], "fps_base",
+                 text="Playback Speed", slider=True)
+
+        LYT.prop(context.scene, "fps_base_enum", expand=True)
+
+
 ''' Panel Preset
 class VIEW3D_PT_manage_modifiers(Panel):
     bl_space_type = 'VIEW_3D'
@@ -280,6 +305,8 @@ classes = (
     VIEW3D_PT_object_color,
     VIEW3D_PT_lighting,
     VIEW3D_PT_background_color,
+
+    VIEW3D_PT_FRAME_RATE,
 )
 
 

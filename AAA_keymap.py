@@ -58,6 +58,8 @@ def global_keymap():
         .properties.name = "PIE_MT_SPACE"
 
     km.keymap_items.new(pie, 'S', 'PRESS').properties.name = "PIE_MT_S"
+    
+    km.keymap_items.new(pie, 'A', 'PRESS').properties.name = "PIE_MT_ANIMATION"
 
     km.keymap_items.new(pie, 'Z', 'PRESS').properties\
         .name = "VIEW3D_MT_SHADING_PIE"

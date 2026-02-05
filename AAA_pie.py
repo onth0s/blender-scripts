@@ -69,7 +69,7 @@ class PIE_MT_SPACE(Menu):
             pie.operator(MN, text="Face Sets").name = "VIEW3D_MT_FACE_SETS"
 
         # ------------------------   BOTTOM-LEFT   -------------------------- #
-        if M in (OBJ, MHE, MHS):
+        if M in (ALL):
             pie.operator(MN, text="Select").name = "VIEW3D_MT_SELECT"
         else:
             pie.operator(MN, text="").name = ""
@@ -133,6 +133,30 @@ class PIE_MT_S(Menu):
             pie.operator(MT, text="Cursor").name = "VIEW3D_MT_CURSOR_POSITION"
         else:
             pie.operator(MT, text="").name = ""
+
+
+class PIE_MT_ANIMATION(Menu):
+    bl_idname = "PIE_MT_ANIMATION"
+    bl_label = "Animation"
+
+    def draw(self, context):
+        M = context.mode
+
+        MT = "wm.call_menu"
+        PT = "wm.call_panel"
+
+        pie = self.layout.menu_pie()
+
+        pie.operator("wm.call_menu", text="")
+        pie.operator("wm.call_menu",
+                     text="Range").name = "VIEW3D_MT_ABOUT_FRAMES"
+        pie.operator("wm.call_menu", text="")
+        pie.operator("wm.call_menu", text="")
+        pie.operator("wm.call_menu", text="")
+        pie.operator("wm.call_menu", text="")
+        pie.operator("wm.call_menu",
+                     text="Timeline").name = "VIEW3D_MT_ANIMATION_PLAYBACK"
+        pie.operator("wm.call_menu", text="")
 
 
 class VIEW3D_MT_SHADING_PIE(Menu):
@@ -214,6 +238,7 @@ class PIE_MT_SAVE_N_STUFF(Menu):
 classes = (
     PIE_MT_SPACE,
     PIE_MT_S,
+    PIE_MT_ANIMATION,
 
     VIEW3D_MT_SHADING_PIE,
 
