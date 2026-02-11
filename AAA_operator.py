@@ -450,8 +450,6 @@ class GLOBAL_Q(Operator):
         CN = SN.conditions
         AT = context.area.type
 
-        print("GLOBAL Q")
-
         if CN == 'TRANSFORM':
             if AT in ("VIEW_3D", 'GRAPH_EDITOR'):
                 bpy.ops.transform.translate('INVOKE_DEFAULT')
