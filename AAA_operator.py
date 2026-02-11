@@ -185,16 +185,16 @@ class ToggleOverlays(Operator):
 
         elif self.header == 'OVERLAYS':
             if not SN.show_bool_toggle:
-                SN.show_overlays           = SD.overlay.show_overlays
-                SN.show_gizmo              = SD.show_gizmo
-                SN.show_t_menu             = SD.show_region_ui
-                SN.show_n_menu             = SD.show_region_toolbar
+                SN.show_overlays = SD.overlay.show_overlays
+                SN.show_gizmo = SD.show_gizmo
+                SN.show_t_menu = SD.show_region_ui
+                SN.show_n_menu = SD.show_region_toolbar
                 SN.show_region_asset_shelf = SD.show_region_asset_shelf
 
-                SD.overlay.show_overlays   = False
-                SD.show_gizmo              = False
-                SD.show_region_ui          = False
-                SD.show_region_toolbar     = False
+                SD.overlay.show_overlays = False
+                SD.show_gizmo = False
+                SD.show_region_ui = False
+                SD.show_region_toolbar = False
                 if context.mode == MHS:
                     SD.show_region_asset_shelf = False
             else:
@@ -206,7 +206,6 @@ class ToggleOverlays(Operator):
                     SD.show_region_asset_shelf = SN.show_region_asset_shelf
 
             SN.show_bool_toggle = not SN.show_bool_toggle
-
 
         return {'FINISHED'}
 
@@ -448,16 +447,23 @@ class GLOBAL_Q(Operator):
 
     def execute(self, context):
         SN = context.scene
-        CN = context.scene.conditions
+        CN = SN.conditions
         AT = context.area.type
+
+        print("GLOBAL Q")
 
         if CN == 'TRANSFORM':
             if AT in ("VIEW_3D", 'GRAPH_EDITOR'):
                 bpy.ops.transform.translate('INVOKE_DEFAULT')
+            elif AT == 'SEQUENCE_EDITOR':
+                bpy.ops.transform.seq_slide(
+                    'INVOKE_DEFAULT', view2d_edge_pan=True)
+            # elif AT == 'DOPESHEET_EDITOR':
+            #     print("DOPESHEET_EDITOR")
+            else:
+                print("something's wrong with the GLOBAL_Q operator")
 
         if CN == 'TIMELINE':
-            # 'loop_frames' is a BoolProperty in 'AAA_settings'
-
             if SN.loop_frames:
                 if SN.use_preview_range:
                     if SN.frame_current == SN.frame_preview_start:

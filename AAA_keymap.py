@@ -58,7 +58,7 @@ def global_keymap():
         .properties.name = "PIE_MT_SPACE"
 
     km.keymap_items.new(pie, 'S', 'PRESS').properties.name = "PIE_MT_S"
-    
+
     km.keymap_items.new(pie, 'A', 'PRESS').properties.name = "PIE_MT_ANIMATION"
 
     km.keymap_items.new(pie, 'Z', 'PRESS').properties\
@@ -70,29 +70,15 @@ def global_keymap():
     km.keymap_items.new(pie, 'S', 'PRESS', ctrl=True) \
         .properties.name = "PIE_MT_SAVE_N_STUFF"
 
+    km.keymap_items.new("aaa.key_q", 'Q', 'PRESS')
+    km.keymap_items.new("aaa.key_w", 'W', 'PRESS')
+    km.keymap_items.new("aaa.key_e", 'E', 'PRESS')
+
     ################################# 3D VIEW #################################
     km = kc.keymaps.new('3D View', space_type='VIEW_3D', region_type='WINDOW')
 
     km.keymap_items.new(
         'aaa.roll_viewport', 'MIDDLEMOUSE', 'CLICK_DRAG', alt=True)
-
-    km.keymap_items.new("aaa.key_q", 'Q', 'PRESS')
-    km.keymap_items.new("aaa.key_w", 'W', 'PRESS')
-    km.keymap_items.new("aaa.key_e", 'E', 'PRESS')
-
-    ################################# FRAMES ##################################
-    km = kc.keymaps.new('Dopesheet', space_type='DOPESHEET_EDITOR',
-                        region_type='WINDOW')
-
-    km.keymap_items.new("aaa.key_q", 'Q', 'PRESS')
-    km.keymap_items.new("aaa.key_w", 'W', 'PRESS')
-    km.keymap_items.new("aaa.key_e", 'E', 'PRESS')
-
-    ################################ OUTLINER #################################
-    km = kc.keymaps.new('Outliner', space_type='OUTLINER',
-                        region_type='WINDOW')
-    km.keymap_items.new(
-        "outliner.collection_new", 'N', 'PRESS', ctrl=True)
 
     ################################ OVERRIDES ################################
     # General keymaps for operators that already exist on Blender by default,
