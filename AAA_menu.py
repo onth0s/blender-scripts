@@ -493,6 +493,10 @@ class VIEW3D_MT_STD_TOOLS(Menu):
             LYT.separator()
             LYT.operator("wm.tool_set_by_id", text="X - Line Trim") \
                 .name = "builtin.line_trim"
+            
+            LYT.operator("wm.tool_set_by_id", text="A - Lasso Trim") \
+                .name = "builtin.lasso_trim"
+            
 
 
 class VIEW3D_MT_MODIFIERS(Menu):
