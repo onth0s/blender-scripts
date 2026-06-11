@@ -68,8 +68,8 @@ class SaveIncremental(Operator):
     def execute(self, context):
         currentblend = bpy.data.filepath
         if currentblend:
-            save_path = self.get_incremented_path(currentblend)
-            # self.add_path_to_recent_files(save_path)
+            save_path = resolve_incremented_path(currentblend)
+            # add_to_recent_files(save_path)
             if os.path.exists(save_path):
                 self.report(
                     {'WARNING'}, "File '%s' exists already!\nBlend has NOT been saved incrementally!" % (save_path))
@@ -81,50 +81,6 @@ class SaveIncremental(Operator):
         else:
             bpy.ops.wm.save_mainfile('INVOKE_DEFAULT')
         return {'FINISHED'}
-
-    def get_incremented_path(self, currentblend):
-        path = os.path.dirname(currentblend)
-        filename = os.path.basename(currentblend)
-
-        filenameRegex = re.compile(r"(.+)\.blend\d*$")
-
-        mo = filenameRegex.match(filename)
-
-        if mo:
-            name = mo.group(1)
-            numberendRegex = re.compile(r"(.*?)(\d+)$")
-
-            mo = numberendRegex.match(name)
-
-            if mo:
-                basename = mo.group(1)
-                numberstr = mo.group(2)
-            else:
-                basename = name + "_"
-                numberstr = "000"
-
-            number = int(numberstr)
-
-            incr = number + 1
-            incrstr = str(incr).zfill(len(numberstr))
-            incrname = basename + incrstr + ".blend"
-
-            return os.path.join(path, incrname)
-
-    def add_path_to_recent_files(self, path):
-        """
-        add the path to the recent files list, for some reason it's not done automatically when saving or loading
-        """
-
-        try:
-            recent_path = bpy.utils.user_resource('CONFIG', "recent-files.txt")
-            with open(recent_path, "r+") as f:
-                content = f.read()
-                f.seek(0, 0)
-                f.write(path.rstrip('\r\n') + '\n' + content)
-
-        except (IOError, OSError, FileNotFoundError):
-            pass
 
 
 class SwitchWorkspace(Operator):
@@ -222,14 +178,6 @@ class RollViewport(Operator):
 
     temp_degree = 0
 
-    @staticmethod
-    def toDegrees(radians):
-        return radians * (180 / pi)
-
-    @staticmethod
-    def to360Degrees(radians):
-        return radians * (180 / pi)
-
     def invoke(self, context, event):
         rv3d = context.space_data.region_3d
         context.window_manager.modal_handler_add(self)
@@ -275,12 +223,12 @@ class RollViewport(Operator):
         rv3d.view_rotation = self.initial_rotation @ quat
 
         if angle_diff > 0:
-            # print(self.toDegrees(angle_diff))
+            # print(to_degrees(angle_diff))
             self.temp_degree = angle_diff
         else:
             self.temp_degree = -1 * angle_diff
             a = 2 * pi - self.temp_degree
-            # print(self.toDegrees(a))
+            # print(to_degrees(a))
 
         return {'FINISHED'}
 
@@ -403,14 +351,14 @@ class SwitchRenderer(Operator):
             if self.mode != 'MATERIAL':
                 # EEVEE Next was renamed to BLENDER_EEVEE in Blender 4.2+
                 engine = self.mode
-                if engine == 'BLENDER_EEVEE_NEXT' and engine not in bpy.types.RenderEngine.bl_rna.properties['engine'].enum_items:
+                if engine == 'BLENDER_EEVEE_NEXT' and engine not in bpy.types.RenderSettings.bl_rna.properties['engine'].enum_items:
                     engine = 'BLENDER_EEVEE'
                 context.scene.render.engine = engine
                 context.space_data.shading.type = 'RENDERED'
             else:
                 if context.scene.render.engine == 'BLENDER_WORKBENCH':
                     engine = 'BLENDER_EEVEE_NEXT'
-                    if engine not in bpy.types.RenderEngine.bl_rna.properties['engine'].enum_items:
+                    if engine not in bpy.types.RenderSettings.bl_rna.properties['engine'].enum_items:
                         engine = 'BLENDER_EEVEE'
                     context.scene.render.engine = engine
                     context.space_data.shading.type = 'MATERIAL'
@@ -449,42 +397,95 @@ class SWITCH_VALUE(Operator):
         return {'FINISHED'}
 
 
+# --- Key Conditions Routing Registry ---
+
+def execute_transform_q(context):
+    AT = context.area.type
+    if AT in ("VIEW_3D", 'GRAPH_EDITOR'):
+        bpy.ops.transform.translate('INVOKE_DEFAULT')
+    elif AT == 'SEQUENCE_EDITOR':
+        bpy.ops.transform.seq_slide('INVOKE_DEFAULT', view2d_edge_pan=True)
+    else:
+        print("something's wrong with the GLOBAL_Q operator under TRANSFORM")
+
+def execute_transform_w(context):
+    AT = context.area.type
+    if AT in ("VIEW_3D", 'GRAPH_EDITOR'):
+        bpy.ops.transform.resize('INVOKE_DEFAULT')
+    elif AT == "DOPESHEET_EDITOR":
+        bpy.ops.transform.transform('INVOKE_DEFAULT', mode="TIME_SCALE")
+
+def execute_transform_e(context):
+    AT = context.area.type
+    if AT in ('VIEW_3D', 'GRAPH_EDITOR'):
+        bpy.ops.transform.rotate('INVOKE_DEFAULT')
+
+
+def execute_timeline_q(context):
+    SN = context.scene
+    if SN.loop_frames:
+        if SN.use_preview_range:
+            if SN.frame_current == SN.frame_preview_start:
+                SN.frame_current = SN.frame_preview_end
+            else:
+                bpy.ops.screen.frame_offset(delta=-1)
+        else:
+            if SN.frame_current == SN.frame_start:
+                SN.frame_current = SN.frame_end
+            else:
+                bpy.ops.screen.frame_offset(delta=-1)
+    else:
+        bpy.ops.screen.frame_offset(delta=-1)
+
+def execute_timeline_w(context):
+    if context.scene.use_preview_range:
+        context.scene.frame_current = context.scene.frame_preview_start
+    else:
+        context.scene.frame_current = context.scene.frame_start
+
+def execute_timeline_e(context):
+    SN = context.scene
+    if SN.loop_frames:
+        if SN.use_preview_range:
+            if SN.frame_current == SN.frame_preview_end:
+                SN.frame_current = SN.frame_preview_start
+            else:
+                bpy.ops.screen.frame_offset(delta=1)
+        else:
+            if SN.frame_current == SN.frame_end:
+                SN.frame_current = SN.frame_start
+            else:
+                bpy.ops.screen.frame_offset(delta=1)
+    else:
+        bpy.ops.screen.frame_offset(delta=1)
+
+
+# Router registry mapping scene conditions to key functions
+CONDITIONS_ROUTER = {
+    'TRANSFORM': {
+        'Q': execute_transform_q,
+        'W': execute_transform_w,
+        'E': execute_transform_e
+    },
+    'TIMELINE': {
+        'Q': execute_timeline_q,
+        'W': execute_timeline_w,
+        'E': execute_timeline_e
+    }
+}
+
+
 class GLOBAL_Q(Operator):
     bl_idname = "aaa.key_q"
     bl_label = "GLOBAL_Q"
     bl_options = {'REGISTER', 'UNDO'}
 
     def execute(self, context):
-        SN = context.scene
-        CN = SN.conditions
-        AT = context.area.type
-
-        if CN == 'TRANSFORM':
-            if AT in ("VIEW_3D", 'GRAPH_EDITOR'):
-                bpy.ops.transform.translate('INVOKE_DEFAULT')
-            elif AT == 'SEQUENCE_EDITOR':
-                bpy.ops.transform.seq_slide(
-                    'INVOKE_DEFAULT', view2d_edge_pan=True)
-            # elif AT == 'DOPESHEET_EDITOR':
-            #     print("DOPESHEET_EDITOR")
-            else:
-                print("something's wrong with the GLOBAL_Q operator")
-
-        if CN == 'TIMELINE':
-            if SN.loop_frames:
-                if SN.use_preview_range:
-                    if SN.frame_current == SN.frame_preview_start:
-                        SN.frame_current = SN.frame_preview_end
-                    else:
-                        bpy.ops.screen.frame_offset(delta=-1)
-                else:
-                    if SN.frame_current == SN.frame_start:
-                        SN.frame_current = SN.frame_end
-                    else:
-                        bpy.ops.screen.frame_offset(delta=-1)
-            else:
-                bpy.ops.screen.frame_offset(delta=-1)
-
+        CN = context.scene.conditions
+        if CN in CONDITIONS_ROUTER and 'Q' in CONDITIONS_ROUTER[CN]:
+            CONDITIONS_ROUTER[CN]['Q'](context)
+        else:
+            self.report({'WARNING'}, f"No mapping found for key Q under condition '{CN}'")
         return {'FINISHED'}
 
 
@@ -494,23 +495,11 @@ class GLOBAL_W(Operator):
     bl_options = {'REGISTER', 'UNDO'}
 
     def execute(self, context):
-        C = context
-        CN = C.scene.conditions
-        AT = C.area.type
-
-        if CN == 'TRANSFORM':
-            if AT in ("VIEW_3D", 'GRAPH_EDITOR'):
-                bpy.ops.transform.resize('INVOKE_DEFAULT')
-            elif AT == "DOPESHEET_EDITOR":
-                bpy.ops.transform.transform(
-                    'INVOKE_DEFAULT', mode="TIME_SCALE")
-
-        if CN == 'TIMELINE':
-            if C.scene.use_preview_range:
-                C.scene.frame_current = C.scene.frame_preview_start
-            else:
-                C.scene.frame_current = C.scene.frame_start
-
+        CN = context.scene.conditions
+        if CN in CONDITIONS_ROUTER and 'W' in CONDITIONS_ROUTER[CN]:
+            CONDITIONS_ROUTER[CN]['W'](context)
+        else:
+            self.report({'WARNING'}, f"No mapping found for key W under condition '{CN}'")
         return {'FINISHED'}
 
 
@@ -520,29 +509,11 @@ class GLOBAL_E(Operator):
     bl_options = {'REGISTER', 'UNDO'}
 
     def execute(self, context):
-        SN = context.scene
-        CN = SN.conditions
-        AT = context.area.type
-
-        if CN == 'TRANSFORM':
-            if AT in ('VIEW_3D', 'GRAPH_EDITOR'):
-                bpy.ops.transform.rotate('INVOKE_DEFAULT')
-
-        if CN == 'TIMELINE':
-            if SN.loop_frames:
-                if SN.use_preview_range:
-                    if SN.frame_current == SN.frame_preview_end:
-                        SN.frame_current = SN.frame_preview_start
-                    else:
-                        bpy.ops.screen.frame_offset(delta=1)
-                else:
-                    if SN.frame_current == SN.frame_end:
-                        SN.frame_current = SN.frame_start
-                    else:
-                        bpy.ops.screen.frame_offset(delta=1)
-            else:
-                bpy.ops.screen.frame_offset(delta=1)
-
+        CN = context.scene.conditions
+        if CN in CONDITIONS_ROUTER and 'E' in CONDITIONS_ROUTER[CN]:
+            CONDITIONS_ROUTER[CN]['E'](context)
+        else:
+            self.report({'WARNING'}, f"No mapping found for key E under condition '{CN}'")
         return {'FINISHED'}
 
 

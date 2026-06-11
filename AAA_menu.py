@@ -64,23 +64,19 @@ class VIEW3D_MT_SHADING_OPTIONS(Menu):
 
     def draw(self, context):
         LYT = self.layout
-        OBT = None if context.object is None else context.object.type
 
-        if OBT == TMH and OBT != None:
+        if is_active_type(context, TMH):
             LYT.operator("object.shade_flat", text="A - Flat")
             LYT.operator("object.shade_smooth", text="S - Smooth")
             if hasattr(bpy.ops.object, "shade_auto_smooth"):
                 LYT.operator("object.shade_auto_smooth", text="D - Autosmooth")
             else:
                 # Fallback for newer Blender versions where auto-smooth is done via modifiers or attributes
-                # We can draw a toggle for use_auto_smooth on mesh data instead of operator, or label it
-                # For simplicity, we just check if active object mesh has it, or show a label/toggle
-                active_obj = context.active_object
-                if active_obj and active_obj.type == 'MESH':
+                if get_active_mesh(context):
                     # In 4.1+, auto smooth is driven by modifiers or mesh attributes, but we can display the label or call the modern equivalent if needed
                     # Let's add a toggle for the classic custom split normals or a toggle prop
-                    LYT.operator("object.shade_smooth", text="D - Smooth (Auto)").use_auto_smooth = True
-
+                    LYT.operator("object.shade_smooth",
+                                 text="D - Smooth (Auto)").use_auto_smooth = True
 
         LYT.separator()
         LYT.operator("wm.call_menu", text="C - Cavity Type") \
@@ -123,7 +119,7 @@ class VIEW3D_MT_RENDERER(Menu):
         LYT = self.layout
 
         engine_eevee = "BLENDER_EEVEE_NEXT"
-        if engine_eevee not in bpy.types.RenderEngine.bl_rna.properties['engine'].enum_items:
+        if engine_eevee not in bpy.types.RenderSettings.bl_rna.properties['engine'].enum_items:
             engine_eevee = "BLENDER_EEVEE"
 
         LYT.operator(OP, text="W - LookDev").mode = "MATERIAL"
@@ -459,11 +455,13 @@ class VIEW3D_MT_STD_TOOLS(Menu):
             LYT.operator("wm.call_menu", text="C - Merge") \
                 .name = "VIEW3D_MT_edit_mesh_merge"
             LYT.operator("mesh.subdivide", text="V - Subdivide")
+
         elif M in (OBJ):
             LYT.operator("object.parent_set", text="E - Parent Object") \
                 .type = 'OBJECT'
             LYT.operator("object.parent_clear", text="Q - Clear Parent") \
                 .type = 'CLEAR'
+
         elif M in (MHS):
             OP = LYT.operator("brush.asset_activate", text="R - Smooth")
             OP.asset_library_type = "ESSENTIALS"
@@ -508,10 +506,9 @@ class VIEW3D_MT_STD_TOOLS(Menu):
             LYT.separator()
             LYT.operator("wm.tool_set_by_id", text="X - Line Trim") \
                 .name = "builtin.line_trim"
-            
+
             LYT.operator("wm.tool_set_by_id", text="A - Lasso Trim") \
                 .name = "builtin.lasso_trim"
-            
 
 
 class VIEW3D_MT_MODIFIERS(Menu):
