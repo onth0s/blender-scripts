@@ -1,47 +1,6 @@
 import bpy  # type: ignore
 
-""" USEFUL ENUMS: space_type, region_type 
-
-space_types = {
-    "Empty": "EMPTY",
-    
-    "General": ["VIEW_3D",
-                "IMAGE_EDITOR",
-                "NODE_EDITOR",
-                "SEQUENCE_EDITOR",
-                "CLIP_EDITOR"],
-    
-    "Animation": ["DOPESHEET_EDITOR",
-                "GRAPH_EDITOR",
-                "NLA_EDITOR"],
-    
-    "Scripting": ["TEXT_EDITOR",
-                "CONSOLE",
-                "INFO",
-                "TOPBAR",
-                "STATUSBAR"],
-    
-    "Data": ["OUTLINER",
-            "PROPERTIES",
-            "FILE_BROWSER",
-            "SPREADSHEET",
-            "PREFERENCES"]
-}
-
-region_types = [
-    "WINDOW", "HEADER", "CHANNELS",
-    "TEMPORARY", "UI", "TOOLS",
-    "TOOL_PROPS", "ASSET_SHELF", "ASSET_SHELF_HEADER",
-    "PREVIEW", "HUD", "NAVIGATION_BAR",
-    "EXECUTE", "FOOTER", "TOOL_HEADER", "XR"
-]
-"""
-
-# THIS SHIT IS ACTUALLY MAGIC
-# for km in bpy.context.window_manager.keyconfigs.active.keymaps:
-#     print(km.name, km.space_type)
-# GET ***ALL*** KEYMAP-SPACE_TYPE COMBINATIONS
-
+addon_keymaps = []
 
 def global_keymap():
     kc = bpy.context.window_manager.keyconfigs.addon
@@ -49,6 +8,7 @@ def global_keymap():
 
     ################################# GLOBAL ##################################
     km = kc.keymaps.new('Window', space_type='EMPTY', region_type='WINDOW')
+    addon_keymaps.append(km)
 
     # Magic context debugger
     km.keymap_items.new("aaa.test_context_debugger", 'P', 'PRESS',
@@ -76,6 +36,7 @@ def global_keymap():
 
     ################################# 3D VIEW #################################
     km = kc.keymaps.new('3D View', space_type='VIEW_3D', region_type='WINDOW')
+    addon_keymaps.append(km)
 
     km.keymap_items.new(
         'aaa.roll_viewport', 'MIDDLEMOUSE', 'CLICK_DRAG', alt=True)
@@ -88,6 +49,7 @@ def global_keymap():
     # how yet.
 
     km = kc.keymaps.new('3D View', space_type='VIEW_3D', region_type='WINDOW')
+    addon_keymaps.append(km)
 
     km.keymap_items.new('view3d.view_selected', 'MIDDLEMOUSE',
                         'PRESS', shift=True, ctrl=True)
@@ -96,6 +58,7 @@ def global_keymap():
 
     km = kc.keymaps.new('Image', space_type='IMAGE_EDITOR',
                         region_type='WINDOW')
+    addon_keymaps.append(km)
 
     kmi = km.keymap_items.new('image.view_zoom_ratio', 'MIDDLEMOUSE',
                               'PRESS', shift=True, ctrl=True)
@@ -107,7 +70,10 @@ def register():
 
 
 def unregister():
-    global_keymap()
+    kc = bpy.context.window_manager.keyconfigs.addon
+    for km in addon_keymaps:
+        kc.keymaps.remove(km)
+    addon_keymaps.clear()
 
 
 if __name__ == "__main__":
