@@ -15,16 +15,16 @@ Design notes:
 
 PLAN.md coverage:
   §1 Zero-crash imports      → TestImports
-  §1 Successful registration → TestOperatorRegistration / TestMenuRegistration / TestPanelRegistration
-                              / TestPieMenuRegistration
+§1 Successful registration → TestSettingsRegistration / TestOperatorRegistration / TestMenuRegistration
+                            / TestPanelRegistration / TestPieMenuRegistration
   §1 Headless execution      → TestOperatorExecution / TestSwitchValue / TestRollViewportMath
                               / TestSaveOperations / TestSwitchWorkspaceExecution
   §1 Safe state rollback     → TestUnregisterCleanup (includes pie menus)
   §2 Mock filepath           → TestSaveOperations (resolve_incremented_path unit tests)
   §3 Fixtures                → setUp() in each execution test class
   §3 SwitchWorkspace         → TestSwitchWorkspaceExecution
-  §4 Scenario A              → TestOperatorExecution / TestSaveOperations
-  §4 Scenario B              → TestSwitchRenderer (logic path, no live space_data)
+  §4 Scenario A              → TestOperatorExecution / TestSaveOperations / TestSwitchCondition
+  §4 Scenario B              → TestSwitchRendererLogic (logic path, no live space_data)
   §4 Scenario C              → TestRollViewportMath (plain-Python stand-in, no bpy_struct)
   §4 Scenario D              → TestSwitchValue / TestToggleProp
   §5 Teardown verification   → TestUnregisterCleanup
