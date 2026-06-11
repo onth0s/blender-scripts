@@ -408,12 +408,14 @@ def execute_transform_q(context):
     else:
         print("something's wrong with the GLOBAL_Q operator under TRANSFORM")
 
+
 def execute_transform_w(context):
     AT = context.area.type
     if AT in ("VIEW_3D", 'GRAPH_EDITOR'):
         bpy.ops.transform.resize('INVOKE_DEFAULT')
     elif AT == "DOPESHEET_EDITOR":
         bpy.ops.transform.transform('INVOKE_DEFAULT', mode="TIME_SCALE")
+
 
 def execute_transform_e(context):
     AT = context.area.type
@@ -437,11 +439,13 @@ def execute_timeline_q(context):
     else:
         bpy.ops.screen.frame_offset(delta=-1)
 
+
 def execute_timeline_w(context):
     if context.scene.use_preview_range:
         context.scene.frame_current = context.scene.frame_preview_start
     else:
         context.scene.frame_current = context.scene.frame_start
+
 
 def execute_timeline_e(context):
     SN = context.scene
@@ -485,7 +489,8 @@ class GLOBAL_Q(Operator):
         if CN in CONDITIONS_ROUTER and 'Q' in CONDITIONS_ROUTER[CN]:
             CONDITIONS_ROUTER[CN]['Q'](context)
         else:
-            self.report({'WARNING'}, f"No mapping found for key Q under condition '{CN}'")
+            self.report(
+                {'WARNING'}, f"No mapping found for key Q under condition '{CN}'")
         return {'FINISHED'}
 
 
@@ -499,7 +504,8 @@ class GLOBAL_W(Operator):
         if CN in CONDITIONS_ROUTER and 'W' in CONDITIONS_ROUTER[CN]:
             CONDITIONS_ROUTER[CN]['W'](context)
         else:
-            self.report({'WARNING'}, f"No mapping found for key W under condition '{CN}'")
+            self.report(
+                {'WARNING'}, f"No mapping found for key W under condition '{CN}'")
         return {'FINISHED'}
 
 
@@ -513,7 +519,8 @@ class GLOBAL_E(Operator):
         if CN in CONDITIONS_ROUTER and 'E' in CONDITIONS_ROUTER[CN]:
             CONDITIONS_ROUTER[CN]['E'](context)
         else:
-            self.report({'WARNING'}, f"No mapping found for key E under condition '{CN}'")
+            self.report(
+                {'WARNING'}, f"No mapping found for key E under condition '{CN}'")
         return {'FINISHED'}
 
 

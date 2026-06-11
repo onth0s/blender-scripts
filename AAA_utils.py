@@ -1,5 +1,8 @@
 # ------------------------   bpy.context.mode   ------------------------ #
 
+from math import pi
+import re
+import os
 OBJ = 'OBJECT'
 
 MHE = 'EDIT_MESH'
@@ -57,22 +60,21 @@ TLP = 'LIGHT_PROBE'
 TSK = 'SPEAKER'
 
 
-import os
-import re
-from math import pi
-
 def is_mode(context, *modes):
     return context.mode in modes
+
 
 def is_active_type(context, *types):
     active = context.active_object
     return active and active.type in types
+
 
 def get_active_mesh(context):
     active = context.active_object
     if active and active.type == 'MESH':
         return active.data
     return None
+
 
 def resolve_incremented_path(currentblend):
     path = os.path.dirname(currentblend)
@@ -101,6 +103,7 @@ def resolve_incremented_path(currentblend):
         return os.path.join(path, incrname)
     return currentblend
 
+
 def add_to_recent_files(path):
     try:
         import bpy  # type: ignore
@@ -112,11 +115,14 @@ def add_to_recent_files(path):
     except (IOError, OSError, FileNotFoundError, ImportError):
         pass
 
+
 def to_degrees(radians):
     return radians * (180 / pi)
 
+
 def to_360_degrees(radians):
     return radians * (180 / pi)
+
 
 def register():
     pass
