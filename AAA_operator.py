@@ -78,9 +78,16 @@ class SaveIncremental(Operator):
                 self.report({'INFO'}, "Saved blend incrementally:" + save_path)
 
                 bpy.data.scenes[0].already_saved_counter = 0
+            return {'FINISHED'}
         else:
-            bpy.ops.wm.save_mainfile('INVOKE_DEFAULT')
-        return {'FINISHED'}
+            # No filepath set – prompt user via the standard save dialog.
+            # context.area is None in background/headless mode, so we cancel
+            # gracefully there rather than crashing on INVOKE_DEFAULT.
+            if context.area is not None:
+                bpy.ops.wm.save_mainfile('INVOKE_DEFAULT')
+                return {'FINISHED'}
+            self.report({'WARNING'}, "File has not been saved yet. Save it first.")
+            return {'CANCELLED'}
 
 
 class SwitchWorkspace(Operator):
@@ -105,14 +112,16 @@ class ModeSet(Operator):
     mode: StringProperty()  # type: ignore
 
     def execute(self, context):
-        if self.mode in (MHE):
-            context.space_data.shading.cavity_type = 'WORLD'
-        elif self.mode == (MHS):
-            context.space_data.shading.cavity_type = 'WORLD'
-        elif self.mode == (MHV):
-            context.space_data.shading.cavity_type = 'WORLD'
-        elif self.mode == OBJ:
-            context.space_data.shading.cavity_type = 'BOTH'
+        # space_data is None in headless/background mode; guard before accessing shading
+        if context.space_data is not None:
+            if self.mode in (MHE):
+                context.space_data.shading.cavity_type = 'WORLD'
+            elif self.mode == (MHS):
+                context.space_data.shading.cavity_type = 'WORLD'
+            elif self.mode == (MHV):
+                context.space_data.shading.cavity_type = 'WORLD'
+            elif self.mode == OBJ:
+                context.space_data.shading.cavity_type = 'BOTH'
 
         bpy.ops.object.mode_set(mode=self.mode)
         return {'FINISHED'}
