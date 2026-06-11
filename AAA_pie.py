@@ -37,6 +37,7 @@ class PIE_MT_SPACE(Menu):
         if M in (OBJ, MHT, MHW, MHV):
             pie.operator("aaa.test_operator", text="TEST OPERATOR")
         elif M in (MHE, MHS):
+            # Layout Placeholder: Intentional empty operator call to maintain balance/alignment
             pie.operator(MN, text="").name = ""
 
         # ------------------------   RIGHT   -------------------------------- #
@@ -44,6 +45,7 @@ class PIE_MT_SPACE(Menu):
             pie.operator(MN, text="Transform Gizmo")\
                 .name = "VIEW3D_MT_TRANSFORM_GIZMO"
         elif M in (MHS, MHT, MHW, MHV):
+            # Layout Placeholder: Intentional empty operator call to maintain balance/alignment
             pie.operator(MN, text="").name = ""
 
         # ------------------------   BOTTOM   ------------------------------- #

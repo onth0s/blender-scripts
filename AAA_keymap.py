@@ -4,6 +4,8 @@ addon_keymaps = []
 
 def global_keymap():
     kc = bpy.context.window_manager.keyconfigs.addon
+    if not kc:
+        return
     pie = "wm.call_menu_pie"
 
     ################################# GLOBAL ##################################
@@ -71,8 +73,9 @@ def register():
 
 def unregister():
     kc = bpy.context.window_manager.keyconfigs.addon
-    for km in addon_keymaps:
-        kc.keymaps.remove(km)
+    if kc:
+        for km in addon_keymaps:
+            kc.keymaps.remove(km)
     addon_keymaps.clear()
 
 

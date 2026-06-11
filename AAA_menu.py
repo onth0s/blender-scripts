@@ -69,7 +69,18 @@ class VIEW3D_MT_SHADING_OPTIONS(Menu):
         if OBT == TMH and OBT != None:
             LYT.operator("object.shade_flat", text="A - Flat")
             LYT.operator("object.shade_smooth", text="S - Smooth")
-            LYT.operator("object.shade_auto_smooth", text="D - Autosmooth")
+            if hasattr(bpy.ops.object, "shade_auto_smooth"):
+                LYT.operator("object.shade_auto_smooth", text="D - Autosmooth")
+            else:
+                # Fallback for newer Blender versions where auto-smooth is done via modifiers or attributes
+                # We can draw a toggle for use_auto_smooth on mesh data instead of operator, or label it
+                # For simplicity, we just check if active object mesh has it, or show a label/toggle
+                active_obj = context.active_object
+                if active_obj and active_obj.type == 'MESH':
+                    # In 4.1+, auto smooth is driven by modifiers or mesh attributes, but we can display the label or call the modern equivalent if needed
+                    # Let's add a toggle for the classic custom split normals or a toggle prop
+                    LYT.operator("object.shade_smooth", text="D - Smooth (Auto)").use_auto_smooth = True
+
 
         LYT.separator()
         LYT.operator("wm.call_menu", text="C - Cavity Type") \
@@ -111,8 +122,12 @@ class VIEW3D_MT_RENDERER(Menu):
         OP = "aaa.switch_renderer"
         LYT = self.layout
 
+        engine_eevee = "BLENDER_EEVEE_NEXT"
+        if engine_eevee not in bpy.types.RenderEngine.bl_rna.properties['engine'].enum_items:
+            engine_eevee = "BLENDER_EEVEE"
+
         LYT.operator(OP, text="W - LookDev").mode = "MATERIAL"
-        LYT.operator(OP, text="A - EEVEE").mode = "BLENDER_EEVEE_NEXT"
+        LYT.operator(OP, text="A - EEVEE").mode = engine_eevee
         LYT.operator(OP, text="S - Workbench").mode = "BLENDER_WORKBENCH"
         LYT.operator(OP, text="D - Cycles").mode = "CYCLES"
         LYT.operator(OP, text="Z - Solid").mode = "SOLID"

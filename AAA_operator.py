@@ -7,8 +7,8 @@ from bpy.props import (FloatProperty, IntProperty,  # type: ignore
                        BoolProperty, StringProperty)
 from bpy.types import (Menu, Operator)  # type: ignore
 from bl_operators.presets import AddPresetBase
-from mathutils import *  # type: ignore
-from math import *
+from mathutils import Vector, Quaternion, Matrix  # type: ignore
+from math import atan2, pi
 
 from AAA_utils import *
 
@@ -222,10 +222,12 @@ class RollViewport(Operator):
 
     temp_degree = 0
 
+    @staticmethod
     def toDegrees(radians):
         return radians * (180 / pi)
 
-    def to360Degrees(test):
+    @staticmethod
+    def to360Degrees(radians):
         return radians * (180 / pi)
 
     def invoke(self, context, event):
@@ -273,12 +275,12 @@ class RollViewport(Operator):
         rv3d.view_rotation = self.initial_rotation @ quat
 
         if angle_diff > 0:
-            # print(toDegrees(angle_diff))
+            # print(self.toDegrees(angle_diff))
             self.temp_degree = angle_diff
         else:
             self.temp_degree = -1 * angle_diff
             a = 2 * pi - self.temp_degree
-            # print(toDegrees(a))
+            # print(self.toDegrees(a))
 
         return {'FINISHED'}
 
@@ -399,11 +401,18 @@ class SwitchRenderer(Operator):
             context.space_data.shading.type = 'SOLID'
         else:
             if self.mode != 'MATERIAL':
-                context.scene.render.engine = self.mode
+                # EEVEE Next was renamed to BLENDER_EEVEE in Blender 4.2+
+                engine = self.mode
+                if engine == 'BLENDER_EEVEE_NEXT' and engine not in bpy.types.RenderEngine.bl_rna.properties['engine'].enum_items:
+                    engine = 'BLENDER_EEVEE'
+                context.scene.render.engine = engine
                 context.space_data.shading.type = 'RENDERED'
             else:
                 if context.scene.render.engine == 'BLENDER_WORKBENCH':
-                    context.scene.render.engine = 'BLENDER_EEVEE_NEXT'
+                    engine = 'BLENDER_EEVEE_NEXT'
+                    if engine not in bpy.types.RenderEngine.bl_rna.properties['engine'].enum_items:
+                        engine = 'BLENDER_EEVEE'
+                    context.scene.render.engine = engine
                     context.space_data.shading.type = 'MATERIAL'
                 else:
                     context.space_data.shading.type = 'MATERIAL'

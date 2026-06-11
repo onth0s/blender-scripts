@@ -2,6 +2,12 @@
 
 - [Blender Python API Documentation](https://docs.blender.org/api/current/index.html) — Always refer to this for the most up-to-date API reference when writing or modifying scripts in this project.
 
+# Intent
+
+These scripts are ad hoc automations and shortcuts tailored to the specific workflow of a single user. They are not intended to be shipped, packaged, or comply with arbitrary conventions. Pragmatism over purity.
+
 # Exceptions
 
 - **Do not refactor or remove** the `exec()` calls in `SWITCH_VALUE` (`AAA_operator.py`) and `ToggleProp` (`AAA_operator.py`) — they are known and accepted (even if not ideal).
+- **Do not remove or change** empty operators or empty menu calls (e.g. `.name = ""` or empty arguments) in `AAA_pie.py` — they are deliberate layout placeholders/anchors to maintain pie menu direction balance.
+
