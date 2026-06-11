@@ -9,16 +9,14 @@ from AAA_utils import *
 # bl_label = ""
 # -------------------------------------------------------
 
-# class BasePT():
-#     bl_space_type = 'VIEW_3D'
-#     bl_region_type = 'UI'
+class AAAPanel:
+    bl_space_type = 'VIEW_3D'
+    bl_region_type = 'WINDOW'
 
 # the '_2' is there to not collide with the built-in Panel
 
 
-class VIEW3D_PT_manage_modifiers(Panel):
-    bl_space_type = 'VIEW_3D'
-    bl_region_type = 'WINDOW'
+class VIEW3D_PT_manage_modifiers(AAAPanel, Panel):
     bl_label = "Manage Modifiers"
     bl_ui_units_x = 14
 
@@ -104,9 +102,7 @@ class VIEW3D_PT_proportional_edit_2(Panel):
                  text="", expand=False)
 
 
-class VIEW3D_PT_frame_range(Panel):
-    bl_space_type = 'VIEW_3D'
-    bl_region_type = 'WINDOW'
+class VIEW3D_PT_frame_range(AAAPanel, Panel):
     bl_ui_units_x = 8
     bl_label = "Frame Range"
 
@@ -129,9 +125,7 @@ class VIEW3D_PT_frame_range(Panel):
             row.prop(SC, "frame_end", text="End")
 
 
-class VIEW3D_PT_object_color(Panel):
-    bl_space_type = 'VIEW_3D'
-    bl_region_type = 'WINDOW'
+class VIEW3D_PT_object_color(AAAPanel, Panel):
     bl_label = "Object Color"
 
     def draw(self, context):
@@ -163,9 +157,7 @@ class VIEW3D_PT_object_color(Panel):
                         .mode = "LAST"
 
 
-class VIEW3D_PT_lighting(Panel):
-    bl_space_type = 'VIEW_3D'
-    bl_region_type = 'WINDOW'
+class VIEW3D_PT_lighting(AAAPanel, Panel):
     bl_label = "Lighting"
     is_popover = True
 
@@ -249,9 +241,7 @@ class VIEW3D_PT_lighting(Panel):
                     col = split.column()  # to align properly with above
 
 
-class VIEW3D_PT_background_color(Panel):
-    bl_space_type = 'VIEW_3D'
-    bl_region_type = 'WINDOW'
+class VIEW3D_PT_background_color(AAAPanel, Panel):
     bl_label = "Background Color"
 
     def draw(self, context):
@@ -268,9 +258,7 @@ class VIEW3D_PT_background_color(Panel):
             LYT.row().prop(context.scene.world, "color", text="")
 
 
-class VIEW3D_PT_FRAME_RATE(Panel):
-    bl_space_type = 'VIEW_3D'
-    bl_region_type = 'WINDOW'
+class VIEW3D_PT_FRAME_RATE(AAAPanel, Panel):
     bl_ui_units_x = 12
     bl_label = ""
 

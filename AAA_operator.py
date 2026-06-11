@@ -367,7 +367,7 @@ class SwitchRenderer(Operator):
         return {'FINISHED'}
 
 
-class SWITCH_CONDITION(Operator):
+class SwitchCondition(Operator):
     bl_idname = "aaa.switch_condition"
     bl_label = "SWITCH_CONDITION"
     bl_options = {'REGISTER'}
@@ -380,7 +380,7 @@ class SWITCH_CONDITION(Operator):
         return {'FINISHED'}
 
 
-class SWITCH_VALUE(Operator):
+class SwitchValue(Operator):
     bl_idname = "aaa.switch_value"
     bl_label = "SWITCH_VALUE"
     bl_options = {'REGISTER'}
@@ -479,7 +479,7 @@ CONDITIONS_ROUTER = {
 }
 
 
-class GLOBAL_Q(Operator):
+class GlobalQ(Operator):
     bl_idname = "aaa.key_q"
     bl_label = "GLOBAL_Q"
     bl_options = {'REGISTER', 'UNDO'}
@@ -494,7 +494,7 @@ class GLOBAL_Q(Operator):
         return {'FINISHED'}
 
 
-class GLOBAL_W(Operator):
+class GlobalW(Operator):
     bl_idname = "aaa.key_w"
     bl_label = "GLOBAL_W"
     bl_options = {'REGISTER', 'UNDO'}
@@ -509,7 +509,7 @@ class GLOBAL_W(Operator):
         return {'FINISHED'}
 
 
-class GLOBAL_E(Operator):
+class GlobalE(Operator):
     bl_idname = "aaa.key_e"
     bl_label = "GLOBAL_E"
     bl_options = {'REGISTER', 'UNDO'}
@@ -605,12 +605,12 @@ classes = (
     AddMaterial,
     SwitchRenderer,
 
-    SWITCH_CONDITION,
-    SWITCH_VALUE,
+    SwitchCondition,
+    SwitchValue,
 
-    GLOBAL_Q,
-    GLOBAL_W,
-    GLOBAL_E,
+    GlobalQ,
+    GlobalW,
+    GlobalE,
 
     ToggleProp,
     TestOperator,
