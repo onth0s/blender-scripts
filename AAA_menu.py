@@ -483,6 +483,10 @@ class VIEW3D_MT_STD_TOOLS(Menu):
             OP.asset_library_type = "ESSENTIALS"
             OP.relative_asset_identifier = BRUSH + "Grab"
 
+            OP = LYT.operator("brush.asset_activate", text="G - Grab 2D")
+            OP.asset_library_type = "ESSENTIALS"
+            OP.relative_asset_identifier = BRUSH + "Grab 2D"
+
             OP = LYT.operator("brush.asset_activate", text="B - Blob")
             OP.asset_library_type = "ESSENTIALS"
             OP.relative_asset_identifier = BRUSH + "Blob"
