@@ -1,8 +1,7 @@
 import bpy  # type: ignore
-from bpy.props import *  # type: ignore
 from bpy.types import Panel  # type: ignore
 
-from AAA_utils import *
+from AAA_utils import OBJ, MHE
 
 # -------------------------------------------------------
 # DON'T FORGET TO ADD THIS SHIT OR IT WON'T WORK
@@ -21,7 +20,7 @@ class VIEW3D_PT_manage_modifiers(AAAPanel, Panel):
     bl_ui_units_x = 14
 
     def draw(self, context):
-        OBJ = bpy.context.active_object
+        OBJ = context.active_object
         LYT = self.layout
 
         if OBJ and OBJ.modifiers:
@@ -43,30 +42,6 @@ class VIEW3D_PT_manage_modifiers(AAAPanel, Panel):
 
         else:
             LYT.label(text="No modifiers found.")
-
-        # if not OBJ or not OBJ.modifiers:
-        #     LYT.label(text="No modifiers found.")
-        #     return
-
-        # for mod in OBJ.modifiers:
-        #     box = LYT.box()
-        #     box.label(text=f"{mod.name} ({mod.type})")
-
-        #     # Draw common modifier toggles
-        #     row = box.row()
-        #     row.prop(mod, "show_viewport", text="Viewport")
-        #     row.prop(mod, "show_render", text="Render")
-        #     row.prop(mod, "show_in_editmode", text="Edit Mode")
-
-        #     # Dynamically draw other properties
-        #     exclude = {'name', 'type', 'rna_type',
-        #                'show_viewport', 'show_render', 'show_in_editmode'}
-        #     for prop in mod.bl_rna.properties:
-        #         if prop.identifier not in exclude and not prop.is_readonly:
-        #             try:
-        #                 box.prop(mod, prop.identifier)
-        #             except:
-        #                 pass  # Some properties may not be drawable directly
 
 
 class VIEW3D_PT_proportional_edit_2(Panel):
@@ -265,28 +240,7 @@ class VIEW3D_PT_FRAME_RATE(AAAPanel, Panel):
     def draw(self, context):
         LYT = self.layout
 
-        # fps_label_text = context.scene.render.fps * context.scene.fps_base
-        # fps_label_text = "%.2f" % round(fps_label_text, 2) + " FPS"
-
-        # LYT.menu("RENDER_MT_framerate_presets", text=str(fps_label_text))
-
         LYT.prop(context.scene.render, "fps")
-        # LYT.prop(bpy.data.scenes[0], "fps_base",
-        #          text="Playback Speed", slider=True)
-
-        # LYT.prop(context.scene, "fps_base_enum", expand=True)
-
-
-''' Panel Preset
-class VIEW3D_PT_manage_modifiers(Panel):
-    bl_space_type = 'VIEW_3D'
-    bl_region_type = 'WINDOW'
-    bl_label = "test"
-    bl_ui_units_x = 12
-    is_popover = True
-    def draw(self, context):
-        
-'''
 
 classes = (
     VIEW3D_PT_manage_modifiers,

@@ -1,16 +1,16 @@
 import bpy  # type: ignore
 import os
-import re
 from datetime import datetime
 
-from bpy.props import (FloatProperty, IntProperty,  # type: ignore
-                       BoolProperty, StringProperty)
-from bpy.types import (Menu, Operator)  # type: ignore
-from bl_operators.presets import AddPresetBase
-from mathutils import Vector, Quaternion, Matrix  # type: ignore
-from math import atan2, pi
+from bpy.props import StringProperty  # type: ignore
+from bpy.types import Operator  # type: ignore
+from mathutils import Vector, Quaternion  # type: ignore
+from math import atan2
 
-from AAA_utils import *
+from AAA_utils import (
+    OBJ, MHE, MHS, MHV,
+    resolve_incremented_path,
+)
 
 ''' Notes
     I dont know how to set up the poll() function
@@ -41,6 +41,13 @@ class SaveFile(Operator):
     bl_options = {'REGISTER'}
 
     def execute(self, context):
+        if not context.blend_data.filepath:
+            if context.area is not None:
+                bpy.ops.wm.save_mainfile('INVOKE_DEFAULT')
+                return {'FINISHED'}
+            self.report({'WARNING'}, "File has not been saved yet. Save it first.")
+            return {'CANCELLED'}
+
         filename = bpy.path.basename(context.blend_data.filepath)
         bpy.ops.wm.save_mainfile('INVOKE_DEFAULT')
 
@@ -49,12 +56,12 @@ class SaveFile(Operator):
                 saved = "Saved: " + filename
                 self.report({'INFO'}, saved)
 
-                bpy.data.scenes[0].already_saved_counter = 0
+                context.scene.already_saved_counter = 0
             else:
-                bpy.data.scenes[0].already_saved_counter += 1
+                context.scene.already_saved_counter += 1
                 st = "No changes have been made to '" + filename + \
                     "'. Already saved file (" + \
-                    str(bpy.data.scenes[0].already_saved_counter) + ")"
+                    str(context.scene.already_saved_counter) + ")"
                 self.report({'INFO'}, st)
 
         return {'FINISHED'}
@@ -77,7 +84,7 @@ class SaveIncremental(Operator):
                 bpy.ops.wm.save_as_mainfile(filepath=save_path)
                 self.report({'INFO'}, "Saved blend incrementally:" + save_path)
 
-                bpy.data.scenes[0].already_saved_counter = 0
+                context.scene.already_saved_counter = 0
             return {'FINISHED'}
         else:
             # No filepath set – prompt user via the standard save dialog.
@@ -99,8 +106,11 @@ class SwitchWorkspace(Operator):
     name: bpy.props.StringProperty()  # type: ignore
 
     def execute(self, context):
-        context.window.workspace = bpy.data.workspaces[self.name]
-        return {'FINISHED'}
+        if self.name in bpy.data.workspaces:
+            context.window.workspace = bpy.data.workspaces[self.name]
+            return {'FINISHED'}
+        self.report({'WARNING'}, f"Workspace '{self.name}' not found")
+        return {'CANCELLED'}
 
 
 class ModeSet(Operator):
@@ -215,11 +225,11 @@ class RollViewport(Operator):
         self.angle_now = self.initial_angle
 
         # change the axis of rotation
-        if bpy.data.scenes[0].axis_roll == "X":
+        if context.scene.axis_roll == "X":
             self.camNormal = Vector((1, 0, 0))  # type: ignore
-        elif bpy.data.scenes[0].axis_roll == "Y":
+        elif context.scene.axis_roll == "Y":
             self.camNormal = Vector((0, 0, -1))  # type: ignore
-        elif bpy.data.scenes[0].axis_roll == "Z":
+        elif context.scene.axis_roll == "Z":
             self.camNormal = Vector((0, 1, 0))  # type: ignore
 
         return {'RUNNING_MODAL'}
@@ -236,8 +246,6 @@ class RollViewport(Operator):
             self.temp_degree = angle_diff
         else:
             self.temp_degree = -1 * angle_diff
-            a = 2 * pi - self.temp_degree
-            # print(to_degrees(a))
 
         return {'FINISHED'}
 
@@ -268,11 +276,11 @@ class RollAxis(Operator):
 
     def execute(self, context):
         if self.axis == 'X':
-            bpy.data.scenes[0].axis_roll = 'X'
+            context.scene.axis_roll = 'X'
         if self.axis == 'Y':
-            bpy.data.scenes[0].axis_roll = 'Y'
+            context.scene.axis_roll = 'Y'
         if self.axis == 'Z':
-            bpy.data.scenes[0].axis_roll = 'Z'
+            context.scene.axis_roll = 'Z'
 
         return {'FINISHED'}
 
@@ -570,11 +578,14 @@ class TestContextDebugger(Operator):
     def execute(self, context):
         print("\n=============== FULL CONTEXT DUMP ===============\n")
 
-        print("""  >>> context.area.type:
+        if context.area is not None:
+            print("""  >>> context.area.type:
     Active Area:""", context.area.type)
 
-        print("""\n  >>> context.area.ui_type:
+            print("""\n  >>> context.area.ui_type:
     UI Type:""", context.area.ui_type)
+        else:
+            print("  >>> context.area: None")
 
         print("""\n  >>> context.active_object:
     Active Object:""", context.active_object)
@@ -586,11 +597,17 @@ class TestContextDebugger(Operator):
         print("""\n  >>> context.mode:
     Mode:""", context.mode)
 
-        print("""\n  >>> context.screen.name:
+        if context.screen is not None:
+            print("""\n  >>> context.screen.name:
     Screen:""", context.screen.name)
+        else:
+            print("\n  >>> context.screen: None")
 
-        print("""\n  >>> context.region.type:
+        if context.region is not None:
+            print("""\n  >>> context.region.type:
     Region:""", context.region.type)
+        else:
+            print("\n  >>> context.region: None")
 
         return {'FINISHED'}
 

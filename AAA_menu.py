@@ -1,8 +1,10 @@
 import bpy  # type: ignore
-from bpy.props import *  # type: ignore
-from bpy.types import (Menu, Operator)  # type: ignore
+from bpy.types import Menu  # type: ignore
 
-from AAA_utils import *
+from AAA_utils import (
+    TMH, OBJ, MHE, MHS,
+    is_active_type, get_active_mesh
+)
 
 # TODO
 # flow.prop(context.preferences.inputs, "drag_threshold_tablet")
@@ -87,7 +89,6 @@ class VIEW3D_MT_SHADING_OPTIONS_CAVITY(Menu):
     bl_label = "Cavity Options"
 
     def draw(self, context):
-        global cavity_state
         LYT = self.layout
 
         cavity_state = "Disable" if context.space_data.shading.show_cavity \
@@ -520,7 +521,6 @@ class VIEW3D_MT_MODIFIERS(Menu):
 
     def draw(self, context):
         LYT = self.layout
-        M = context.mode
 
         LYT.operator("wm.call_panel",
                      text="D - Manage").name = 'VIEW3D_PT_manage_modifiers'

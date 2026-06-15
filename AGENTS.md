@@ -9,5 +9,6 @@ These scripts are ad hoc automations and shortcuts tailored to the specific work
 # Exceptions
 
 - **Do not refactor or remove** the `exec()` calls in `SWITCH_VALUE` (`AAA_operator.py`) and `ToggleProp` (`AAA_operator.py`) — they are known and accepted (even if not ideal).
+
 - **Do not remove or change** empty operators or empty menu calls (e.g. `.name = ""` or empty arguments) in `AAA_pie.py` — they are deliberate layout placeholders/anchors to maintain pie menu direction balance.
 

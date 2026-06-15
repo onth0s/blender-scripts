@@ -1,7 +1,7 @@
 import bpy  # type: ignore
 from bpy.types import Menu  # type: ignore
 
-from AAA_utils import *
+from AAA_utils import OBJ, MHE, MHS, MHT, MHW, MHV, ALL
 
 ''' Useful API ENUMS
     bpy.context.area.type
@@ -142,11 +142,6 @@ class PIE_MT_ANIMATION(Menu):
     bl_label = "Animation"
 
     def draw(self, context):
-        M = context.mode
-
-        MT = "wm.call_menu"
-        PT = "wm.call_panel"
-
         pie = self.layout.menu_pie()
 
         pie.operator("wm.call_menu", text="")

@@ -33,6 +33,8 @@ PLAN.md coverage:
 import sys
 import os
 import unittest
+import io
+import contextlib
 import bpy  # type: ignore
 from mathutils import Vector, Quaternion  # type: ignore
 from math import pi
@@ -53,6 +55,13 @@ import AAA_keymap  # noqa: E402
 # ---------------------------------------------------------------------------
 # Helpers
 # ---------------------------------------------------------------------------
+
+@contextlib.contextmanager
+def silence_warnings():
+    """Silence stdout warning messages printed during Blender operator executions."""
+    with contextlib.redirect_stdout(io.StringIO()):
+        yield
+
 
 def _idname_to_bpy_types_key(bl_idname: str) -> str:
     """
@@ -291,6 +300,12 @@ class TestSwitchWorkspaceExecution(unittest.TestCase):
                 res = bpy.ops.aaa.switch_workspace(name=ws.name)
                 self.assertEqual(res, {'FINISHED'})
 
+    def test_switch_to_nonexistent_workspace_returns_cancelled(self):
+        """Switching to a non-existent workspace returns CANCELLED."""
+        with silence_warnings():
+            res = bpy.ops.aaa.switch_workspace(name="NON_EXISTENT_WORKSPACE_NAME_123")
+        self.assertEqual(res, {'CANCELLED'})
+
 
 # ---------------------------------------------------------------------------
 # §4 Scenario A – Standard operator execution
@@ -354,17 +369,28 @@ class TestOperatorExecution(unittest.TestCase):
         """roll_axis sets axis_roll scene property to X."""
         res = bpy.ops.aaa.roll_axis(axis='X')
         self.assertEqual(res, {'FINISHED'})
-        self.assertEqual(bpy.data.scenes[0].axis_roll, 'X')
+        self.assertEqual(bpy.context.scene.axis_roll, 'X')
 
     def test_roll_axis_y(self):
         """roll_axis sets axis_roll scene property to Y."""
         bpy.ops.aaa.roll_axis(axis='Y')
-        self.assertEqual(bpy.data.scenes[0].axis_roll, 'Y')
+        self.assertEqual(bpy.context.scene.axis_roll, 'Y')
 
     def test_roll_axis_z(self):
         """roll_axis sets axis_roll scene property to Z."""
         bpy.ops.aaa.roll_axis(axis='Z')
-        self.assertEqual(bpy.data.scenes[0].axis_roll, 'Z')
+        self.assertEqual(bpy.context.scene.axis_roll, 'Z')
+
+    def test_std_tools(self):
+        """std_tools completes without crash in headless."""
+        with silence_warnings():
+            res = bpy.ops.aaa.std_tools(name='SPIN_TOOL')
+        self.assertEqual(res, {'FINISHED'})
+
+    def test_context_debugger(self):
+        """context_debugger completes without crash in headless."""
+        res = bpy.ops.aaa.test_context_debugger()
+        self.assertEqual(res, {'FINISHED'})
 
 
 # ---------------------------------------------------------------------------
@@ -389,8 +415,15 @@ class TestSaveOperations(unittest.TestCase):
 
     def test_save_incremental_cancelled_no_filepath(self):
         """SaveIncremental returns CANCELLED in headless with no filepath."""
-        res = bpy.ops.aaa.save_incremental()
+        with silence_warnings():
+            res = bpy.ops.aaa.save_incremental()
         self.assertIn(res, [{'FINISHED'}, {'CANCELLED'}])
+
+    def test_save_file_cancelled_no_filepath(self):
+        """SaveFile returns CANCELLED in headless with no filepath."""
+        with silence_warnings():
+            res = bpy.ops.aaa.save_file()
+        self.assertEqual(res, {'CANCELLED'})
 
     def test_resolve_incremented_path_basic(self):
         """resolve_incremented_path increments 'file_000.blend' -> 'file_001.blend'."""
@@ -464,6 +497,55 @@ class TestSwitchCondition(unittest.TestCase):
         bpy.ops.aaa.switch_condition(cond="SCULPT")
         bpy.ops.aaa.switch_condition(cond="TRANSFORM")
         self.assertEqual(bpy.context.scene.conditions, "TRANSFORM")
+
+
+class TestKeyConditionsRouting(unittest.TestCase):
+    """
+    Test routing of GlobalQ, GlobalW, and GlobalE via CONDITIONS_ROUTER.
+    Under the TIMELINE condition, these do not depend on context.area and
+    can run fully in headless mode.
+    """
+
+    def setUp(self):
+        self.original_condition = bpy.context.scene.conditions
+        self.original_frame = bpy.context.scene.frame_current
+        self.original_loop = bpy.context.scene.loop_frames
+        self.original_start = bpy.context.scene.frame_start
+        self.original_end = bpy.context.scene.frame_end
+
+        bpy.context.scene.conditions = 'TIMELINE'
+        bpy.context.scene.loop_frames = True
+        bpy.context.scene.frame_start = 10
+        bpy.context.scene.frame_end = 250
+
+    def tearDown(self):
+        bpy.context.scene.conditions = self.original_condition
+        bpy.context.scene.frame_current = self.original_frame
+        bpy.context.scene.loop_frames = self.original_loop
+        bpy.context.scene.frame_start = self.original_start
+        bpy.context.scene.frame_end = self.original_end
+        _clean_scene()
+
+    def test_key_q_timeline_wraparound(self):
+        """GlobalQ wraps frame_current around to frame_end when at frame_start."""
+        bpy.context.scene.frame_current = 10
+        res = bpy.ops.aaa.key_q()
+        self.assertEqual(res, {'FINISHED'})
+        self.assertEqual(bpy.context.scene.frame_current, 250)
+
+    def test_key_w_timeline_sets_start(self):
+        """GlobalW resets frame_current to frame_start."""
+        bpy.context.scene.frame_current = 100
+        res = bpy.ops.aaa.key_w()
+        self.assertEqual(res, {'FINISHED'})
+        self.assertEqual(bpy.context.scene.frame_current, 10)
+
+    def test_key_e_timeline_wraparound(self):
+        """GlobalE wraps frame_current around to frame_start when at frame_end."""
+        bpy.context.scene.frame_current = 250
+        res = bpy.ops.aaa.key_e()
+        self.assertEqual(res, {'FINISHED'})
+        self.assertEqual(bpy.context.scene.frame_current, 10)
 
 
 # ---------------------------------------------------------------------------
