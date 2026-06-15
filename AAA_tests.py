@@ -922,4 +922,17 @@ def unregister():
 if __name__ == '__main__':
     args = sys.argv
     unittest_args = args[args.index("--") + 1:] if "--" in args else []
-    unittest.main(argv=[sys.argv[0]] + unittest_args, verbosity=2)
+
+    suite = unittest.defaultTestLoader.loadTestsFromModule(sys.modules[__name__])
+    runner = unittest.TextTestRunner(verbosity=2)
+    result = runner.run(suite)
+
+    if result.wasSuccessful():
+        print()
+        print(" ╔══════════════════════════╗")
+        print(" ║  BANZAI! (ﾉ◕ヮ◕)ﾉ*:･ﾟ✧  ║")
+        print(" ║  All tests passed!       ║")
+        print(" ╚══════════════════════════╝")
+        print()
+
+    sys.exit(not result.wasSuccessful())
