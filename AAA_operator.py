@@ -207,7 +207,7 @@ class RollViewport(Operator):
     # the quadrant the mouse is in at invocation determines the direction:
     #   top-right -> pivot is pushed down-left toward center, etc.
     # a value of 0 rotates around the mouse itself.
-    margin: bpy.props.IntProperty(default=50)  # type: ignore
+    margin: bpy.props.IntProperty(default=75)  # type: ignore
 
     def invoke(self, context, event):
         rv3d = context.space_data.region_3d
