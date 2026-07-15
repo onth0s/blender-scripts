@@ -6,6 +6,8 @@ from bpy.props import StringProperty  # type: ignore
 from bpy.types import Operator  # type: ignore
 from mathutils import Vector, Quaternion  # type: ignore
 from math import atan2
+import gpu  # type: ignore
+from gpu_extras.batch import batch_for_shader  # type: ignore
 
 from AAA_utils import (
     OBJ, MHE, MHS, MHV,
@@ -197,6 +199,16 @@ class RollViewport(Operator):
 
     temp_degree = 0
 
+    _draw_handler = None
+
+    # margin (px) offset from the mouse cursor for the rotation pivot.
+    # the pivot is placed along the ray from viewport center through the mouse,
+    # at mouse_position - margin in that direction (toward center).
+    # the quadrant the mouse is in at invocation determines the direction:
+    #   top-right -> pivot is pushed down-left toward center, etc.
+    # a value of 0 rotates around the mouse itself.
+    margin: bpy.props.IntProperty(default=50)  # type: ignore
+
     def invoke(self, context, event):
         rv3d = context.space_data.region_3d
         context.window_manager.modal_handler_add(self)
@@ -207,24 +219,43 @@ class RollViewport(Operator):
         if rv3d.view_perspective == 'CAMERA':
             rv3d.view_perspective = 'PERSP'
 
-        # get the center of the viewport
+        # viewport size in pixels
         self.view3d_bounds = Vector(  # type: ignore
             (context.region.width, context.region.height))
-        self.view3d_center = self.view3d_bounds / 2
+        viewport_center = self.view3d_bounds / 2
 
-        # how far is the mouse from the center, returns a Vector
+        # mouse position at invocation (region-relative coordinates)
         mouseloc = Vector(  # type: ignore
             (event.mouse_region_x, event.mouse_region_y))
-        mouseloc_centered = mouseloc - self.view3d_center
 
-        # copy a Quaternion(w, x, y, z) into a Vector((x, y, z)), returns a Quaternion()
+        # compute the rotation pivot: offset from the mouse toward viewport center.
+        # the direction is the unit vector from viewport center to mouse (the quadrant).
+        # subtracting margin pulls the pivot that many pixels back toward center.
+        # if the mouse is exactly on the viewport center, no offset is applied.
+        to_mouse = mouseloc - viewport_center
+        length = to_mouse.length
+        if length > 0:
+            direction = to_mouse / length
+        else:
+            direction = Vector((0, 0))  # type: ignore
+        self.view3d_center = mouseloc - direction * self.margin
+
+        # DEBUG: draw the pivot as a crosshair in the viewport
+        self._region_x = context.region.x
+        self._region_y = context.region.y
+        self._draw_handler = bpy.types.SpaceView3D.draw_handler_add(
+            self._draw_pivot, (self,), 'WINDOW', 'POST_PIXEL')
+
+        # angle from the pivot to the mouse position at invocation (radians).
+        # this is the baseline angle; subsequent mouse movement is compared against it.
+        # atan2 returns values in [-pi, pi]: past 180 degrees counterclockwise
+        # yields negative numbers (e.g. 181 -> -179).
+        mouseloc_centered = mouseloc - self.view3d_center
         self.initial_rotation = rv3d.view_rotation.copy()
-        # the angle in radians from the center of the viewport to the position of the cursor
-        # past 180 degrees (or PI radians) counterclockwise will get you negative numbers: 180 turn into -179, not 181 (it's not an integer though)
         self.initial_angle = atan2(mouseloc_centered.y, mouseloc_centered.x)
         self.angle_now = self.initial_angle
 
-        # change the axis of rotation
+        # rotation axis mapped from the scene property
         if context.scene.axis_roll == "X":
             self.camNormal = Vector((1, 0, 0))  # type: ignore
         elif context.scene.axis_roll == "Y":
@@ -249,6 +280,24 @@ class RollViewport(Operator):
 
         return {'FINISHED'}
 
+    @staticmethod
+    def _draw_pivot(op):
+        """DEBUG: draw a red crosshair at the rotation pivot position."""
+        shader = gpu.shader.from_builtin('UNIFORM_COLOR')
+        # convert region-relative pivot coords to window coords for POST_PIXEL
+        cx = op._region_x + op.view3d_center.x
+        cy = op._region_y + op.view3d_center.y
+        size = 10
+
+        coords = [
+            (cx - size, cy), (cx + size, cy),
+            (cx, cy - size), (cx, cy + size),
+        ]
+        batch = batch_for_shader(shader, 'LINES', {"pos": coords})
+        shader.bind()
+        shader.uniform_float("color", (1.0, 0.2, 0.2, 1.0))
+        batch.draw(shader)
+
     def modal(self, context, event):
         rv3d = context.space_data.region_3d
 
@@ -259,9 +308,15 @@ class RollViewport(Operator):
             self.angle_now = atan2(mouseloc_centered.y, mouseloc_centered.x)
             self.execute(context)
         elif event.type in {'LEFTMOUSE', 'MIDDLEMOUSE'}:
+            if self._draw_handler:
+                bpy.types.SpaceView3D.draw_handler_remove(self._draw_handler, 'WINDOW')
+                self._draw_handler = None
             return {'FINISHED'}
         elif event.type in {'RIGHTMOUSE', 'ESC'}:
             rv3d.view_rotation = self.initial_rotation
+            if self._draw_handler:
+                bpy.types.SpaceView3D.draw_handler_remove(self._draw_handler, 'WINDOW')
+                self._draw_handler = None
             return {'CANCELLED'}
 
         return {'RUNNING_MODAL'}
