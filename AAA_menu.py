@@ -509,6 +509,10 @@ class VIEW3D_MT_STD_TOOLS(Menu):
                 .name = "builtin_brush.mask"
 
             LYT.separator()
+            LYT.operator("wm.tool_set_by_id", text="H - Lasso Hide") \
+                .name = "builtin.lasso_hide"
+
+            LYT.separator()
             LYT.operator("wm.tool_set_by_id", text="X - Line Trim") \
                 .name = "builtin.line_trim"
 
