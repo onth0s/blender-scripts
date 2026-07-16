@@ -214,7 +214,11 @@ class RollViewport(Operator):
         context.window_manager.modal_handler_add(self)
 
         self.camera = context.scene.camera
-        self.rotate_camera = (rv3d.view_perspective == 'CAMERA' and self.camera is not None)
+        self.rotate_camera = (
+            rv3d.view_perspective == 'CAMERA'
+            and self.camera is not None
+            and getattr(context.space_data, "lock_camera", False)
+        )
 
         if not self.rotate_camera:
             if rv3d.view_perspective == 'CAMERA':
