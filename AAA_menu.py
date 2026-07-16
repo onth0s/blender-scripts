@@ -496,6 +496,10 @@ class VIEW3D_MT_STD_TOOLS(Menu):
             OP.asset_library_type = "ESSENTIALS"
             OP.relative_asset_identifier = BRUSH + "Inflate/Deflate"
 
+            OP = LYT.operator("brush.asset_activate", text="W - Pinch")
+            OP.asset_library_type = "ESSENTIALS"
+            OP.relative_asset_identifier = BRUSH + "Pinch/Magnify"
+
             OP = LYT.operator("brush.asset_activate", text="T - Fill")
             OP.asset_library_type = "ESSENTIALS"
             OP.relative_asset_identifier = BRUSH + "Fill/Deepen"
@@ -610,6 +614,9 @@ class VIEW3D_MT_SCULPT_OPS(Menu):
         LYT = self.layout
         op = LYT.operator("paint.hide_show_masked", text="F - Hide Masked")
         op.action = 'HIDE'
+
+        op = LYT.operator("paint.hide_show_all", text="G - Show All")
+        op.action = 'SHOW'
 
 
 classes = (
