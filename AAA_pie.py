@@ -230,7 +230,7 @@ class PIE_MT_SAVE_N_STUFF(Menu):
         else:
             pie.operator("wm.append", text="Append")
 
-        # leave 'app_template' in blank to load the 'startup' file
+        # leave 'app_template' blank to load the 'startup' file
         pie.operator("wm.read_homefile", text="New File").app_template = ""
         pie.operator("aaa.save_incremental", text="Save Incremental")
 
