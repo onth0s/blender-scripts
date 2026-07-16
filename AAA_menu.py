@@ -603,9 +603,19 @@ class VIEW3D_MT_CLEAR(Menu):
         props = LYT.operator(OB+".origin_clear", text="W - Origin to Parent")
 
 
+class VIEW3D_MT_SCULPT_OPS(Menu):
+    bl_label = "Sculpt Operators"
+
+    def draw(self, context):
+        LYT = self.layout
+        op = LYT.operator("paint.hide_show_masked", text="F - Hide Masked")
+        op.action = 'HIDE'
+
+
 classes = (
     VIEW3D_MT_WORKSPACE,
     VIEW3D_MT_MODE,
+    VIEW3D_MT_SCULPT_OPS,
 
     VIEW3D_MT_VIEWPORT_DISPLAY,
     VIEW3D_MT_SHADING_OPTIONS,
