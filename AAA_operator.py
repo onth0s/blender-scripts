@@ -772,9 +772,15 @@ class AAA_OT_clear_all_transforms(Operator):
     bl_options = {"UNDO"}
 
     def execute(self, context):
-        bpy.ops.object.location_clear(clear_delta=False)
-        bpy.ops.object.rotation_clear(clear_delta=False)
-        bpy.ops.object.scale_clear(clear_delta=False)
+        for ob in context.selected_objects:
+            ob.location = (0.0, 0.0, 0.0)
+            if ob.rotation_mode == "QUATERNION":
+                ob.rotation_quaternion = (1.0, 0.0, 0.0, 0.0)
+            elif ob.rotation_mode == "AXIS_ANGLE":
+                ob.rotation_axis_angle = (0.0, 0.0, 1.0, 0.0)
+            else:
+                ob.rotation_euler = (0.0, 0.0, 0.0)
+            ob.scale = (1.0, 1.0, 1.0)
         return {"FINISHED"}
 
 
@@ -784,8 +790,14 @@ class AAA_OT_clear_except_location(Operator):
     bl_options = {"UNDO"}
 
     def execute(self, context):
-        bpy.ops.object.rotation_clear(clear_delta=False)
-        bpy.ops.object.scale_clear(clear_delta=False)
+        for ob in context.selected_objects:
+            if ob.rotation_mode == "QUATERNION":
+                ob.rotation_quaternion = (1.0, 0.0, 0.0, 0.0)
+            elif ob.rotation_mode == "AXIS_ANGLE":
+                ob.rotation_axis_angle = (0.0, 0.0, 1.0, 0.0)
+            else:
+                ob.rotation_euler = (0.0, 0.0, 0.0)
+            ob.scale = (1.0, 1.0, 1.0)
         return {"FINISHED"}
 
 
