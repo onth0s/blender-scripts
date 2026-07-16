@@ -3,11 +3,15 @@ from bpy.props import BoolProperty, IntProperty, StringProperty  # type: ignore
 
 # Declarative scene properties configuration mapping: (name, property_factory_ref, args_dict)
 SCENE_PROPERTIES = [
-    ("conditions", StringProperty, {
-        "name": "Global Conditions",
-        "description": "A global variable for storing conditions",
-        "default": "TRANSFORM",
-    }),
+    (
+        "conditions",
+        StringProperty,
+        {
+            "name": "Global Conditions",
+            "description": "A global variable for storing conditions",
+            "default": "TRANSFORM",
+        },
+    ),
     ("show_overlays", BoolProperty, {"default": False}),
     ("show_gizmo", BoolProperty, {"default": False}),
     ("show_t_menu", BoolProperty, {"default": False}),

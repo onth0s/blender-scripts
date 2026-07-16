@@ -3,7 +3,7 @@ from bpy.types import Menu  # type: ignore
 
 from AAA_utils import OBJ, MHE, MHS, MHT, MHW, MHV, ALL
 
-''' Useful API ENUMS
+""" Useful API ENUMS
     bpy.context.area.type
         enum in [EMPTY, VIEW_3D, IMAGE_EDITOR, NODE_EDITOR, SEQUENCE_EDITOR,
         CLIP_EDITOR, DOPESHEET_EDITOR, GRAPH_EDITOR, NLA_EDITOR, TEXT_EDITOR,
@@ -19,7 +19,7 @@ from AAA_utils import OBJ, MHE, MHS, MHT, MHW, MHV, ALL
     bpy.context.object.type
         enum in [MESH, CURVE, SURFACE, META, FONT, ARMATURE, LATTICE, EMPTY,
         GPENCIL, CAMERA, LIGHT, SPEAKER, LIGHT_PROBE], default EMPTY
-    '''
+    """
 
 
 class PIE_MT_SPACE(Menu):
@@ -31,7 +31,7 @@ class PIE_MT_SPACE(Menu):
         MN = "wm.call_menu"
 
         pie = self.layout.menu_pie()
-        pie.operator_context = 'EXEC_DEFAULT'
+        pie.operator_context = "EXEC_DEFAULT"
 
         # ------------------------   LEFT   --------------------------------- #
         if M in (OBJ, MHT, MHW, MHV):
@@ -42,8 +42,7 @@ class PIE_MT_SPACE(Menu):
 
         # ------------------------   RIGHT   -------------------------------- #
         if M in (OBJ, MHE):
-            pie.operator(MN, text="Transform Gizmo")\
-                .name = "VIEW3D_MT_TRANSFORM_GIZMO"
+            pie.operator(MN, text="Transform Gizmo").name = "VIEW3D_MT_TRANSFORM_GIZMO"
         elif M in (MHS, MHT, MHW, MHV):
             # Layout Placeholder: Intentional empty operator call to maintain balance/alignment
             pie.operator(MN, text="").name = ""
@@ -62,11 +61,9 @@ class PIE_MT_SPACE(Menu):
 
         # ------------------------   TOP-RIGHT   ---------------------------- #
         if M in (OBJ):
-            pie.operator(MN, text="Object Operations") \
-                .name = "VIEW3D_MT_STD_TOOLS"
+            pie.operator(MN, text="Object Operations").name = "VIEW3D_MT_STD_TOOLS"
         elif M in (MHE):
-            pie.operator(MN, text="Select Mode") \
-                .name = "VIEW3D_MT_MHE_MODE"
+            pie.operator(MN, text="Select Mode").name = "VIEW3D_MT_MHE_MODE"
         elif M in (MHS):
             pie.operator(MN, text="Face Sets").name = "VIEW3D_MT_FACE_SETS"
 
@@ -96,14 +93,14 @@ class PIE_MT_S(Menu):
 
         # ------------------------   LEFT   --------------------------------- #
         if M in (OBJ, MHE):
-            pie.operator(PT, text="Orientation") \
-                .name = "VIEW3D_PT_transform_orientations"
+            pie.operator(
+                PT, text="Orientation"
+            ).name = "VIEW3D_PT_transform_orientations"
         else:
             pie.operator(MT, text="").name = ""
         # ------------------------   RIGHT   -------------------------------- #
         if M in (MHE, MHS):
-            pie.operator(MT, text="Tools") \
-                .name = "VIEW3D_MT_STD_TOOLS"
+            pie.operator(MT, text="Tools").name = "VIEW3D_MT_STD_TOOLS"
         else:
             pie.operator(MT, text="").name = ""
         # ------------------------   BOTTOM   ------------------------------- #
@@ -120,14 +117,13 @@ class PIE_MT_S(Menu):
         else:
             pie.operator(MT, text="").name = ""
         # ------------------------   TOP-RIGHT   ---------------------------- #
-        if M in (ALL) and context.mode != 'SCULPT':
+        if M in (ALL) and context.mode != "SCULPT":
             pie.operator(MT, text="Modifiers").name = "VIEW3D_MT_MODIFIERS"
         elif M in MHS:
             pie.operator(MT, text="Operators").name = "VIEW3D_MT_SCULPT_OPS"
         # ------------------------   BOTTOM-LEFT   -------------------------- #
         if M in (OBJ, MHE):
-            pie.operator(PT, text="Proportional") \
-                .name = "VIEW3D_PT_proportional_edit_2"
+            pie.operator(PT, text="Proportional").name = "VIEW3D_PT_proportional_edit_2"
         elif M in MHS:
             pie.operator(PT, text="Symmetry").name = "AAA_PT_sculpt_symmetry"
         else:
@@ -147,14 +143,14 @@ class PIE_MT_ANIMATION(Menu):
         pie = self.layout.menu_pie()
 
         pie.operator("wm.call_menu", text="")
-        pie.operator("wm.call_menu",
-                     text="Timeline").name = "VIEW3D_MT_ANIMATION_PLAYBACK"
+        pie.operator(
+            "wm.call_menu", text="Timeline"
+        ).name = "VIEW3D_MT_ANIMATION_PLAYBACK"
         pie.operator("wm.call_menu", text="")
         pie.operator("wm.call_menu", text="")
         pie.operator("wm.call_menu", text="")
         pie.operator("wm.call_menu", text="")
-        pie.operator("wm.call_menu",
-                     text="Range").name = "VIEW3D_MT_ABOUT_FRAMES"
+        pie.operator("wm.call_menu", text="Range").name = "VIEW3D_MT_ABOUT_FRAMES"
         pie.operator("wm.call_menu", text="")
 
 
@@ -168,18 +164,16 @@ class VIEW3D_MT_SHADING_PIE(Menu):
         PT = "wm.call_panel"
 
         pie.operator(PT, text="Object Color").name = "VIEW3D_PT_object_color"
-        pie.operator(MN, text="Display") \
-            .name = "VIEW3D_MT_VIEWPORT_DISPLAY"
+        pie.operator(MN, text="Display").name = "VIEW3D_MT_VIEWPORT_DISPLAY"
 
         pie.operator(MN, text="Renderer").name = "VIEW3D_MT_RENDERER"
 
-        if context.scene.render.engine != 'BLENDER_WORKBENCH':
+        if context.scene.render.engine != "BLENDER_WORKBENCH":
             pie.operator(PT, text="Lighting").name = "VIEW3D_PT_lighting"
         else:
             pie.operator(MN, text="")
 
-        pie.operator(
-            PT, text="Background Color").name = "VIEW3D_PT_background_color"
+        pie.operator(PT, text="Background Color").name = "VIEW3D_PT_background_color"
         pie.operator(MN, text="")
         pie.operator(MN, text="")
 
@@ -194,8 +188,7 @@ class PIE_MT_KEY_CONDITIONS(Menu):
         OP = "aaa.switch_condition"
         pie = self.layout.menu_pie()
 
-        pie.operator("wm.call_panel", text="Frame Range") \
-            .name = "VIEW3D_PT_frame_range"
+        pie.operator("wm.call_panel", text="Frame Range").name = "VIEW3D_PT_frame_range"
 
         pie.operator(OP, text="Transform").cond = "TRANSFORM"
         pie.operator(OP, text="").cond = ""
@@ -214,20 +207,20 @@ class PIE_MT_SAVE_N_STUFF(Menu):
         layout = self.layout
         pie = layout.menu_pie()
 
-        if context.area.type == 'TEXT_EDITOR':
+        if context.area.type == "TEXT_EDITOR":
             pie.operator("text.run_script", text="Run Script")
         else:
             pie.operator("script.reload", text="Reload Scripts")
 
         pie.operator("aaa.save_file", text="Save")
 
-        pie.operator_context = 'INVOKE_DEFAULT'
+        pie.operator_context = "INVOKE_DEFAULT"
         pie.operator("wm.open_mainfile", text="Open")
 
         pie.operator("wm.save_homefile", text="Override Startup")
         pie.operator("wm.obj_import", text="Import OBJ")
 
-        if context.area.type == 'TEXT_EDITOR':
+        if context.area.type == "TEXT_EDITOR":
             pie.operator("text.comment_toggle", text="Toggle Comment")
         else:
             pie.operator("wm.append", text="Append")
@@ -241,9 +234,7 @@ classes = (
     PIE_MT_SPACE,
     PIE_MT_S,
     PIE_MT_ANIMATION,
-
     VIEW3D_MT_SHADING_PIE,
-
     PIE_MT_KEY_CONDITIONS,
     PIE_MT_SAVE_N_STUFF,
 )

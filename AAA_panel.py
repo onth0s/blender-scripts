@@ -8,9 +8,11 @@ from AAA_utils import OBJ, MHE
 # bl_label = ""
 # -------------------------------------------------------
 
+
 class AAAPanel:
-    bl_space_type = 'VIEW_3D'
-    bl_region_type = 'WINDOW'
+    bl_space_type = "VIEW_3D"
+    bl_region_type = "WINDOW"
+
 
 # the '_2' is there to not collide with the built-in Panel
 
@@ -32,10 +34,13 @@ class VIEW3D_PT_manage_modifiers(AAAPanel, Panel):
 
                 # Right side: buttons in a tight row
                 button_row = split.row(align=True)
-                for label, direction in [("↓", "DOWN"), ("↑", "UP"),
-                                         ("↓↓", "BOTTOM"), ("↑↑", "TOP")]:
-                    op = button_row.operator(
-                        "aaa.reorder_modifiers", text=label)
+                for label, direction in [
+                    ("↓", "DOWN"),
+                    ("↑", "UP"),
+                    ("↓↓", "BOTTOM"),
+                    ("↑↑", "TOP"),
+                ]:
+                    op = button_row.operator("aaa.reorder_modifiers", text=label)
                     op.name = mod.name
                     op.where = direction
                     op.index = index
@@ -45,8 +50,8 @@ class VIEW3D_PT_manage_modifiers(AAAPanel, Panel):
 
 
 class VIEW3D_PT_proportional_edit_2(Panel):
-    bl_space_type = 'VIEW_3D'
-    bl_region_type = 'HEADER'
+    bl_space_type = "VIEW_3D"
+    bl_region_type = "HEADER"
     bl_label = "Proportional Editing"
     bl_ui_units_x = 8
 
@@ -62,8 +67,7 @@ class VIEW3D_PT_proportional_edit_2(Panel):
         elif context.mode == MHE:
             row.prop(tool_settings, "use_proportional_edit", text="")
 
-        row.prop(tool_settings, "proportional_distance",
-                 text="Distance")
+        row.prop(tool_settings, "proportional_distance", text="Distance")
 
         col = layout.column()
         if context.mode == MHE:
@@ -73,8 +77,7 @@ class VIEW3D_PT_proportional_edit_2(Panel):
             sub.prop(tool_settings, "use_proportional_projected")
 
         col.separator()
-        col.prop(tool_settings, "proportional_edit_falloff",
-                 text="", expand=False)
+        col.prop(tool_settings, "proportional_edit_falloff", text="", expand=False)
 
 
 class VIEW3D_PT_frame_range(AAAPanel, Panel):
@@ -108,28 +111,24 @@ class VIEW3D_PT_object_color(AAAPanel, Panel):
         LYT = self.layout
         OB = context.active_object
 
-        LYT.grid_flow(columns=3, align=True).prop(
-            shading, "color_type", expand=True)
+        LYT.grid_flow(columns=3, align=True).prop(shading, "color_type", expand=True)
 
-        if shading.color_type == 'SINGLE':
+        if shading.color_type == "SINGLE":
             LYT.row().prop(shading, "single_color", text="")
 
-        elif shading.color_type == 'OBJECT':
+        elif shading.color_type == "OBJECT":
             LYT.row().prop(context.object, "color", text="")
 
-        elif shading.color_type == 'MATERIAL':
+        elif shading.color_type == "MATERIAL":
             if OB.active_material is not None:
-                LYT.row().prop(context.object.active_material,
-                               "diffuse_color", text="")
-                LYT.row().template_ID(OB, "active_material",
-                                      new="material.new")
+                LYT.row().prop(context.object.active_material, "diffuse_color", text="")
+                LYT.row().template_ID(OB, "active_material", new="material.new")
             else:
                 LYT.row().label(text="No Material Found")
                 row = LYT.row(align=True)
                 row.operator("aaa.add_material", text="Add New").mode = "NEW"
                 if bpy.data.materials:
-                    row.operator("aaa.add_material", text="Use Lastest") \
-                        .mode = "LAST"
+                    row.operator("aaa.add_material", text="Use Lastest").mode = "LAST"
 
 
 class VIEW3D_PT_lighting(AAAPanel, Panel):
@@ -143,7 +142,7 @@ class VIEW3D_PT_lighting(AAAPanel, Panel):
         col = LYT.column()
         split = col.split(factor=1)
 
-        if shading.type == 'SOLID':
+        if shading.type == "SOLID":
             split.row().prop(shading, "light", expand=True)
             col = split.column()
 
@@ -151,44 +150,55 @@ class VIEW3D_PT_lighting(AAAPanel, Panel):
             col = split.column()
             sub = col.row()
 
-            if shading.light == 'STUDIO':
+            if shading.light == "STUDIO":
                 prefs = context.preferences
                 system = prefs.system
 
                 if not system.use_studio_light_edit:
                     sub.scale_y = 0.6  # smaller studiolight preview
-                    sub.template_icon_view(
-                        shading, "studio_light", scale_popup=3.0)
+                    sub.template_icon_view(shading, "studio_light", scale_popup=3.0)
                 else:
-                    sub.prop(system, "use_studio_light_edit",
-                             text="Disable Studio Light Edit",
-                             icon='NONE', toggle=True)
+                    sub.prop(
+                        system,
+                        "use_studio_light_edit",
+                        text="Disable Studio Light Edit",
+                        icon="NONE",
+                        toggle=True,
+                    )
 
                 split = LYT.split(factor=1)
                 col = split.column()
 
                 row = col.row()
-                row.prop(shading, "use_world_space_lighting",
-                         text="", icon='WORLD', toggle=True)
+                row.prop(
+                    shading,
+                    "use_world_space_lighting",
+                    text="",
+                    icon="WORLD",
+                    toggle=True,
+                )
                 row = row.row()
                 row.active = shading.use_world_space_lighting
                 row.prop(shading, "studiolight_rotate_z", text="Rotation")
 
                 col = split.column()
 
-            elif shading.light == 'MATCAP':
+            elif shading.light == "MATCAP":
                 sub.scale_y = 0.6  # smaller matcap preview
 
-                sub.template_icon_view(
-                    shading, "studio_light", scale_popup=2.4)
+                sub.template_icon_view(shading, "studio_light", scale_popup=2.4)
 
                 row = LYT.row()
-                row.operator("view3d.toggle_matcap_flip",
-                             emboss=True, text="", icon='ARROW_LEFTRIGHT')
+                row.operator(
+                    "view3d.toggle_matcap_flip",
+                    emboss=True,
+                    text="",
+                    icon="ARROW_LEFTRIGHT",
+                )
                 row.label(text="Flip MatCap")
 
-        elif context.scene.render.engine != 'BLENDER_WORKBENCH':
-            if shading.type == 'MATERIAL':
+        elif context.scene.render.engine != "BLENDER_WORKBENCH":
+            if shading.type == "MATERIAL":
                 col.prop(shading, "use_scene_lights")
                 col.prop(shading, "use_scene_world")
             else:
@@ -204,7 +214,7 @@ class VIEW3D_PT_lighting(AAAPanel, Panel):
                 sub.scale_y = 0.6
                 sub.template_icon_view(shading, "studio_light", scale_popup=3)
 
-                if shading.selected_studio_light.type == 'WORLD':
+                if shading.selected_studio_light.type == "WORLD":
                     split = LYT.split(factor=0.9)
                     col = split.column()
                     col.prop(shading, "studiolight_rotate_z", text="Rotation")
@@ -226,17 +236,17 @@ class VIEW3D_PT_background_color(AAAPanel, Panel):
         LYT.row().label(text="Background")
         LYT.row().prop(shading, "background_type", expand=True)
 
-        if shading.background_type == 'VIEWPORT':
+        if shading.background_type == "VIEWPORT":
             LYT.row().prop(shading, "background_color", text="")
 
-        if shading.background_type == 'WORLD':
+        if shading.background_type == "WORLD":
             LYT.row().prop(context.scene.world, "color", text="")
 
 
 class AAA_PT_sculpt_symmetry(AAAPanel, Panel):
     bl_label = "Symmetry & Symmetrize"
     bl_ui_units_x = 10
-    bl_options = {'INSTANCED'}
+    bl_options = {"INSTANCED"}
 
     def draw(self, context):
         layout = self.layout
@@ -247,7 +257,7 @@ class AAA_PT_sculpt_symmetry(AAAPanel, Panel):
         row.label(text="Mirror:")
         sub = row.row(align=True)
         if ob:
-            if context.mode == 'SCULPT' and ob.type == 'MESH':
+            if context.mode == "SCULPT" and ob.type == "MESH":
                 mesh = ob.data
                 sub.prop(mesh, "use_mirror_x", text="X", toggle=True)
                 sub.prop(mesh, "use_mirror_y", text="Y", toggle=True)
@@ -265,6 +275,8 @@ class AAA_PT_sculpt_symmetry(AAAPanel, Panel):
         if tool_settings.sculpt:
             row2.prop(tool_settings.sculpt, "symmetrize_direction", text="")
         row2.operator("sculpt.symmetrize", text="Symmetrize")
+
+
 class VIEW3D_PT_FRAME_RATE(AAAPanel, Panel):
     bl_ui_units_x = 12
     bl_label = ""
@@ -277,15 +289,11 @@ class VIEW3D_PT_FRAME_RATE(AAAPanel, Panel):
 
 classes = (
     VIEW3D_PT_manage_modifiers,
-
     VIEW3D_PT_proportional_edit_2,
-
     VIEW3D_PT_frame_range,
-
     VIEW3D_PT_object_color,
     VIEW3D_PT_lighting,
     VIEW3D_PT_background_color,
-
     VIEW3D_PT_FRAME_RATE,
     AAA_PT_sculpt_symmetry,
 )

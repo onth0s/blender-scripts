@@ -3,61 +3,72 @@
 from math import pi
 import re
 import os
-OBJ = 'OBJECT'
 
-MHE = 'EDIT_MESH'
-MHS = 'SCULPT'
-MHT = 'PAINT_TEXTURE'
-MHW = 'PAINT_WEIGHT'
-MHV = 'PAINT_VERTEX'
+OBJ = "OBJECT"
 
-ARE = 'EDIT_ARMATURE'
-ARP = 'POSE'
+MHE = "EDIT_MESH"
+MHS = "SCULPT"
+MHT = "PAINT_TEXTURE"
+MHW = "PAINT_WEIGHT"
+MHV = "PAINT_VERTEX"
 
-SFE = 'EDIT_SURFACE'
+ARE = "EDIT_ARMATURE"
+ARP = "POSE"
 
-CVE = 'EDIT_CURVE'
+SFE = "EDIT_SURFACE"
 
-GPE = 'EDIT_GPENCIL'
-GPS = 'SCULPT_GPENCIL'
-GPW = 'WEIGHT_GPENCIL'
-GPP = 'PAINT_GPENCIL'
+CVE = "EDIT_CURVE"
 
-MBE = 'EDIT_METABALL'
+GPE = "EDIT_GPENCIL"
+GPS = "SCULPT_GPENCIL"
+GPW = "WEIGHT_GPENCIL"
+GPP = "PAINT_GPENCIL"
 
-LCE = 'EDIT_LATTICE'
+MBE = "EDIT_METABALL"
 
-PTC = 'PARTICLE'
+LCE = "EDIT_LATTICE"
 
-TXE = 'EDIT_TEXT'
+PTC = "PARTICLE"
+
+TXE = "EDIT_TEXT"
 
 
-ALL = (OBJ,
-       MHE, MHS, MHT, MHW, MHV,
-       ARE, ARP,
-       SFE,
-       CVE,
-       GPE, GPS, GPW, GPP,
-       MBE,
-       LCE,
-       PTC,
-       TXE)
+ALL = (
+    OBJ,
+    MHE,
+    MHS,
+    MHT,
+    MHW,
+    MHV,
+    ARE,
+    ARP,
+    SFE,
+    CVE,
+    GPE,
+    GPS,
+    GPW,
+    GPP,
+    MBE,
+    LCE,
+    PTC,
+    TXE,
+)
 
 # ------------------------   context.object.type   ------------------------ #
 
-TMH = 'MESH'
-TCV = 'CURVE'
-TSF = 'SURFACE'
-TMB = 'META'
-TTX = 'FONT'
-TAR = 'ARMATURE'
-TLC = 'LATTICE'
-TET = 'EMPTY'
-TGP = 'GPENCIL'
-TCM = 'CAMERA'
-TLT = 'LIGHT'
-TLP = 'LIGHT_PROBE'
-TSK = 'SPEAKER'
+TMH = "MESH"
+TCV = "CURVE"
+TSF = "SURFACE"
+TMB = "META"
+TTX = "FONT"
+TAR = "ARMATURE"
+TLC = "LATTICE"
+TET = "EMPTY"
+TGP = "GPENCIL"
+TCM = "CAMERA"
+TLT = "LIGHT"
+TLP = "LIGHT_PROBE"
+TSK = "SPEAKER"
 
 
 def is_mode(context, *modes):
@@ -71,7 +82,7 @@ def is_active_type(context, *types):
 
 def get_active_mesh(context):
     active = context.active_object
-    if active and active.type == 'MESH':
+    if active and active.type == "MESH":
         return active.data
     return None
 
@@ -107,11 +118,12 @@ def resolve_incremented_path(currentblend):
 def add_to_recent_files(path):
     try:
         import bpy  # type: ignore
-        recent_path = bpy.utils.user_resource('CONFIG', "recent-files.txt")
+
+        recent_path = bpy.utils.user_resource("CONFIG", "recent-files.txt")
         with open(recent_path, "r+") as f:
             content = f.read()
             f.seek(0, 0)
-            f.write(path.rstrip('\r\n') + '\n' + content)
+            f.write(path.rstrip("\r\n") + "\n" + content)
     except (IOError, OSError, FileNotFoundError, ImportError):
         pass
 

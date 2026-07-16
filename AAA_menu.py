@@ -1,10 +1,7 @@
 import bpy  # type: ignore
 from bpy.types import Menu  # type: ignore
 
-from AAA_utils import (
-    TMH, OBJ, MHE, MHS,
-    is_active_type, get_active_mesh
-)
+from AAA_utils import TMH, OBJ, MHE, MHS, is_active_type, get_active_mesh
 
 # TODO
 # flow.prop(context.preferences.inputs, "drag_threshold_tablet")
@@ -36,10 +33,10 @@ class VIEW3D_MT_MODE(Menu):
         LYT = self.layout
 
         if OBT == TMH:
-            LYT.operator(MS, text="A - Object Mode").mode = 'OBJECT'
-            LYT.operator(MS, text="S - Edit Mode").mode = 'EDIT'
-            LYT.operator(MS, text="D - Sculpt Mode").mode = 'SCULPT'
-            LYT.operator(MS, text="E - Vertex Paint").mode = 'VERTEX_PAINT'
+            LYT.operator(MS, text="A - Object Mode").mode = "OBJECT"
+            LYT.operator(MS, text="S - Edit Mode").mode = "EDIT"
+            LYT.operator(MS, text="D - Sculpt Mode").mode = "SCULPT"
+            LYT.operator(MS, text="E - Vertex Paint").mode = "VERTEX_PAINT"
         else:
             LYT.label(text="No valid object selected")
 
@@ -50,15 +47,14 @@ class VIEW3D_MT_VIEWPORT_DISPLAY(Menu):
     def draw(self, context):
         LYT = self.layout
 
-        LYT.operator("aaa.toggle_overlays",
-                     text="Q - Header").header = 'HEADER'
-        LYT.operator("aaa.toggle_overlays",
-                     text="A - Overlays").header = 'OVERLAYS'
+        LYT.operator("aaa.toggle_overlays", text="Q - Header").header = "HEADER"
+        LYT.operator("aaa.toggle_overlays", text="A - Overlays").header = "OVERLAYS"
         LYT.operator("aaa.toggle_overlays", text="F - Floor").header = "FLOOR"
 
         LYT.separator()
-        LYT.operator("aaa.toggle_prop", text="Z - Face Orientation") \
-            .prop = "context.space_data.overlay.show_face_orientation"
+        LYT.operator(
+            "aaa.toggle_prop", text="Z - Face Orientation"
+        ).prop = "context.space_data.overlay.show_face_orientation"
 
 
 class VIEW3D_MT_SHADING_OPTIONS(Menu):
@@ -77,12 +73,14 @@ class VIEW3D_MT_SHADING_OPTIONS(Menu):
                 if get_active_mesh(context):
                     # In 4.1+, auto smooth is driven by modifiers or mesh attributes, but we can display the label or call the modern equivalent if needed
                     # Let's add a toggle for the classic custom split normals or a toggle prop
-                    LYT.operator("object.shade_smooth",
-                                 text="D - Smooth (Auto)").use_auto_smooth = True
+                    LYT.operator(
+                        "object.shade_smooth", text="D - Smooth (Auto)"
+                    ).use_auto_smooth = True
 
         LYT.separator()
-        LYT.operator("wm.call_menu", text="C - Cavity Type") \
-            .name = "VIEW3D_MT_SHADING_OPTIONS_CAVITY"
+        LYT.operator(
+            "wm.call_menu", text="C - Cavity Type"
+        ).name = "VIEW3D_MT_SHADING_OPTIONS_CAVITY"
 
 
 class VIEW3D_MT_SHADING_OPTIONS_CAVITY(Menu):
@@ -91,11 +89,11 @@ class VIEW3D_MT_SHADING_OPTIONS_CAVITY(Menu):
     def draw(self, context):
         LYT = self.layout
 
-        cavity_state = "Disable" if context.space_data.shading.show_cavity \
-            else "Enable"
+        cavity_state = "Disable" if context.space_data.shading.show_cavity else "Enable"
 
-        LYT.operator("aaa.toggle_prop", text="W - " + cavity_state) \
-            .prop = "context.space_data.shading.show_cavity"
+        LYT.operator(
+            "aaa.toggle_prop", text="W - " + cavity_state
+        ).prop = "context.space_data.shading.show_cavity"
 
         TEMP = "context.space_data.shading.cavity_type"
         LYT.separator()
@@ -120,7 +118,10 @@ class VIEW3D_MT_RENDERER(Menu):
         LYT = self.layout
 
         engine_eevee = "BLENDER_EEVEE_NEXT"
-        if engine_eevee not in bpy.types.RenderSettings.bl_rna.properties['engine'].enum_items:
+        if (
+            engine_eevee
+            not in bpy.types.RenderSettings.bl_rna.properties["engine"].enum_items
+        ):
             engine_eevee = "BLENDER_EEVEE"
 
         LYT.operator(OP, text="W - LookDev").mode = "MATERIAL"
@@ -145,14 +146,13 @@ class VIEW3D_MT_VIEW(Menu):
 
         LYT.separator()
         LYT.operator(
-            "aaa.toggle_prop", text="R - Lock Orbit") \
-            .prop = "context.space_data.region_3d.lock_rotation"
+            "aaa.toggle_prop", text="R - Lock Orbit"
+        ).prop = "context.space_data.region_3d.lock_rotation"
 
-        LYT.operator(MN, text="X - Axis Roll")\
-            .name = "VIEW3D_MT_VIEW_AXIS_ROLL"
+        LYT.operator(MN, text="X - Axis Roll").name = "VIEW3D_MT_VIEW_AXIS_ROLL"
 
         LYT.separator()
-        LYT.operator_context = 'INVOKE_DEFAULT'
+        LYT.operator_context = "INVOKE_DEFAULT"
         LYT.operator("view3d.walk", text="F - Walk Navigation")
         LYT.operator("view3d.localview", text="Z - Local View")
 
@@ -165,26 +165,26 @@ class VIEW3D_MT_VIEW_ALIGN(Menu):
 
         props = LYT.operator("view3d.view_axis", text="Q - Top")
         props.align_active = True
-        props.type = 'TOP'
+        props.type = "TOP"
         props = LYT.operator("view3d.view_axis", text="A - Bottom")
         props.align_active = True
-        props.type = 'BOTTOM'
+        props.type = "BOTTOM"
 
         LYT.separator()
         props = LYT.operator("view3d.view_axis", text="W - Front")
         props.align_active = True
-        props.type = 'FRONT'
+        props.type = "FRONT"
         props = LYT.operator("view3d.view_axis", text="S - Back")
         props.align_active = True
-        props.type = 'BACK'
+        props.type = "BACK"
 
         LYT.separator()
         props = LYT.operator("view3d.view_axis", text="E - Right")
         props.align_active = True
-        props.type = 'RIGHT'
+        props.type = "RIGHT"
         props = LYT.operator("view3d.view_axis", text="D - Left")
         props.align_active = True
-        props.type = 'LEFT'
+        props.type = "LEFT"
 
 
 class VIEW3D_MT_VIEW_VIEW(Menu):
@@ -192,16 +192,16 @@ class VIEW3D_MT_VIEW_VIEW(Menu):
 
     def draw(self, context):
         LYT = self.layout
-        LYT.operator("view3d.view_axis", text="Q - Top").type = 'TOP'
-        LYT.operator("view3d.view_axis", text="A - Bottom").type = 'BOTTOM'
+        LYT.operator("view3d.view_axis", text="Q - Top").type = "TOP"
+        LYT.operator("view3d.view_axis", text="A - Bottom").type = "BOTTOM"
 
         LYT.separator()
-        LYT.operator("view3d.view_axis", text="W - Front").type = 'FRONT'
-        LYT.operator("view3d.view_axis", text="S - Back").type = 'BACK'
+        LYT.operator("view3d.view_axis", text="W - Front").type = "FRONT"
+        LYT.operator("view3d.view_axis", text="S - Back").type = "BACK"
 
         LYT.separator()
-        LYT.operator("view3d.view_axis", text="E - Right").type = 'RIGHT'
-        LYT.operator("view3d.view_axis", text="D - Left").type = 'LEFT'
+        LYT.operator("view3d.view_axis", text="E - Right").type = "RIGHT"
+        LYT.operator("view3d.view_axis", text="D - Left").type = "LEFT"
 
 
 class VIEW3D_MT_VIEW_AXIS_ROLL(Menu):
@@ -209,9 +209,9 @@ class VIEW3D_MT_VIEW_AXIS_ROLL(Menu):
 
     def draw(self, context):
         layout = self.layout
-        layout.operator("aaa.roll_axis", text="A - X Axis").axis = 'X'
-        layout.operator("aaa.roll_axis", text="S - Y Axis").axis = 'Y'
-        layout.operator("aaa.roll_axis", text="D - Z Axis").axis = 'Z'
+        layout.operator("aaa.roll_axis", text="A - X Axis").axis = "X"
+        layout.operator("aaa.roll_axis", text="S - Y Axis").axis = "Y"
+        layout.operator("aaa.roll_axis", text="D - Z Axis").axis = "Z"
 
 
 class VIEW3D_MT_TRANSFORM_GIZMO(Menu):
@@ -239,23 +239,18 @@ class VIEW3D_MT_SELECT(Menu):
 
         LYT = self.layout
 
-        if AT == 'VIEW_3D':
+        if AT == "VIEW_3D":
             if M in OBJ:
-                LYT.operator("object.select_all", text="A - All") \
-                    .action = 'SELECT'
-                LYT.operator("object.select_all", text="S - None") \
-                    .action = 'DESELECT'
-                LYT.operator("object.select_all", text="D - Invert") \
-                    .action = 'INVERT'
-                LYT.operator("object.select_grouped",
-                             text="Q - Select Grouped").type = 'PARENT'
+                LYT.operator("object.select_all", text="A - All").action = "SELECT"
+                LYT.operator("object.select_all", text="S - None").action = "DESELECT"
+                LYT.operator("object.select_all", text="D - Invert").action = "INVERT"
+                LYT.operator(
+                    "object.select_grouped", text="Q - Select Grouped"
+                ).type = "PARENT"
             elif M in MHE:
-                LYT.operator("mesh.select_all", text="A - All") \
-                    .action = 'SELECT'
-                LYT.operator("mesh.select_all", text="S - None") \
-                    .action = 'DESELECT'
-                LYT.operator("mesh.select_all", text="D - Invert") \
-                    .action = 'INVERT'
+                LYT.operator("mesh.select_all", text="A - All").action = "SELECT"
+                LYT.operator("mesh.select_all", text="S - None").action = "DESELECT"
+                LYT.operator("mesh.select_all", text="D - Invert").action = "INVERT"
 
                 LYT.separator()
                 LYT.operator("mesh.select_linked", text="Q - Linked")
@@ -265,19 +260,16 @@ class VIEW3D_MT_SELECT(Menu):
                 LYT.operator("mesh.region_to_loop", text="F - Boundary")
             elif M in MHS:
                 OP = LYT.operator("paint.mask_flood_fill", text="S - Clear")
-                OP.mode = 'VALUE'
+                OP.mode = "VALUE"
                 OP.value = 0
 
                 OP = LYT.operator("paint.mask_flood_fill", text="D - Invert")
-                OP.mode = 'INVERT'
+                OP.mode = "INVERT"
 
-        elif AT == 'SEQUENCE_EDITOR':
-            LYT.operator("sequencer.select_all", text="A - All") \
-                .action = 'SELECT'
-            LYT.operator("sequencer.select_all", text="S - None") \
-                .action = 'DESELECT'
-            LYT.operator("sequencer.select_all", text="D - Invert") \
-                .action = 'INVERT'
+        elif AT == "SEQUENCE_EDITOR":
+            LYT.operator("sequencer.select_all", text="A - All").action = "SELECT"
+            LYT.operator("sequencer.select_all", text="S - None").action = "DESELECT"
+            LYT.operator("sequencer.select_all", text="D - Invert").action = "INVERT"
 
 
 class VIEW3D_MT_SELECT_MODE(Menu):
@@ -306,14 +298,14 @@ class VIEW3D_MT_CURSOR_POSITION(Menu):
         layout = self.layout
 
         if M in (OBJ, MHE):
-            layout.operator("view3d.snap_cursor_to_center",
-                            text="A - Cursor to Center")
-            layout.operator("view3d.snap_cursor_to_selected",
-                            text="D - Cursor to Selection")
-            layout.operator("view3d.snap_cursor_to_active",
-                            text="W - Cursor to Active")
-            layout.operator("view3d.snap_selected_to_cursor",
-                            text="S - Selection with Offset").use_offset = True
+            layout.operator("view3d.snap_cursor_to_center", text="A - Cursor to Center")
+            layout.operator(
+                "view3d.snap_cursor_to_selected", text="D - Cursor to Selection"
+            )
+            layout.operator("view3d.snap_cursor_to_active", text="W - Cursor to Active")
+            layout.operator(
+                "view3d.snap_selected_to_cursor", text="S - Selection with Offset"
+            ).use_offset = True
 
 
 class VIEW3D_MT_ANIMATION_PLAYBACK(Menu):
@@ -324,8 +316,7 @@ class VIEW3D_MT_ANIMATION_PLAYBACK(Menu):
         layout.operator("screen.animation_play", text="D - Play")
         layout.operator("screen.frame_jump", text="A - Jump Start").end = False
         layout.operator("screen.frame_jump", text="Q - Jump End").end = True
-        layout.operator("screen.animation_play",
-                        text="E - Reverse").reverse = True
+        layout.operator("screen.animation_play", text="E - Reverse").reverse = True
 
 
 class VIEW3D_MT_ABOUT_FRAMES(Menu):
@@ -335,10 +326,10 @@ class VIEW3D_MT_ABOUT_FRAMES(Menu):
         LYT = self.layout
 
         LYT = self.layout
-        LYT.operator("wm.call_panel",
-                     text="A - Rate").name = "VIEW3D_PT_FRAME_RATE"
+        LYT.operator("wm.call_panel", text="A - Rate").name = "VIEW3D_PT_FRAME_RATE"
         LYT.operator(
-            "aaa.toggle_prop", text="D - Preview").prop = "context.scene.use_preview_range"
+            "aaa.toggle_prop", text="D - Preview"
+        ).prop = "context.scene.use_preview_range"
 
         # LYT.operator("wm.call_panel",
         #              text="xxxF - Range").name = "VIEW3D_PT_FRAME_RANGE"
@@ -385,16 +376,19 @@ class VIEW3D_MT_PIVOT_POINT(Menu):
             LYT.separator()
 
             STATE = " [ON]" if TS.use_transform_data_origin else " [OFF]"
-            LYT.operator("aaa.toggle_prop", text="Z - Only Origins" + STATE) \
-                .prop = TS2 + ".use_transform_data_origin"
+            LYT.operator("aaa.toggle_prop", text="Z - Only Origins" + STATE).prop = (
+                TS2 + ".use_transform_data_origin"
+            )
 
             STATE = " [ON]" if TS.use_transform_skip_children else " [OFF]"
-            LYT.operator("aaa.toggle_prop", text="X - Only Parents" + STATE) \
-                .prop = TS2 + ".use_transform_skip_children"
+            LYT.operator("aaa.toggle_prop", text="X - Only Parents" + STATE).prop = (
+                TS2 + ".use_transform_skip_children"
+            )
 
             STATE = " [ON]" if TS.use_transform_pivot_point_align else " [OFF]"
-            LYT.operator("aaa.toggle_prop", text="C - Only Locations" + STATE)\
-                .prop = TS2 + ".use_transform_pivot_point_align"
+            LYT.operator("aaa.toggle_prop", text="C - Only Locations" + STATE).prop = (
+                TS2 + ".use_transform_pivot_point_align"
+            )
 
 
 class VIEW3D_MT_FACE_SETS(Menu):
@@ -403,12 +397,13 @@ class VIEW3D_MT_FACE_SETS(Menu):
     def draw(self, context):
         LYT = self.layout
 
-        LYT.operator("sculpt.face_sets_create",
-                     text="A - From Masked").mode = "MASKED"
-        LYT.operator("sculpt.face_sets_create",
-                     text="S - From Visible").mode = "VISIBLE"
-        LYT.operator("sculpt.face_sets_create",
-                     text="D - From Selection").mode = "SELECTION"
+        LYT.operator("sculpt.face_sets_create", text="A - From Masked").mode = "MASKED"
+        LYT.operator(
+            "sculpt.face_sets_create", text="S - From Visible"
+        ).mode = "VISIBLE"
+        LYT.operator(
+            "sculpt.face_sets_create", text="D - From Selection"
+        ).mode = "SELECTION"
 
 
 class VIEW3D_MT_MHE_MODE(Menu):
@@ -417,12 +412,9 @@ class VIEW3D_MT_MHE_MODE(Menu):
     def draw(self, context):
         LYT = self.layout
 
-        LYT.operator("mesh.select_mode", text="A - Vertex Select") \
-            .type = 'VERT'
-        LYT.operator("mesh.select_mode", text="S - Edge Select") \
-            .type = 'EDGE'
-        LYT.operator("mesh.select_mode", text="D - Face Select")\
-            .type = 'FACE'
+        LYT.operator("mesh.select_mode", text="A - Vertex Select").type = "VERT"
+        LYT.operator("mesh.select_mode", text="S - Edge Select").type = "EDGE"
+        LYT.operator("mesh.select_mode", text="D - Face Select").type = "FACE"
 
 
 class VIEW3D_MT_STD_TOOLS(Menu):
@@ -435,7 +427,7 @@ class VIEW3D_MT_STD_TOOLS(Menu):
         BRUSH = "brushes\\essentials_brushes-mesh_sculpt.blend\\Brush\\"
 
         if M in (MHE):
-            LYT.operator_context = 'INVOKE_DEFAULT'
+            LYT.operator_context = "INVOKE_DEFAULT"
 
             LYT.operator("mesh.duplicate_move", text="Q - Duplicate")
             LYT.operator("mesh.inset", text="W - Inset")
@@ -448,20 +440,18 @@ class VIEW3D_MT_STD_TOOLS(Menu):
 
             # custom built-in operator call to make sure the active tool
             # switches from the selection ones to the spin tool
-            LYT.operator("aaa.std_tools", text="F - Spin") \
-                .name = "SPIN_TOOL"
+            LYT.operator("aaa.std_tools", text="F - Spin").name = "SPIN_TOOL"
 
             LYT.separator()
             LYT.operator("mesh.remove_doubles", text="Z - Remove Doubles")
-            LYT.operator("wm.call_menu", text="C - Merge") \
-                .name = "VIEW3D_MT_edit_mesh_merge"
+            LYT.operator(
+                "wm.call_menu", text="C - Merge"
+            ).name = "VIEW3D_MT_edit_mesh_merge"
             LYT.operator("mesh.subdivide", text="V - Subdivide")
 
         elif M in (OBJ):
-            LYT.operator("object.parent_set", text="E - Parent Object") \
-                .type = 'OBJECT'
-            LYT.operator("object.parent_clear", text="Q - Clear Parent") \
-                .type = 'CLEAR'
+            LYT.operator("object.parent_set", text="E - Parent Object").type = "OBJECT"
+            LYT.operator("object.parent_clear", text="Q - Clear Parent").type = "CLEAR"
 
         elif M in (MHS):
             OP = LYT.operator("brush.asset_activate", text="R - Smooth")
@@ -509,19 +499,23 @@ class VIEW3D_MT_STD_TOOLS(Menu):
             OP.relative_asset_identifier = BRUSH + "Flatten/Contrast"
 
             LYT.separator()
-            LYT.operator("wm.tool_set_by_id", text="Z - Mask") \
-                .name = "builtin_brush.mask"
+            LYT.operator(
+                "wm.tool_set_by_id", text="Z - Mask"
+            ).name = "builtin_brush.mask"
 
             LYT.separator()
-            LYT.operator("wm.tool_set_by_id", text="H - Lasso Hide") \
-                .name = "builtin.lasso_hide"
+            LYT.operator(
+                "wm.tool_set_by_id", text="H - Lasso Hide"
+            ).name = "builtin.lasso_hide"
 
             LYT.separator()
-            LYT.operator("wm.tool_set_by_id", text="X - Line Trim") \
-                .name = "builtin.line_trim"
+            LYT.operator(
+                "wm.tool_set_by_id", text="X - Line Trim"
+            ).name = "builtin.line_trim"
 
-            LYT.operator("wm.tool_set_by_id", text="A - Lasso Trim") \
-                .name = "builtin.lasso_trim"
+            LYT.operator(
+                "wm.tool_set_by_id", text="A - Lasso Trim"
+            ).name = "builtin.lasso_trim"
 
 
 class VIEW3D_MT_MODIFIERS(Menu):
@@ -530,17 +524,16 @@ class VIEW3D_MT_MODIFIERS(Menu):
     def draw(self, context):
         LYT = self.layout
 
-        LYT.operator("wm.call_panel",
-                     text="D - Manage").name = 'VIEW3D_PT_manage_modifiers'
+        LYT.operator(
+            "wm.call_panel", text="D - Manage"
+        ).name = "VIEW3D_PT_manage_modifiers"
         LYT.separator()
 
-        LYT.operator("object.modifier_add",
-                     text="S - Subsurf").type = 'SUBSURF'
+        LYT.operator("object.modifier_add", text="S - Subsurf").type = "SUBSURF"
 
-        LYT.operator("object.modifier_add", text="T - Mirror").type = 'MIRROR'
+        LYT.operator("object.modifier_add", text="T - Mirror").type = "MIRROR"
 
-        LYT.operator("object.modifier_add",
-                     text="V - Solidify").type = 'SOLIDIFY'
+        LYT.operator("object.modifier_add", text="V - Solidify").type = "SOLIDIFY"
 
 
 class VIEW3D_MT_APPLY_CLEAR(Menu):
@@ -550,8 +543,8 @@ class VIEW3D_MT_APPLY_CLEAR(Menu):
         LYT = self.layout
         MN = "wm.call_menu"
 
-        LYT.operator(MN, text="A - Apply").name = 'VIEW3D_MT_APPLY'
-        LYT.operator(MN, text="D - Clear").name = 'VIEW3D_MT_CLEAR'
+        LYT.operator(MN, text="A - Apply").name = "VIEW3D_MT_APPLY"
+        LYT.operator(MN, text="D - Clear").name = "VIEW3D_MT_CLEAR"
 
 
 class VIEW3D_MT_APPLY(Menu):
@@ -564,8 +557,7 @@ class VIEW3D_MT_APPLY(Menu):
         props.location = True
         props.scale = True
         props.rotation = True
-        props = LYT.operator("object.transform_apply",
-                             text="W - Except Location")
+        props = LYT.operator("object.transform_apply", text="W - Except Location")
         props.location = False
         props.scale = True
         props.rotation = True
@@ -592,19 +584,19 @@ class VIEW3D_MT_CLEAR(Menu):
 
     def draw(self, context):
         LYT = self.layout
-        OB = 'object'
+        OB = "object"
 
-        props = LYT.operator(OB+".location_clear", text="A - Location")
+        props = LYT.operator(OB + ".location_clear", text="A - Location")
         props.clear_delta = False
 
-        props = LYT.operator(OB+".scale_clear", text="S - Scale")
+        props = LYT.operator(OB + ".scale_clear", text="S - Scale")
         props.clear_delta = False
 
-        props = LYT.operator(OB+".rotation_clear", text="D - Rotation")
+        props = LYT.operator(OB + ".rotation_clear", text="D - Rotation")
         props.clear_delta = False
 
         LYT.separator()
-        props = LYT.operator(OB+".origin_clear", text="W - Origin to Parent")
+        props = LYT.operator(OB + ".origin_clear", text="W - Origin to Parent")
 
 
 class VIEW3D_MT_SCULPT_OPS(Menu):
@@ -613,45 +605,35 @@ class VIEW3D_MT_SCULPT_OPS(Menu):
     def draw(self, context):
         LYT = self.layout
         op = LYT.operator("paint.hide_show_masked", text="F - Hide Masked")
-        op.action = 'HIDE'
+        op.action = "HIDE"
 
         op = LYT.operator("paint.hide_show_all", text="G - Show All")
-        op.action = 'SHOW'
+        op.action = "SHOW"
 
 
 classes = (
     VIEW3D_MT_WORKSPACE,
     VIEW3D_MT_MODE,
     VIEW3D_MT_SCULPT_OPS,
-
     VIEW3D_MT_VIEWPORT_DISPLAY,
     VIEW3D_MT_SHADING_OPTIONS,
     VIEW3D_MT_SHADING_OPTIONS_CAVITY,
     VIEW3D_MT_RENDERER,
-
     VIEW3D_MT_VIEW,
     VIEW3D_MT_VIEW_ALIGN,
     VIEW3D_MT_VIEW_VIEW,
     VIEW3D_MT_VIEW_AXIS_ROLL,
-
     VIEW3D_MT_TRANSFORM_GIZMO,
-
     VIEW3D_MT_SELECT,
     VIEW3D_MT_SELECT_MODE,
-
     VIEW3D_MT_CURSOR_POSITION,
-
     VIEW3D_MT_ANIMATION_PLAYBACK,
     VIEW3D_MT_ABOUT_FRAMES,
-
     VIEW3D_MT_PIVOT_POINT,
-
     VIEW3D_MT_FACE_SETS,
-
     VIEW3D_MT_MHE_MODE,
     VIEW3D_MT_STD_TOOLS,
     VIEW3D_MT_MODIFIERS,
-
     VIEW3D_MT_APPLY_CLEAR,
     VIEW3D_MT_APPLY,
     VIEW3D_MT_CLEAR,
