@@ -766,7 +766,32 @@ class TestContextDebugger(Operator):
         return {"FINISHED"}
 
 
+class AAA_OT_clear_all_transforms(Operator):
+    bl_idname = "aaa.clear_all_transforms"
+    bl_label = "Clear All Transforms"
+    bl_options = {"UNDO"}
+
+    def execute(self, context):
+        bpy.ops.object.location_clear(clear_delta=False)
+        bpy.ops.object.rotation_clear(clear_delta=False)
+        bpy.ops.object.scale_clear(clear_delta=False)
+        return {"FINISHED"}
+
+
+class AAA_OT_clear_except_location(Operator):
+    bl_idname = "aaa.clear_except_location"
+    bl_label = "Clear Except Location"
+    bl_options = {"UNDO"}
+
+    def execute(self, context):
+        bpy.ops.object.rotation_clear(clear_delta=False)
+        bpy.ops.object.scale_clear(clear_delta=False)
+        return {"FINISHED"}
+
+
 classes = (
+    AAA_OT_clear_all_transforms,
+    AAA_OT_clear_except_location,
     SaveFile,
     SaveIncremental,
     SwitchWorkspace,

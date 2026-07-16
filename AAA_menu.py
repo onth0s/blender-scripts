@@ -586,6 +586,9 @@ class VIEW3D_MT_CLEAR(Menu):
         LYT = self.layout
         OB = "object"
 
+        LYT.operator("aaa.clear_all_transforms", text="Q - Clear All")
+        LYT.separator()
+
         props = LYT.operator(OB + ".location_clear", text="A - Location")
         props.clear_delta = False
 
@@ -595,8 +598,10 @@ class VIEW3D_MT_CLEAR(Menu):
         props = LYT.operator(OB + ".rotation_clear", text="D - Rotation")
         props.clear_delta = False
 
+        LYT.operator("aaa.clear_except_location", text="W - Except Location")
+
         LYT.separator()
-        props = LYT.operator(OB + ".origin_clear", text="W - Origin to Parent")
+        props = LYT.operator(OB + ".origin_clear", text="E - Origin to Parent")
 
 
 class VIEW3D_MT_SCULPT_OPS(Menu):
