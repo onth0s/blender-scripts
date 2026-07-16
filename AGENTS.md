@@ -12,3 +12,8 @@ These scripts are ad hoc automations and shortcuts tailored to the specific work
 
 - **Do not remove or change** empty operators or empty menu calls (e.g. `.name = ""` or empty arguments) in `AAA_pie.py` — they are deliberate layout placeholders/anchors to maintain pie menu direction balance.
 
+# Namespace Rules
+
+- **Use the `AAA_` prefix** (e.g. `AAA_PT_` for panels, `AAA_OT_` for operators, `AAA_MT_` for menus) on custom classes and registered types where there is a likelihood of namespace conflicts with Blender's built-in types.
+
+

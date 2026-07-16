@@ -128,6 +128,8 @@ class PIE_MT_S(Menu):
         if M in (OBJ, MHE):
             pie.operator(PT, text="Proportional") \
                 .name = "VIEW3D_PT_proportional_edit_2"
+        elif M in MHS:
+            pie.operator(PT, text="Symmetry").name = "AAA_PT_sculpt_symmetry"
         else:
             pie.operator(MT, text="").name = ""
         # ------------------------   BOTTOM-RIGHT   ------------------------- #

@@ -233,6 +233,30 @@ class VIEW3D_PT_background_color(AAAPanel, Panel):
             LYT.row().prop(context.scene.world, "color", text="")
 
 
+class AAA_PT_sculpt_symmetry(AAAPanel, Panel):
+    bl_label = "Symmetry & Symmetrize"
+    bl_ui_units_x = 10
+
+    def draw(self, context):
+        layout = self.layout
+        ob = context.active_object
+        tool_settings = context.tool_settings
+
+        row = layout.row(align=True)
+        row.label(text="Mirror:")
+        sub = row.row(align=True)
+        if ob:
+            sub.prop(ob, "use_mesh_mirror_x", text="X", toggle=True)
+            sub.prop(ob, "use_mesh_mirror_y", text="Y", toggle=True)
+            sub.prop(ob, "use_mesh_mirror_z", text="Z", toggle=True)
+        else:
+            sub.label(text="None")
+
+        layout.separator()
+
+        if tool_settings.sculpt:
+            layout.prop(tool_settings.sculpt, "symmetrize_direction", text="Direction")
+        layout.operator("sculpt.symmetrize", text="Symmetrize")
 class VIEW3D_PT_FRAME_RATE(AAAPanel, Panel):
     bl_ui_units_x = 12
     bl_label = ""
@@ -241,6 +265,7 @@ class VIEW3D_PT_FRAME_RATE(AAAPanel, Panel):
         LYT = self.layout
 
         LYT.prop(context.scene.render, "fps")
+
 
 classes = (
     VIEW3D_PT_manage_modifiers,
@@ -254,6 +279,7 @@ classes = (
     VIEW3D_PT_background_color,
 
     VIEW3D_PT_FRAME_RATE,
+    AAA_PT_sculpt_symmetry,
 )
 
 
