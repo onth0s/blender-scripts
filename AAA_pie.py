@@ -122,8 +122,8 @@ class PIE_MT_S(Menu):
         # ------------------------   TOP-RIGHT   ---------------------------- #
         if M in (ALL) and context.mode != 'SCULPT':
             pie.operator(MT, text="Modifiers").name = "VIEW3D_MT_MODIFIERS"
-        else:
-            pie.operator(MT, text="").name = ""
+        elif M in MHS:
+            pie.operator(MT, text="Operators").name = "VIEW3D_MT_SCULPT_OPS"
         # ------------------------   BOTTOM-LEFT   -------------------------- #
         if M in (OBJ, MHE):
             pie.operator(PT, text="Proportional") \

@@ -236,6 +236,7 @@ class VIEW3D_PT_background_color(AAAPanel, Panel):
 class AAA_PT_sculpt_symmetry(AAAPanel, Panel):
     bl_label = "Symmetry & Symmetrize"
     bl_ui_units_x = 10
+    bl_options = {'INSTANCED'}
 
     def draw(self, context):
         layout = self.layout
@@ -246,17 +247,24 @@ class AAA_PT_sculpt_symmetry(AAAPanel, Panel):
         row.label(text="Mirror:")
         sub = row.row(align=True)
         if ob:
-            sub.prop(ob, "use_mesh_mirror_x", text="X", toggle=True)
-            sub.prop(ob, "use_mesh_mirror_y", text="Y", toggle=True)
-            sub.prop(ob, "use_mesh_mirror_z", text="Z", toggle=True)
+            if context.mode == 'SCULPT' and ob.type == 'MESH':
+                mesh = ob.data
+                sub.prop(mesh, "use_mirror_x", text="X", toggle=True)
+                sub.prop(mesh, "use_mirror_y", text="Y", toggle=True)
+                sub.prop(mesh, "use_mirror_z", text="Z", toggle=True)
+            else:
+                sub.prop(ob, "use_mesh_mirror_x", text="X", toggle=True)
+                sub.prop(ob, "use_mesh_mirror_y", text="Y", toggle=True)
+                sub.prop(ob, "use_mesh_mirror_z", text="Z", toggle=True)
         else:
             sub.label(text="None")
 
         layout.separator()
 
+        row2 = layout.row(align=True)
         if tool_settings.sculpt:
-            layout.prop(tool_settings.sculpt, "symmetrize_direction", text="Direction")
-        layout.operator("sculpt.symmetrize", text="Symmetrize")
+            row2.prop(tool_settings.sculpt, "symmetrize_direction", text="")
+        row2.operator("sculpt.symmetrize", text="Symmetrize")
 class VIEW3D_PT_FRAME_RATE(AAAPanel, Panel):
     bl_ui_units_x = 12
     bl_label = ""
