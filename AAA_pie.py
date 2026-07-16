@@ -225,7 +225,10 @@ class PIE_MT_SAVE_N_STUFF(Menu):
         pie.operator("wm.save_homefile", text="Override Startup")
         pie.operator("wm.obj_import", text="Import OBJ")
 
-        pie.operator("wm.append", text="Append")
+        if context.area.type == 'TEXT_EDITOR':
+            pie.operator("text.comment_toggle", text="Toggle Comment")
+        else:
+            pie.operator("wm.append", text="Append")
 
         # leave 'app_template' in blank to load the 'startup' file
         pie.operator("wm.read_homefile", text="New File").app_template = ""
