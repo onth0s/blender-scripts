@@ -213,11 +213,26 @@ class RollViewport(Operator):
         rv3d = context.space_data.region_3d
         context.window_manager.modal_handler_add(self)
 
-        ''' TODO
-            takes you out from the camera view into the perspective view to call the rotation view modal
-            it should rotate the camera too, or be an option'''
-        if rv3d.view_perspective == 'CAMERA':
-            rv3d.view_perspective = 'PERSP'
+        self.camera = context.scene.camera
+        self.rotate_camera = (rv3d.view_perspective == 'CAMERA' and self.camera is not None)
+
+        if not self.rotate_camera:
+            if rv3d.view_perspective == 'CAMERA':
+                rv3d.view_perspective = 'PERSP'
+
+        if self.rotate_camera:
+            self.camera_rotation_mode = self.camera.rotation_mode
+            if self.camera_rotation_mode == 'QUATERNION':
+                self.initial_camera_rotation = self.camera.rotation_quaternion.copy()
+                self.initial_camera_rotation_quat = self.initial_camera_rotation
+            elif self.camera_rotation_mode == 'AXIS_ANGLE':
+                self.initial_camera_rotation = list(self.camera.rotation_axis_angle)
+                axis = Vector(self.initial_camera_rotation[1:])
+                angle = self.initial_camera_rotation[0]
+                self.initial_camera_rotation_quat = Quaternion(axis, angle)
+            else:
+                self.initial_camera_rotation = self.camera.rotation_euler.copy()
+                self.initial_camera_rotation_quat = self.initial_camera_rotation.to_quaternion()
 
         # viewport size in pixels
         self.view3d_bounds = Vector(  # type: ignore
@@ -270,7 +285,18 @@ class RollViewport(Operator):
 
         angle_diff = self.angle_now - self.initial_angle
         quat = Quaternion(self.camNormal, angle_diff)  # type: ignore
-        rv3d.view_rotation = self.initial_rotation @ quat
+
+        if self.rotate_camera:
+            new_quat = self.initial_camera_rotation_quat @ quat
+            if self.camera_rotation_mode == 'QUATERNION':
+                self.camera.rotation_quaternion = new_quat
+            elif self.camera_rotation_mode == 'AXIS_ANGLE':
+                axis_angle = new_quat.to_axis_angle()
+                self.camera.rotation_axis_angle = (axis_angle[1], *axis_angle[0])
+            else:
+                self.camera.rotation_euler = new_quat.to_euler(self.camera_rotation_mode)
+        else:
+            rv3d.view_rotation = self.initial_rotation @ quat
 
         if angle_diff > 0:
             # print(to_degrees(angle_diff))
@@ -313,7 +339,16 @@ class RollViewport(Operator):
                 self._draw_handler = None
             return {'FINISHED'}
         elif event.type in {'RIGHTMOUSE', 'ESC'}:
-            rv3d.view_rotation = self.initial_rotation
+            if self.rotate_camera:
+                if self.camera_rotation_mode == 'QUATERNION':
+                    self.camera.rotation_quaternion = self.initial_camera_rotation
+                elif self.camera_rotation_mode == 'AXIS_ANGLE':
+                    self.camera.rotation_axis_angle = self.initial_camera_rotation
+                else:
+                    self.camera.rotation_euler = self.initial_camera_rotation
+            else:
+                rv3d.view_rotation = self.initial_rotation
+
             if self._draw_handler:
                 bpy.types.SpaceView3D.draw_handler_remove(self._draw_handler, 'WINDOW')
                 self._draw_handler = None
