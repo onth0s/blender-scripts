@@ -48,7 +48,9 @@ class PIE_MT_SPACE(Menu):
             pie.operator(MN, text="").name = ""
 
         # ------------------------   BOTTOM   ------------------------------- #
-        if M in (ALL):
+        if M in (MHS):
+            pie.operator(MN, text="Sculpt Filters").name = "VIEW3D_MT_SCULPT_FILTERS"
+        elif M in (ALL):
             pie.operator(MN, text="Apply/Clear").name = "VIEW3D_MT_APPLY_CLEAR"
 
         # ------------------------   TOP   ---------------------------------- #

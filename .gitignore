@@ -1,6 +1,8 @@
 *
 !AAA_*
+!AAA_*/**
 !BBB_*
+!BBB_*/**
 !AGENTS.md
 !TODO.md
 !PLAN.md
@@ -8,3 +10,5 @@
 !NOTES.md
 !README.md
 !.gitignore
+__pycache__/
+*.pyc
