@@ -72,3 +72,65 @@ class SaveIncremental(Operator):
                 return {"FINISHED"}
             self.report({"WARNING"}, "File has not been saved yet. Save it first.")
             return {"CANCELLED"}
+
+
+class ReloadScripts(Operator):
+    bl_idname = "aaa.reload_scripts"
+    bl_label = "Reload AAA Scripts"
+    bl_options = {"REGISTER"}
+
+    def execute(self, context):
+        import bpy
+        import sys
+
+        def delayed_reload():
+            # 1. Unregister top-level modules
+            for name in list(sys.modules.keys()):
+                if name.startswith("AAA_") and "." not in name:
+                    mod = sys.modules[name]
+                    if hasattr(mod, "unregister"):
+                        try:
+                            mod.unregister()
+                        except Exception as e:
+                            print(f"Error unregistering {name}: {e}")
+
+            # 2. Clear all AAA modules from sys.modules
+            for name in list(sys.modules.keys()):
+                if name.startswith("AAA"):
+                    del sys.modules[name]
+
+            # 3. Re-import and Register in order
+            try:
+                import AAA_utils
+                import AAA_settings
+                import AAA_operator
+                import AAA_menu
+                import AAA_panel
+                import AAA_pie
+                import AAA_keymap
+
+                modules = [
+                    AAA_utils,
+                    AAA_settings,
+                    AAA_operator,
+                    AAA_menu,
+                    AAA_panel,
+                    AAA_pie,
+                    AAA_keymap,
+                ]
+
+                for mod in modules:
+                    if hasattr(mod, "register"):
+                        mod.register()
+
+                print("Reloaded AAA scripts successfully")
+            except Exception as e:
+                print(f"Failed to reload AAA scripts: {e}")
+
+            return None
+
+        # Schedule execution to run outside of the operator call stack
+        bpy.app.timers.register(delayed_reload, first_interval=0.01)
+        self.report({"INFO"}, "Scripts Reloaded!")
+        return {"FINISHED"}
+

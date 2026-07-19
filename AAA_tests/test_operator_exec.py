@@ -192,3 +192,10 @@ class TestSwitchValue(unittest.TestCase):
         )
         self.assertEqual(res, {"FINISHED"})
         self.assertIsInstance(bpy.context.scene.conditions, str)
+
+
+class TestReloadScripts(unittest.TestCase):
+    def test_reload_scripts_execution(self):
+        res = bpy.ops.aaa.reload_scripts()
+        self.assertEqual(res, {"FINISHED"})
+

@@ -23,6 +23,7 @@ from AAA_tests.test_operator_exec import (
     TestToggleProp,
     TestSwitchCondition,
     TestSwitchValue,
+    TestReloadScripts,
 )
 from AAA_tests.test_viewport_math import TestRollViewportMath, TestSwitchRendererLogic
 from AAA_tests.test_routing import TestKeyConditionsRouting, TestConditionsRouter

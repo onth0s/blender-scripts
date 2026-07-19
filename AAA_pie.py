@@ -212,7 +212,7 @@ class PIE_MT_SAVE_N_STUFF(Menu):
         if context.area.type == "TEXT_EDITOR":
             pie.operator("text.run_script", text="Run Script")
         else:
-            pie.operator("script.reload", text="Reload Scripts")
+            pie.operator("aaa.reload_scripts", text="Reload Scripts")
 
         pie.operator("aaa.save_file", text="Save")
 

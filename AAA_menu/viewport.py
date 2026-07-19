@@ -50,6 +50,9 @@ class VIEW3D_MT_VIEWPORT_DISPLAY(Menu):
         LYT.operator(
             "aaa.toggle_prop", text="Z - Face Orientation"
         ).prop = "context.space_data.overlay.show_face_orientation"
+        LYT.operator(
+            "aaa.toggle_prop", text="W - Wireframes"
+        ).prop = "bpy.context.space_data.overlay.show_wireframes"
 
 
 class VIEW3D_MT_SHADING_OPTIONS(Menu):

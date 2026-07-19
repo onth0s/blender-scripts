@@ -1,6 +1,6 @@
 import bpy  # type: ignore
 
-from .file_ops import SaveFile, SaveIncremental
+from .file_ops import SaveFile, SaveIncremental, ReloadScripts
 from .viewport import (
     SwitchWorkspace,
     ToggleOverlays,
@@ -24,6 +24,7 @@ classes = (
     AAA_OT_clear_except_location,
     SaveFile,
     SaveIncremental,
+    ReloadScripts,
     SwitchWorkspace,
     ModeSet,
     ToggleOverlays,
