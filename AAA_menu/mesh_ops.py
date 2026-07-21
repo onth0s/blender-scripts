@@ -83,6 +83,10 @@ class VIEW3D_MT_STD_TOOLS(Menu):
             OP.asset_library_type = "ESSENTIALS"
             OP.relative_asset_identifier = BRUSH + "Flatten/Contrast"
 
+            OP = LYT.operator("brush.asset_activate", text="V - Draw Sharp")
+            OP.asset_library_type = "ESSENTIALS"
+            OP.relative_asset_identifier = BRUSH + "Draw Sharp"
+
             LYT.separator()
             LYT.operator(
                 "wm.tool_set_by_id", text="Z - Mask"
