@@ -5,8 +5,8 @@ operators, panels, keymaps, and scene settings — tailored to a single-user
 sculpting/retopology workflow.
 
 > **Pragmatism over purity.** These are ad hoc automations, not a polished
-> addon. No `bl_info`, no `__init__.py`. They live in Blender's startup
-> directory and auto-register on launch.
+> addon. No `bl_info`. They live in Blender's startup directory as thin
+> wrapper modules over packages and auto-register on launch.
 
 ---
 
@@ -15,13 +15,15 @@ sculpting/retopology workflow.
 | File | Purpose |
 |---|---|
 | `AAA_settings.py` | Declares custom `Scene` properties (`conditions`, `show_overlays`, `axis_roll`, `loop_frames`, …) |
-| `AAA_operator.py` | ~20 operators: save, mode switching, modifier reorder, viewport roll, global key routing, property toggles, debug tools |
-| `AAA_menu.py` | Custom `VIEW3D_MT_*` menus (workspace, mode, viewport display, shading, renderer, select, tools, modifiers, pivot, apply/clear, …) |
+| `AAA_operator.py` | Thin wrapper that registers the `AAA_operator/` package on import |
+| `AAA_operator/` | Package of 22 operators: save, mode switching, workspace switch, modifier reorder, viewport roll, global key routing, property toggles, clear transforms, debug tools |
+| `AAA_menu.py` | Thin wrapper that registers the `AAA_menu/` package on import |
+| `AAA_menu/` | Custom `VIEW3D_MT_*` menus (workspace, mode, viewport display, shading, renderer, select, tools, modifiers, pivot, apply/clear, …) |
 | `AAA_pie.py` | Pie menus: **SPACE** (general), **S** (tools), **A** (animation), **Z** (shading), **C** (key conditions), **Ctrl+S** (save) |
-| `AAA_panel.py` | Popover panels (modifier manager, proportional edit, frame range, object color, lighting, background, frame rate) |
+| `AAA_panel.py` | Popover panels (modifier manager, proportional edit, frame range, object color, lighting, background, frame rate, sculpt symmetry) |
 | `AAA_keymap.py` | Global keymap registration — ties pie menus & operators to keyboard shortcuts |
 | `AAA_utils.py` | Shared constants (`OBJ`, `MHE`, `MHS`, `ALL`, …), mode/type helpers, incremental save path resolver |
-| `AAA_tests.py` | Headless test suite (`unittest`), runnable via `blender --background -noaudio --python AAA_tests.py --` |
+| `AAA_tests/` | Headless test suite (`unittest`) split into test modules; runner lives in `AAA_tests/__init__.py` |
 
 ---
 
@@ -29,12 +31,12 @@ sculpting/retopology workflow.
 
 | Key | Pie | Contents |
 |---|---|---|
-| **SPACE** | `PIE_MT_SPACE` | Workspace, View, Select, Select Mode, Apply/Clear, Object Ops / Edit Mode / Face Sets |
-| **S** | `PIE_MT_S` | Orientation, Tools, Pivot Point, Snapping, Proportional Edit, Modifiers, Cursor |
+| **SPACE** | `PIE_MT_SPACE` | Workspace, View, Select, Select Mode, Apply/Clear, Object Ops / Edit Mode / Face Sets, Transform Gizmo, Sculpt Filters |
+| **S** | `PIE_MT_S` | Orientation, Tools, Pivot Point, Snapping, Proportional Edit, Modifiers, Cursor, Mode, Sculpt Symmetry/Operators |
 | **A** | `PIE_MT_ANIMATION` | Timeline playback, frame range |
 | **Z** | `VIEW3D_MT_SHADING_PIE` | Object Color, Display, Renderer, Lighting, Background, Shading Options |
 | **C** | `PIE_MT_KEY_CONDITIONS` | Switch between Transform / Timeline key routing modes |
-| **Ctrl+S** | `PIE_MT_SAVE_N_STUFF` | Save, Save Incremental, Open, New, Append, Import OBJ, Override Startup, Run Script |
+| **Ctrl+S** | `PIE_MT_SAVE_N_STUFF` | Save, Save Incremental, Open, New, Append, Import OBJ, Override Startup, Reload Scripts (Run Script/Toggle Comment in Text Editor) |
 
 ---
 
@@ -55,6 +57,8 @@ Switch via `PIE_MT_KEY_CONDITIONS` (pie bound to **C**).
 |---|---|---|
 | `SaveFile` | `aaa.save_file` | Save current blend; warns if no changes |
 | `SaveIncremental` | `aaa.save_incremental` | Save with incremented filename (`file_001.blend` → `file_002.blend`) |
+| `ReloadScripts` | `aaa.reload_scripts` | Unregister, purge, re-import and re-register all `AAA_*` modules |
+| `SwitchWorkspace` | `aaa.switch_workspace` | Switch to a named workspace |
 | `ModeSet` | `aaa.mode_set` | Switch object mode (also sets cavity type) |
 | `ToggleOverlays` | `aaa.toggle_overlays` | Toggle header / floor / all overlays |
 | `RollViewport` | `aaa.roll_viewport` | Drag-rotate viewport around chosen axis (**Alt+MMB**) |
@@ -62,8 +66,10 @@ Switch via `PIE_MT_KEY_CONDITIONS` (pie bound to **C**).
 | `ReorderModifiers` | `aaa.reorder_modifiers` | Move modifier up/down/top/bottom |
 | `AddMaterial` | `aaa.add_material` | Add new or most-recent material to active object |
 | `SwitchRenderer` | `aaa.switch_renderer` | Swap between Solid / Material / EEVEE / Cycles / Workbench |
+| `STDTools` | `aaa.std_tools` | Set standard tools (e.g. spin tool) |
 | `SwitchCondition` | `aaa.switch_condition` | Set `scene.conditions` |
 | `SwitchValue` / `ToggleProp` | `aaa.switch_value` / `aaa.toggle_prop` | Generic exec-based value assignment / toggle |
+| `ClearAllTransforms` / `ClearExceptLocation` | `aaa.clear_all_transforms` / `aaa.clear_except_location` | Reset transforms of selected objects |
 | `GlobalQ/W/E` | `aaa.key_q/w/e` | Routed by `CONDITIONS_ROUTER` |
 | `TestOperator` / `TestContextDebugger` | `aaa.test_operator` / `aaa.test_context_debugger` | Debug utilities |
 
@@ -77,6 +83,7 @@ Switch via `PIE_MT_KEY_CONDITIONS` (pie bound to **C**).
 - **Object Color** (`VIEW3D_PT_object_color`) — color type, single/object/material
 - **Lighting** (`VIEW3D_PT_lighting`) — studio light, matcap, scene lights/world
 - **Background Color** (`VIEW3D_PT_background_color`) — viewport/world background
+- **Symmetry & Symmetrize** (`AAA_PT_sculpt_symmetry`) — mirror axes, symmetrize direction
 - **Frame Rate** (`VIEW3D_PT_FRAME_RATE`) — FPS display
 
 ---
@@ -103,7 +110,7 @@ Switch via `PIE_MT_KEY_CONDITIONS` (pie bound to **C**).
 ## Running Tests
 
 ```bash
-blender --background -noaudio --python AAA_tests.py --
+blender --background -noaudio --python AAA_tests/__init__.py --
 ```
 
 Covers: import sanity, registration/unregistration, operator execution (headless-compatible), filename increment logic, quaternion rotation math, conditions routing, keymap declarations.
