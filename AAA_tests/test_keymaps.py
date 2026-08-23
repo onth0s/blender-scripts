@@ -24,6 +24,9 @@ class TestKeymapDeclarations(unittest.TestCase):
     def test_image_keys_exists(self):
         self.assertTrue(hasattr(AAA_keymap, "IMAGE_KEYS"))
 
+    def test_image_paint_keys_exists(self):
+        self.assertTrue(hasattr(AAA_keymap, "IMAGE_PAINT_KEYS"))
+
     def test_window_keys_well_formed(self):
         self._check_keymap_list(AAA_keymap.WINDOW_KEYS, "WINDOW_KEYS")
 
@@ -32,6 +35,9 @@ class TestKeymapDeclarations(unittest.TestCase):
 
     def test_image_keys_well_formed(self):
         self._check_keymap_list(AAA_keymap.IMAGE_KEYS, "IMAGE_KEYS")
+
+    def test_image_paint_keys_well_formed(self):
+        self._check_keymap_list(AAA_keymap.IMAGE_PAINT_KEYS, "IMAGE_PAINT_KEYS")
 
     def test_addon_keymaps_is_list(self):
         self.assertIsInstance(AAA_keymap.addon_keymaps, list)

@@ -104,6 +104,7 @@ Switch via `PIE_MT_KEY_CONDITIONS` (pie bound to **C**).
 | **Shift+Ctrl+MMB** | `view3d.view_selected` |
 | **Ctrl+Alt+MMB** | `view3d.view_center_pick` |
 | **Shift+Ctrl+MMB** (Image Editor) | Zoom to 1:1 |
+| **Alt+LMB** (Texture / Image Paint) | Color Eyedropper (`ui.eyedropper_color`) |
 
 ---
 

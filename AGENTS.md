@@ -16,4 +16,8 @@ These scripts are ad hoc automations and shortcuts tailored to the specific work
 
 - **Use the `AAA_` prefix** (e.g. `AAA_PT_` for panels, `AAA_OT_` for operators, `AAA_MT_` for menus) on custom classes and registered types where there is a likelihood of namespace conflicts with Blender's built-in types.
 
+# Keymap Rules
+
+- **Check for conflicts**: When adding new keymap items or changing key bindings, always inspect existing keymaps across Blender's default, addon, and user key configurations to ensure the new shortcut does not conflict with existing workflows or built-in tools.
+
 

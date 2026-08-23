@@ -52,6 +52,11 @@ IMAGE_KEYS = [
     ),
 ]
 
+# Configuration table for Image Paint (Texture Paint) shortcut mappings
+IMAGE_PAINT_KEYS = [
+    ("ui.eyedropper_color", "LEFTMOUSE", "PRESS", {"alt": True}, None),
+]
+
 
 def global_keymap():
     kc = bpy.context.window_manager.keyconfigs.addon
@@ -87,6 +92,11 @@ def global_keymap():
     km_image = kc.keymaps.new("Image", space_type="IMAGE_EDITOR", region_type="WINDOW")
     addon_keymaps.append(km_image)
     setup_items(km_image, IMAGE_KEYS)
+
+    # 4. IMAGE PAINT keymaps
+    km_image_paint = kc.keymaps.new("Image Paint", space_type="EMPTY", region_type="WINDOW")
+    addon_keymaps.append(km_image_paint)
+    setup_items(km_image_paint, IMAGE_PAINT_KEYS)
 
 
 def register():
