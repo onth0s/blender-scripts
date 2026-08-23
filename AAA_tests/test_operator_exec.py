@@ -40,6 +40,11 @@ class TestOperatorExecution(unittest.TestCase):
         self.assertIn("FINISHED", res)
         self.assertEqual(bpy.context.mode, "EDIT_MESH")
 
+    def test_mode_set_texture_paint(self):
+        res = bpy.ops.aaa.mode_set(mode="TEXTURE_PAINT")
+        self.assertIn("FINISHED", res)
+        self.assertEqual(bpy.context.mode, "PAINT_TEXTURE")
+
     def test_mode_set_returns_to_object(self):
         bpy.ops.aaa.mode_set(mode="EDIT")
         res = bpy.ops.aaa.mode_set(mode="OBJECT")

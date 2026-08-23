@@ -54,7 +54,7 @@ IMAGE_KEYS = [
 
 # Configuration table for Image Paint (Texture Paint) shortcut mappings
 IMAGE_PAINT_KEYS = [
-    ("ui.eyedropper_color", "LEFTMOUSE", "PRESS", {"alt": True}, None),
+    ("paint.sample_color", "LEFTMOUSE", "PRESS", {"alt": True}, None),
 ]
 
 

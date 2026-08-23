@@ -32,6 +32,7 @@ class VIEW3D_MT_MODE(Menu):
             LYT.operator(MS, text="S - Edit Mode").mode = "EDIT"
             LYT.operator(MS, text="D - Sculpt Mode").mode = "SCULPT"
             LYT.operator(MS, text="E - Vertex Paint").mode = "VERTEX_PAINT"
+            LYT.operator(MS, text="F - Texture Paint").mode = "TEXTURE_PAINT"
         else:
             LYT.label(text="No valid object selected")
 
