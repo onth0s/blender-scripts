@@ -3,6 +3,7 @@ from bpy.types import Operator  # type: ignore
 from bpy.props import StringProperty  # type: ignore
 from AAA_utils import MHE, MHS, MHV, OBJ
 
+
 class ModeSet(Operator):
     bl_idname = "aaa.mode_set"
     bl_label = ""
@@ -12,11 +13,9 @@ class ModeSet(Operator):
     def execute(self, context):
         # space_data is None in headless/background mode; guard before accessing shading
         if context.space_data is not None:
-            if self.mode in (MHE):
+            if self.mode in (MHE, MHS.MHV):
                 context.space_data.shading.cavity_type = "WORLD"
-            elif self.mode == (MHS):
                 context.space_data.shading.cavity_type = "WORLD"
-            elif self.mode == (MHV):
                 context.space_data.shading.cavity_type = "WORLD"
             elif self.mode == OBJ:
                 context.space_data.shading.cavity_type = "BOTH"
