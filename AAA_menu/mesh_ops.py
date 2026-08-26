@@ -93,23 +93,23 @@ class VIEW3D_MT_STD_TOOLS(Menu):
             OP.brush_type = "DENSITY"
 
             LYT.separator()
-            OP = LYT.operator("aaa.sculpt_brush_activate", text="Z - Mask")
-            OP.tool_id = "builtin_brush.mask"
-            OP.brush_type = "STANDARD"
+            LYT.operator(
+                "wm.tool_set_by_id", text="Z - Mask"
+            ).name = "builtin_brush.mask"
 
             LYT.separator()
-            OP = LYT.operator("aaa.sculpt_brush_activate", text="H - Lasso Hide")
-            OP.tool_id = "builtin.lasso_hide"
-            OP.brush_type = "STANDARD"
+            LYT.operator(
+                "wm.tool_set_by_id", text="H - Lasso Hide"
+            ).name = "builtin.lasso_hide"
 
             LYT.separator()
-            OP = LYT.operator("aaa.sculpt_brush_activate", text="X - Line Trim")
-            OP.tool_id = "builtin.line_trim"
-            OP.brush_type = "STANDARD"
+            LYT.operator(
+                "wm.tool_set_by_id", text="X - Line Trim"
+            ).name = "builtin.line_trim"
 
-            OP = LYT.operator("aaa.sculpt_brush_activate", text="A - Lasso Trim")
-            OP.tool_id = "builtin.lasso_trim"
-            OP.brush_type = "STANDARD"
+            LYT.operator(
+                "wm.tool_set_by_id", text="A - Lasso Trim"
+            ).name = "builtin.lasso_trim"
 
 
 class VIEW3D_MT_MODIFIERS(Menu):
