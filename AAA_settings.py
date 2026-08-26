@@ -21,6 +21,9 @@ SCENE_PROPERTIES = [
     ("axis_roll", StringProperty, {}),
     ("loop_frames", BoolProperty, {"default": False}),
     ("already_saved_counter", IntProperty, {}),
+    ("dyntopo_prev_state", BoolProperty, {"default": False}),
+    ("dyntopo_override_density", BoolProperty, {"default": False}),
+    ("dyntopo_override_move", BoolProperty, {"default": False}),
 ]
 
 

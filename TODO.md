@@ -1,3 +1,3 @@
 - separate mask and hide (sculpt tools) into different Menus called from the S Pie Menu
 - surface smooth sculpt filter to space-pie-bottom 
-- make the 'density' brush (that only shows when dyntopo is enabled) automatically set 'display.show_shadows' of current object; disable it on any other brush select (via S-Pie-East)
+- [x] make the 'density' brush automatically set 'show_wire' of current object and manage dyntopo state; restore/disable on other brush select (via S-Pie-East)

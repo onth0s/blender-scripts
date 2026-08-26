@@ -39,72 +39,77 @@ class VIEW3D_MT_STD_TOOLS(Menu):
             LYT.operator("object.parent_clear", text="Q - Clear Parent").type = "CLEAR"
 
         elif M in (MHS):
-            OP = LYT.operator("brush.asset_activate", text="R - Smooth")
-            OP.asset_library_type = "ESSENTIALS"
-            OP.relative_asset_identifier = BRUSH + "Smooth"
+            OP = LYT.operator("aaa.sculpt_brush_activate", text="R - Smooth")
+            OP.asset_identifier = BRUSH + "Smooth"
+            OP.brush_type = "STANDARD"
 
-            OP = LYT.operator("brush.asset_activate", text="S - Clay Strips")
-            OP.asset_library_type = "ESSENTIALS"
-            OP.relative_asset_identifier = BRUSH + "Clay Strips"
+            OP = LYT.operator("aaa.sculpt_brush_activate", text="S - Clay Strips")
+            OP.asset_identifier = BRUSH + "Clay Strips"
+            OP.brush_type = "STANDARD"
 
-            OP = LYT.operator("brush.asset_activate", text="C - Crease Sharp")
-            OP.asset_library_type = "ESSENTIALS"
-            OP.relative_asset_identifier = BRUSH + "Crease Sharp"
+            OP = LYT.operator("aaa.sculpt_brush_activate", text="C - Crease Sharp")
+            OP.asset_identifier = BRUSH + "Crease Sharp"
+            OP.brush_type = "STANDARD"
 
-            OP = LYT.operator("brush.asset_activate", text="F - Crease Polish")
-            OP.asset_library_type = "ESSENTIALS"
-            OP.relative_asset_identifier = BRUSH + "Crease Polish"
+            OP = LYT.operator("aaa.sculpt_brush_activate", text="F - Crease Polish")
+            OP.asset_identifier = BRUSH + "Crease Polish"
+            OP.brush_type = "STANDARD"
 
-            OP = LYT.operator("brush.asset_activate", text="D - Grab")
-            OP.asset_library_type = "ESSENTIALS"
-            OP.relative_asset_identifier = BRUSH + "Grab"
+            OP = LYT.operator("aaa.sculpt_brush_activate", text="D - Grab")
+            OP.asset_identifier = BRUSH + "Grab"
+            OP.brush_type = "MOVE"
 
-            OP = LYT.operator("brush.asset_activate", text="G - Grab 2D")
-            OP.asset_library_type = "ESSENTIALS"
-            OP.relative_asset_identifier = BRUSH + "Grab 2D"
+            OP = LYT.operator("aaa.sculpt_brush_activate", text="G - Grab 2D")
+            OP.asset_identifier = BRUSH + "Grab 2D"
+            OP.brush_type = "MOVE"
 
-            OP = LYT.operator("brush.asset_activate", text="B - Blob")
-            OP.asset_library_type = "ESSENTIALS"
-            OP.relative_asset_identifier = BRUSH + "Blob"
+            OP = LYT.operator("aaa.sculpt_brush_activate", text="B - Blob")
+            OP.asset_identifier = BRUSH + "Blob"
+            OP.brush_type = "STANDARD"
 
-            OP = LYT.operator("brush.asset_activate", text="Q - Inflate")
-            OP.asset_library_type = "ESSENTIALS"
-            OP.relative_asset_identifier = BRUSH + "Inflate/Deflate"
+            OP = LYT.operator("aaa.sculpt_brush_activate", text="Q - Inflate")
+            OP.asset_identifier = BRUSH + "Inflate/Deflate"
+            OP.brush_type = "STANDARD"
 
-            OP = LYT.operator("brush.asset_activate", text="W - Pinch")
-            OP.asset_library_type = "ESSENTIALS"
-            OP.relative_asset_identifier = BRUSH + "Pinch/Magnify"
+            OP = LYT.operator("aaa.sculpt_brush_activate", text="W - Pinch")
+            OP.asset_identifier = BRUSH + "Pinch/Magnify"
+            OP.brush_type = "STANDARD"
 
-            OP = LYT.operator("brush.asset_activate", text="T - Fill")
-            OP.asset_library_type = "ESSENTIALS"
-            OP.relative_asset_identifier = BRUSH + "Fill/Deepen"
+            OP = LYT.operator("aaa.sculpt_brush_activate", text="T - Fill")
+            OP.asset_identifier = BRUSH + "Fill/Deepen"
+            OP.brush_type = "STANDARD"
 
-            OP = LYT.operator("brush.asset_activate", text="E - Flatten")
-            OP.asset_library_type = "ESSENTIALS"
-            OP.relative_asset_identifier = BRUSH + "Flatten/Contrast"
+            OP = LYT.operator("aaa.sculpt_brush_activate", text="E - Flatten")
+            OP.asset_identifier = BRUSH + "Flatten/Contrast"
+            OP.brush_type = "STANDARD"
 
-            OP = LYT.operator("brush.asset_activate", text="V - Draw Sharp")
-            OP.asset_library_type = "ESSENTIALS"
-            OP.relative_asset_identifier = BRUSH + "Draw Sharp"
-
-            LYT.separator()
-            LYT.operator(
-                "wm.tool_set_by_id", text="Z - Mask"
-            ).name = "builtin_brush.mask"
+            OP = LYT.operator("aaa.sculpt_brush_activate", text="V - Draw Sharp")
+            OP.asset_identifier = BRUSH + "Draw Sharp"
+            OP.brush_type = "STANDARD"
 
             LYT.separator()
-            LYT.operator(
-                "wm.tool_set_by_id", text="H - Lasso Hide"
-            ).name = "builtin.lasso_hide"
+            OP = LYT.operator("aaa.sculpt_brush_activate", text="Y - Density")
+            OP.asset_identifier = BRUSH + "Density"
+            OP.brush_type = "DENSITY"
 
             LYT.separator()
-            LYT.operator(
-                "wm.tool_set_by_id", text="X - Line Trim"
-            ).name = "builtin.line_trim"
+            OP = LYT.operator("aaa.sculpt_brush_activate", text="Z - Mask")
+            OP.tool_id = "builtin_brush.mask"
+            OP.brush_type = "STANDARD"
 
-            LYT.operator(
-                "wm.tool_set_by_id", text="A - Lasso Trim"
-            ).name = "builtin.lasso_trim"
+            LYT.separator()
+            OP = LYT.operator("aaa.sculpt_brush_activate", text="H - Lasso Hide")
+            OP.tool_id = "builtin.lasso_hide"
+            OP.brush_type = "STANDARD"
+
+            LYT.separator()
+            OP = LYT.operator("aaa.sculpt_brush_activate", text="X - Line Trim")
+            OP.tool_id = "builtin.line_trim"
+            OP.brush_type = "STANDARD"
+
+            OP = LYT.operator("aaa.sculpt_brush_activate", text="A - Lasso Trim")
+            OP.tool_id = "builtin.lasso_trim"
+            OP.brush_type = "STANDARD"
 
 
 class VIEW3D_MT_MODIFIERS(Menu):

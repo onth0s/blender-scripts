@@ -8,7 +8,7 @@ from .viewport import (
     RollAxis,
     SwitchRenderer,
 )
-from .modes import ModeSet, STDTools
+from .modes import ModeSet, STDTools, AAA_OT_sculpt_brush_activate
 from .objects import (
     ReorderModifiers,
     AddMaterial,
@@ -31,6 +31,7 @@ classes = (
     RollViewport,
     RollAxis,
     STDTools,
+    AAA_OT_sculpt_brush_activate,
     ReorderModifiers,
     AddMaterial,
     SwitchRenderer,

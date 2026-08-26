@@ -204,3 +204,105 @@ class TestReloadScripts(unittest.TestCase):
         res = bpy.ops.aaa.reload_scripts()
         self.assertEqual(res, {"FINISHED"})
 
+
+class TestSculptBrushActivate(unittest.TestCase):
+    """Test aaa.sculpt_brush_activate operator Dyntopo state machine and wireframe toggle."""
+
+    BRUSH = "brushes\\essentials_brushes-mesh_sculpt.blend\\Brush\\"
+
+    def setUp(self):
+        self.obj = _make_mesh_object()
+        bpy.ops.object.mode_set(mode="SCULPT")
+        bpy.context.scene.dyntopo_prev_state = False
+        bpy.context.scene.dyntopo_override_density = False
+        bpy.context.scene.dyntopo_override_move = False
+
+    def tearDown(self):
+        _clean_scene()
+
+    def test_density_activates_dyntopo_and_show_wire(self):
+        self.assertFalse(self.obj.use_dynamic_topology_sculpting)
+        with silence_warnings():
+            res = bpy.ops.aaa.sculpt_brush_activate(
+                asset_identifier=self.BRUSH + "Density", brush_type="DENSITY"
+            )
+        self.assertEqual(res, {"FINISHED"})
+        self.assertTrue(self.obj.use_dynamic_topology_sculpting)
+        self.assertTrue(self.obj.show_wire)
+        self.assertTrue(bpy.context.scene.dyntopo_override_density)
+
+    def test_standard_brush_restores_dyntopo_off_after_density(self):
+        self.assertFalse(self.obj.use_dynamic_topology_sculpting)
+        with silence_warnings():
+            bpy.ops.aaa.sculpt_brush_activate(
+                asset_identifier=self.BRUSH + "Density", brush_type="DENSITY"
+            )
+            self.assertTrue(self.obj.use_dynamic_topology_sculpting)
+            self.assertTrue(self.obj.show_wire)
+
+            res = bpy.ops.aaa.sculpt_brush_activate(
+                asset_identifier=self.BRUSH + "Smooth", brush_type="STANDARD"
+            )
+        self.assertEqual(res, {"FINISHED"})
+        self.assertFalse(self.obj.use_dynamic_topology_sculpting)
+        self.assertFalse(self.obj.show_wire)
+        self.assertFalse(bpy.context.scene.dyntopo_override_density)
+
+    def test_move_brush_disables_dyntopo(self):
+        bpy.ops.sculpt.dynamic_topology_toggle()
+        self.assertTrue(self.obj.use_dynamic_topology_sculpting)
+
+        with silence_warnings():
+            res = bpy.ops.aaa.sculpt_brush_activate(
+                asset_identifier=self.BRUSH + "Grab", brush_type="MOVE"
+            )
+        self.assertEqual(res, {"FINISHED"})
+        self.assertFalse(self.obj.use_dynamic_topology_sculpting)
+        self.assertFalse(self.obj.show_wire)
+        self.assertTrue(bpy.context.scene.dyntopo_override_move)
+
+    def test_standard_brush_restores_dyntopo_on_after_move(self):
+        bpy.ops.sculpt.dynamic_topology_toggle()
+        self.assertTrue(self.obj.use_dynamic_topology_sculpting)
+
+        with silence_warnings():
+            bpy.ops.aaa.sculpt_brush_activate(
+                asset_identifier=self.BRUSH + "Grab", brush_type="MOVE"
+            )
+            self.assertFalse(self.obj.use_dynamic_topology_sculpting)
+
+            res = bpy.ops.aaa.sculpt_brush_activate(
+                asset_identifier=self.BRUSH + "Clay Strips", brush_type="STANDARD"
+            )
+        self.assertEqual(res, {"FINISHED"})
+        self.assertTrue(self.obj.use_dynamic_topology_sculpting)
+        self.assertFalse(self.obj.show_wire)
+        self.assertFalse(bpy.context.scene.dyntopo_override_move)
+
+    def test_chained_density_to_move_to_standard(self):
+        bpy.ops.sculpt.dynamic_topology_toggle()
+        self.assertTrue(self.obj.use_dynamic_topology_sculpting)
+
+        with silence_warnings():
+            # Density keeps dyntopo ON, sets show_wire True
+            bpy.ops.aaa.sculpt_brush_activate(
+                asset_identifier=self.BRUSH + "Density", brush_type="DENSITY"
+            )
+            self.assertTrue(self.obj.use_dynamic_topology_sculpting)
+            self.assertTrue(self.obj.show_wire)
+
+            # Move disables dyntopo, sets show_wire False
+            bpy.ops.aaa.sculpt_brush_activate(
+                asset_identifier=self.BRUSH + "Grab", brush_type="MOVE"
+            )
+            self.assertFalse(self.obj.use_dynamic_topology_sculpting)
+            self.assertFalse(self.obj.show_wire)
+
+            # Standard restores initial dyntopo ON, sets show_wire False
+            bpy.ops.aaa.sculpt_brush_activate(
+                asset_identifier=self.BRUSH + "Smooth", brush_type="STANDARD"
+            )
+            self.assertTrue(self.obj.use_dynamic_topology_sculpting)
+            self.assertFalse(self.obj.show_wire)
+
+
