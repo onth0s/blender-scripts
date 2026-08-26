@@ -13,7 +13,7 @@ class ModeSet(Operator):
     def execute(self, context):
         # space_data is None in headless/background mode; guard before accessing shading
         if context.space_data is not None:
-            if self.mode in (MHE, MHS.MHV):
+            if self.mode in (MHE, MHS, MHV):
                 context.space_data.shading.cavity_type = "WORLD"
                 context.space_data.shading.cavity_type = "WORLD"
                 context.space_data.shading.cavity_type = "WORLD"
