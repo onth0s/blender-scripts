@@ -1,2 +1,2 @@
 - separate mask and hide (sculpt tools) into different Menus called from the S Pie Menu
-- surface smooth to space-bot pie
+- surface smooth sculpt filter to space-pie-bottom 
