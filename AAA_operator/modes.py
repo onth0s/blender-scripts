@@ -13,12 +13,10 @@ class ModeSet(Operator):
     def execute(self, context):
         # space_data is None in headless/background mode; guard before accessing shading
         if context.space_data is not None:
-            if self.mode in (MHE, MHS, MHV):
-                context.space_data.shading.cavity_type = "WORLD"
-                context.space_data.shading.cavity_type = "WORLD"
-                context.space_data.shading.cavity_type = "WORLD"
-            elif self.mode == OBJ:
+            if self.mode == "OBJECT" or self.mode == OBJ:
                 context.space_data.shading.cavity_type = "BOTH"
+            else:
+                context.space_data.shading.cavity_type = "WORLD"
 
         bpy.ops.object.mode_set(mode=self.mode)
         return {"FINISHED"}

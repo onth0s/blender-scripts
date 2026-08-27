@@ -51,6 +51,34 @@ class TestOperatorExecution(unittest.TestCase):
         self.assertIn("FINISHED", res)
         self.assertEqual(bpy.context.mode, "OBJECT")
 
+    def test_mode_set_cavity_type_switching(self):
+        class MockShading:
+            cavity_type = None
+
+        class MockSpaceData:
+            shading = MockShading()
+
+        class MockContext:
+            space_data = MockSpaceData()
+
+        from AAA_operator.modes import ModeSet
+
+        class FakeOp:
+            mode = "OBJECT"
+
+        op = FakeOp()
+        ctx = MockContext()
+
+        op.mode = "OBJECT"
+        ModeSet.execute(op, ctx)
+        self.assertEqual(ctx.space_data.shading.cavity_type, "BOTH")
+
+        for m in ("EDIT", "SCULPT", "VERTEX_PAINT", "TEXTURE_PAINT", "WEIGHT_PAINT"):
+            with self.subTest(mode=m):
+                op.mode = m
+                ModeSet.execute(op, ctx)
+                self.assertEqual(ctx.space_data.shading.cavity_type, "WORLD")
+
     def test_reorder_modifiers_down(self):
         self.obj.modifiers.new("SubsurfMod", "SUBSURF")
         self.obj.modifiers.new("MirrorMod", "MIRROR")
