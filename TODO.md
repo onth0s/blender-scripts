@@ -1,3 +1,3 @@
 - separate mask and hide (sculpt tools) into different Menus called from the S Pie Menu
 - surface smooth sculpt filter to space-pie-bottom 
-- [x] make the 'density' brush automatically set 'show_wire' of current object and manage dyntopo state; restore/disable on other brush select (via S-Pie-East)
+- MatCap menu North from Z Pie broken if you go from Workbench render to regular; that's how you reproduce it
