@@ -62,6 +62,11 @@ VERTEX_PAINT_KEYS = [
     ("paint.sample_color", "LEFTMOUSE", "PRESS", {"alt": True}, None),
 ]
 
+# Configuration table for Sculpt shortcut mappings
+SCULPT_KEYS = [
+    ("paint.sample_color", "LEFTMOUSE", "PRESS", {"alt": True}, None),
+]
+
 
 def global_keymap():
     kc = bpy.context.window_manager.keyconfigs.addon
@@ -107,6 +112,11 @@ def global_keymap():
     km_vertex_paint = kc.keymaps.new("Vertex Paint", space_type="EMPTY", region_type="WINDOW")
     addon_keymaps.append(km_vertex_paint)
     setup_items(km_vertex_paint, VERTEX_PAINT_KEYS)
+
+    # 6. SCULPT keymaps
+    km_sculpt = kc.keymaps.new("Sculpt", space_type="EMPTY", region_type="WINDOW")
+    addon_keymaps.append(km_sculpt)
+    setup_items(km_sculpt, SCULPT_KEYS)
 
 
 def register():
