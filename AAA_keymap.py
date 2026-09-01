@@ -57,6 +57,11 @@ IMAGE_PAINT_KEYS = [
     ("paint.sample_color", "LEFTMOUSE", "PRESS", {"alt": True}, None),
 ]
 
+# Configuration table for Vertex Paint shortcut mappings
+VERTEX_PAINT_KEYS = [
+    ("paint.sample_color", "LEFTMOUSE", "PRESS", {"alt": True}, None),
+]
+
 
 def global_keymap():
     kc = bpy.context.window_manager.keyconfigs.addon
@@ -97,6 +102,11 @@ def global_keymap():
     km_image_paint = kc.keymaps.new("Image Paint", space_type="EMPTY", region_type="WINDOW")
     addon_keymaps.append(km_image_paint)
     setup_items(km_image_paint, IMAGE_PAINT_KEYS)
+
+    # 5. VERTEX PAINT keymaps
+    km_vertex_paint = kc.keymaps.new("Vertex Paint", space_type="EMPTY", region_type="WINDOW")
+    addon_keymaps.append(km_vertex_paint)
+    setup_items(km_vertex_paint, VERTEX_PAINT_KEYS)
 
 
 def register():
