@@ -108,8 +108,8 @@ class PIE_MT_S(Menu):
         # ------------------------   BOTTOM   ------------------------------- #
         if M in (OBJ, MHE):
             pie.operator(MT, text="Pivot Point").name = "VIEW3D_MT_PIVOT_POINT"
-        else:
-            pie.operator(MT, text="").name = ""
+        elif M in (MHS):
+            pie.operator(MT, text="Mask").name = "VIEW3D_MT_SCULPT_MASK"
         # ------------------------   TOP   ---------------------------------- #
         if M in (ALL):
             pie.operator(MT, text="Mode").name = "VIEW3D_MT_MODE"
@@ -121,12 +121,12 @@ class PIE_MT_S(Menu):
         # ------------------------   TOP-RIGHT   ---------------------------- #
         if M in (ALL) and context.mode != "SCULPT":
             pie.operator(MT, text="Modifiers").name = "VIEW3D_MT_MODIFIERS"
-        elif M in MHS:
+        elif M in (MHS):
             pie.operator(MT, text="Operators").name = "VIEW3D_MT_SCULPT_OPS"
         # ------------------------   BOTTOM-LEFT   -------------------------- #
         if M in (OBJ, MHE):
             pie.operator(PT, text="Proportional").name = "VIEW3D_PT_proportional_edit_2"
-        elif M in MHS:
+        elif M in (MHS):
             pie.operator(PT, text="Symmetry").name = "AAA_PT_sculpt_symmetry"
         else:
             pie.operator(MT, text="").name = ""

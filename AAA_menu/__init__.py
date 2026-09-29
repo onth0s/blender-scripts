@@ -15,6 +15,7 @@ from .viewport import (
     VIEW3D_MT_PIVOT_POINT,
 )
 from .sculpt import (
+    VIEW3D_MT_SCULPT_MASK,
     VIEW3D_MT_SCULPT_OPS,
     VIEW3D_MT_FACE_SETS,
     VIEW3D_MT_SCULPT_FILTERS,
@@ -40,6 +41,7 @@ from .mesh_ops import (
 classes = (
     VIEW3D_MT_WORKSPACE,
     VIEW3D_MT_MODE,
+    VIEW3D_MT_SCULPT_MASK,
     VIEW3D_MT_SCULPT_OPS,
     VIEW3D_MT_VIEWPORT_DISPLAY,
     VIEW3D_MT_SHADING_OPTIONS,
