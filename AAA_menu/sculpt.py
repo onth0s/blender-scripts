@@ -47,6 +47,22 @@ class VIEW3D_MT_SCULPT_MASK(Menu):
 
     def draw(self, context):
         LYT = self.layout
-        op = LYT.operator("aaa.test", text="test")
-        # op.action = "HIDE"
 
+        LYT.operator(
+            "wm.tool_set_by_id", text="Z - Mask"
+        ).name = "builtin_brush.mask"
+
+
+class VIEW3D_MT_SCULPT_PAINT(Menu):
+    bl_label = "Sculpt Paint"
+
+    def draw(self, context):
+        LYT = self.layout
+        BRUSH = "brushes\\essentials_brushes-mesh_sculpt.blend\\Brush\\"
+
+        # bpy.ops.brush.asset_activate(asset_library_type='ESSENTIALS', asset_library_identifier="",
+        #                              relative_asset_identifier="brushes\\essentials_brushes-mesh_sculpt.blend\\Brush\\Paint Hard")
+
+        OP = LYT.operator("aaa.sculpt_brush_activate", text="S - Paint Hard")
+        OP.asset_identifier = BRUSH + "Paint Hard"
+        OP.brush_type = "STANDARD"

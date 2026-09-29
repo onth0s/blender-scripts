@@ -91,12 +91,7 @@ class VIEW3D_MT_STD_TOOLS(Menu):
             OP = LYT.operator("aaa.sculpt_brush_activate", text="Y - Density")
             OP.asset_identifier = BRUSH + "Density"
             OP.brush_type = "DENSITY"
-
-            LYT.separator()
-            LYT.operator(
-                "wm.tool_set_by_id", text="Z - Mask"
-            ).name = "builtin_brush.mask"
-
+       
             LYT.separator()
             LYT.operator(
                 "wm.tool_set_by_id", text="H - Lasso Hide"

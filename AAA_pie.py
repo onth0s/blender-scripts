@@ -110,6 +110,8 @@ class PIE_MT_S(Menu):
             pie.operator(MT, text="Pivot Point").name = "VIEW3D_MT_PIVOT_POINT"
         elif M in (MHS):
             pie.operator(MT, text="Mask").name = "VIEW3D_MT_SCULPT_MASK"
+        else:
+            pie.operator(MT, text="").name = ""
         # ------------------------   TOP   ---------------------------------- #
         if M in (ALL):
             pie.operator(MT, text="Mode").name = "VIEW3D_MT_MODE"
@@ -133,6 +135,8 @@ class PIE_MT_S(Menu):
         # ------------------------   BOTTOM-RIGHT   ------------------------- #
         if M in (OBJ, MHE):
             pie.operator(MT, text="Cursor").name = "VIEW3D_MT_CURSOR_POSITION"
+        elif M in (MHS):
+            pie.operator(MT, text="Paint").name = "VIEW3D_MT_SCULPT_PAINT"
         else:
             pie.operator(MT, text="").name = ""
 
