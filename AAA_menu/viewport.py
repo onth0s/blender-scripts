@@ -142,6 +142,7 @@ class VIEW3D_MT_VIEW(Menu):
         LYT.operator(MN, text="W - Views").name = "VIEW3D_MT_VIEW_VIEW"
 
         LYT.separator()
+        LYT.operator("screen.region_quadview", text="T - Quad View")
         LYT.operator("view3d.view_persportho", text="E - Persp/Ortho")
 
         LYT.separator()

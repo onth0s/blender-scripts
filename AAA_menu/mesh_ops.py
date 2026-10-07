@@ -36,7 +36,8 @@ class VIEW3D_MT_STD_TOOLS(Menu):
 
         elif M in (OBJ):
             LYT.operator("object.parent_set", text="E - Parent Object").type = "OBJECT"
-            LYT.operator("object.parent_clear", text="Q - Clear Parent").type = "CLEAR"
+            LYT.operator("object.parent_clear", text="Q - Clear Parent + Keep Transform").type = "CLEAR_KEEP_TRANSFORM"
+            LYT.operator("object.parent_clear", text="R - Clear Parent").type = "CLEAR"
 
         elif M in (MHS):
             OP = LYT.operator("aaa.sculpt_brush_activate", text="R - Smooth")
