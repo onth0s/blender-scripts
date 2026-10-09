@@ -12,14 +12,14 @@ class VIEW3D_MT_SELECT(Menu):
         LYT = self.layout
 
         if AT == "VIEW_3D":
-            if M in OBJ:
+            if M == OBJ:
                 LYT.operator("object.select_all", text="A - All").action = "SELECT"
                 LYT.operator("object.select_all", text="S - None").action = "DESELECT"
                 LYT.operator("object.select_all", text="D - Invert").action = "INVERT"
                 LYT.operator(
                     "object.select_grouped", text="Q - Select Grouped"
                 ).type = "PARENT"
-            elif M in MHE:
+            elif M == MHE:
                 LYT.operator("mesh.select_all", text="A - All").action = "SELECT"
                 LYT.operator("mesh.select_all", text="S - None").action = "DESELECT"
                 LYT.operator("mesh.select_all", text="D - Invert").action = "INVERT"
@@ -30,7 +30,7 @@ class VIEW3D_MT_SELECT(Menu):
                 LYT.separator()
                 LYT.operator("mesh.loop_to_region", text="E - Inner Region")
                 LYT.operator("mesh.region_to_loop", text="F - Boundary")
-            elif M in MHS:
+            elif M == MHS:
                 OP = LYT.operator("paint.mask_flood_fill", text="S - Clear")
                 OP.mode = "VALUE"
                 OP.value = 0

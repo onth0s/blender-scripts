@@ -1,7 +1,7 @@
 import bpy  # type: ignore
 from bpy.types import Operator  # type: ignore
 
-class SwitchCondition(Operator):
+class AAA_OT_switch_condition(Operator):
     bl_idname = "aaa.switch_condition"
     bl_label = "SWITCH_CONDITION"
     bl_options = {"REGISTER"}
@@ -14,7 +14,7 @@ class SwitchCondition(Operator):
         return {"FINISHED"}
 
 
-class SwitchValue(Operator):
+class AAA_OT_switch_value(Operator):
     bl_idname = "aaa.switch_value"
     bl_label = "SWITCH_VALUE"
     bl_options = {"REGISTER"}
@@ -31,7 +31,7 @@ class SwitchValue(Operator):
         return {"FINISHED"}
 
 
-class ToggleProp(Operator):
+class AAA_OT_toggle_prop(Operator):
     bl_idname = "aaa.toggle_prop"
     bl_label = "Toggle Property"
     bl_options = {"UNDO"}
@@ -42,3 +42,9 @@ class ToggleProp(Operator):
         exec(self.prop + " = not " + self.prop)
 
         return {"FINISHED"}
+
+
+# Backwards compatibility aliases
+SwitchCondition = AAA_OT_switch_condition
+SwitchValue = AAA_OT_switch_value
+ToggleProp = AAA_OT_toggle_prop

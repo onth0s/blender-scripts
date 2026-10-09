@@ -20,4 +20,6 @@ These scripts are ad hoc automations and shortcuts tailored to the specific work
 
 - **Check for conflicts**: When adding new keymap items or changing key bindings, always inspect existing keymaps across Blender's default, addon, and user key configurations to ensure the new shortcut does not conflict with existing workflows or built-in tools.
 
+# Documentation & Tracking Files
 
+- **Empty Files**: Tracking and planning files such as `PLAN.md`, `TODO.md`, and `NOTES.md` can be empty sometimes (e.g. between active development cycles or after all tasks are completed). Keep them tracked in git even when empty.

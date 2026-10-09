@@ -334,3 +334,52 @@ class TestSculptBrushActivate(unittest.TestCase):
             self.assertFalse(self.obj.show_wire)
 
 
+class TestClearTransforms(unittest.TestCase):
+    def setUp(self):
+        self.obj = _make_mesh_object()
+        self.obj.location = (1.0, 2.0, 3.0)
+        self.obj.rotation_euler = (0.5, 0.5, 0.5)
+        self.obj.scale = (2.0, 2.0, 2.0)
+
+    def tearDown(self):
+        _clean_scene()
+
+    def test_clear_all_transforms(self):
+        res = bpy.ops.aaa.clear_all_transforms()
+        self.assertEqual(res, {"FINISHED"})
+        for i in range(3):
+            self.assertAlmostEqual(self.obj.location[i], 0.0)
+            self.assertAlmostEqual(self.obj.rotation_euler[i], 0.0)
+            self.assertAlmostEqual(self.obj.scale[i], 1.0)
+
+    def test_clear_except_location(self):
+        res = bpy.ops.aaa.clear_except_location()
+        self.assertEqual(res, {"FINISHED"})
+        self.assertAlmostEqual(self.obj.location[0], 1.0)
+        self.assertAlmostEqual(self.obj.location[1], 2.0)
+        self.assertAlmostEqual(self.obj.location[2], 3.0)
+        for i in range(3):
+            self.assertAlmostEqual(self.obj.rotation_euler[i], 0.0)
+            self.assertAlmostEqual(self.obj.scale[i], 1.0)
+
+
+class TestOperatorPoll(unittest.TestCase):
+    def tearDown(self):
+        _clean_scene()
+
+    def test_mode_set_poll_no_object(self):
+        _clean_scene()
+        from AAA_operator.modes import AAA_OT_mode_set
+        self.assertFalse(AAA_OT_mode_set.poll(bpy.context))
+
+    def test_reorder_modifiers_poll_no_modifiers(self):
+        _make_mesh_object()
+        from AAA_operator.objects import AAA_OT_reorder_modifiers
+        self.assertFalse(AAA_OT_reorder_modifiers.poll(bpy.context))
+
+    def test_clear_transforms_poll_no_selection(self):
+        _clean_scene()
+        from AAA_operator.objects import AAA_OT_clear_all_transforms
+        self.assertFalse(AAA_OT_clear_all_transforms.poll(bpy.context))
+
+

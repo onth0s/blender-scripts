@@ -24,6 +24,9 @@ from AAA_tests.test_operator_exec import (
     TestSwitchCondition,
     TestSwitchValue,
     TestReloadScripts,
+    TestSculptBrushActivate,
+    TestClearTransforms,
+    TestOperatorPoll,
 )
 from AAA_tests.test_viewport_math import TestRollViewportMath, TestSwitchRendererLogic
 from AAA_tests.test_routing import TestKeyConditionsRouting, TestConditionsRouter
@@ -43,7 +46,38 @@ if __name__ == "__main__":
     args = sys.argv
     unittest_args = args[args.index("--") + 1 :] if "--" in args else []
 
-    suite = unittest.defaultTestLoader.loadTestsFromModule(sys.modules[__name__])
+    test_classes = [
+        TestImports,
+        TestSettingsRegistration,
+        TestOperatorRegistration,
+        TestMenuRegistration,
+        TestPanelRegistration,
+        TestPieMenuRegistration,
+        TestUtils,
+        TestSwitchWorkspaceExecution,
+        TestOperatorExecution,
+        TestSaveOperations,
+        TestToggleProp,
+        TestSwitchCondition,
+        TestSwitchValue,
+        TestReloadScripts,
+        TestSculptBrushActivate,
+        TestClearTransforms,
+        TestOperatorPoll,
+        TestRollViewportMath,
+        TestSwitchRendererLogic,
+        TestKeyConditionsRouting,
+        TestConditionsRouter,
+        TestKeymapDeclarations,
+        # Cleanup MUST execute strictly last
+        TestUnregisterCleanup,
+    ]
+
+    suite = unittest.TestSuite()
+    loader = unittest.TestLoader()
+    for test_class in test_classes:
+        suite.addTests(loader.loadTestsFromTestCase(test_class))
+
     runner = unittest.TextTestRunner(verbosity=2)
     result = runner.run(suite)
 

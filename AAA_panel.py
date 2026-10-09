@@ -3,10 +3,8 @@ from bpy.types import Panel  # type: ignore
 
 from AAA_utils import OBJ, MHE
 
-# -------------------------------------------------------
-# DON'T FORGET TO ADD THIS SHIT OR IT WON'T WORK
-# bl_label = ""
-# -------------------------------------------------------
+# Panels require bl_label to be defined
+
 
 
 class AAAPanel:
@@ -17,7 +15,7 @@ class AAAPanel:
 # the '_2' is there to not collide with the built-in Panel
 
 
-class VIEW3D_PT_manage_modifiers(AAAPanel, Panel):
+class AAA_PT_manage_modifiers(AAAPanel, Panel):
     bl_label = "Manage Modifiers"
     bl_ui_units_x = 14
 
@@ -49,7 +47,7 @@ class VIEW3D_PT_manage_modifiers(AAAPanel, Panel):
             LYT.label(text="No modifiers found.")
 
 
-class VIEW3D_PT_proportional_edit_2(Panel):
+class AAA_PT_proportional_edit(Panel):
     bl_space_type = "VIEW_3D"
     bl_region_type = "HEADER"
     bl_label = "Proportional Editing"
@@ -80,7 +78,7 @@ class VIEW3D_PT_proportional_edit_2(Panel):
         col.prop(tool_settings, "proportional_edit_falloff", text="", expand=False)
 
 
-class VIEW3D_PT_frame_range(AAAPanel, Panel):
+class AAA_PT_frame_range(AAAPanel, Panel):
     bl_ui_units_x = 8
     bl_label = "Frame Range"
 
@@ -103,7 +101,7 @@ class VIEW3D_PT_frame_range(AAAPanel, Panel):
             row.prop(SC, "frame_end", text="End")
 
 
-class VIEW3D_PT_object_color(AAAPanel, Panel):
+class AAA_PT_object_color(AAAPanel, Panel):
     bl_label = "Object Color"
 
     def draw(self, context):
@@ -128,10 +126,10 @@ class VIEW3D_PT_object_color(AAAPanel, Panel):
                 row = LYT.row(align=True)
                 row.operator("aaa.add_material", text="Add New").mode = "NEW"
                 if bpy.data.materials:
-                    row.operator("aaa.add_material", text="Use Lastest").mode = "LAST"
+                    row.operator("aaa.add_material", text="Use Latest").mode = "LAST"
 
 
-class VIEW3D_PT_lighting(AAAPanel, Panel):
+class AAA_PT_lighting(AAAPanel, Panel):
     bl_label = "Lighting"
     is_popover = True
 
@@ -214,7 +212,10 @@ class VIEW3D_PT_lighting(AAAPanel, Panel):
                 sub.scale_y = 0.6
                 sub.template_icon_view(shading, "studio_light", scale_popup=3)
 
-                if shading.selected_studio_light.type == "WORLD":
+                if (
+                    shading.selected_studio_light
+                    and shading.selected_studio_light.type == "WORLD"
+                ):
                     split = LYT.split(factor=0.9)
                     col = split.column()
                     col.prop(shading, "studiolight_rotate_z", text="Rotation")
@@ -226,7 +227,7 @@ class VIEW3D_PT_lighting(AAAPanel, Panel):
                     col = split.column()  # to align properly with above
 
 
-class VIEW3D_PT_background_color(AAAPanel, Panel):
+class AAA_PT_background_color(AAAPanel, Panel):
     bl_label = "Background Color"
 
     def draw(self, context):
@@ -277,9 +278,9 @@ class AAA_PT_sculpt_symmetry(AAAPanel, Panel):
         row2.operator("sculpt.symmetrize", text="Symmetrize")
 
 
-class VIEW3D_PT_FRAME_RATE(AAAPanel, Panel):
+class AAA_PT_frame_rate(AAAPanel, Panel):
     bl_ui_units_x = 12
-    bl_label = ""
+    bl_label = "Frame Rate"
 
     def draw(self, context):
         LYT = self.layout
@@ -288,15 +289,24 @@ class VIEW3D_PT_FRAME_RATE(AAAPanel, Panel):
 
 
 classes = (
-    VIEW3D_PT_manage_modifiers,
-    VIEW3D_PT_proportional_edit_2,
-    VIEW3D_PT_frame_range,
-    VIEW3D_PT_object_color,
-    VIEW3D_PT_lighting,
-    VIEW3D_PT_background_color,
-    VIEW3D_PT_FRAME_RATE,
+    AAA_PT_manage_modifiers,
+    AAA_PT_proportional_edit,
+    AAA_PT_frame_range,
+    AAA_PT_object_color,
+    AAA_PT_lighting,
+    AAA_PT_background_color,
+    AAA_PT_frame_rate,
     AAA_PT_sculpt_symmetry,
 )
+
+# Backwards compatibility aliases
+VIEW3D_PT_manage_modifiers = AAA_PT_manage_modifiers
+VIEW3D_PT_proportional_edit_2 = AAA_PT_proportional_edit
+VIEW3D_PT_frame_range = AAA_PT_frame_range
+VIEW3D_PT_object_color = AAA_PT_object_color
+VIEW3D_PT_lighting = AAA_PT_lighting
+VIEW3D_PT_background_color = AAA_PT_background_color
+VIEW3D_PT_FRAME_RATE = AAA_PT_frame_rate
 
 
 def register():

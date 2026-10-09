@@ -2,7 +2,7 @@ import bpy  # type: ignore
 from bpy.types import Operator  # type: ignore
 from datetime import datetime
 
-class TestOperator(Operator):
+class AAA_OT_test_operator(Operator):
     """Test Operator Docstring"""
 
     bl_idname = "aaa.test_operator"
@@ -18,7 +18,7 @@ class TestOperator(Operator):
         return {"FINISHED"}
 
 
-class TestContextDebugger(Operator):
+class AAA_OT_test_context_debugger(Operator):
     bl_idname = "aaa.test_context_debugger"
     bl_label = "Test Context Debugger"
     bl_options = {"REGISTER"}
@@ -78,3 +78,8 @@ class TestContextDebugger(Operator):
             print("\n  >>> context.region: None")
 
         return {"FINISHED"}
+
+
+# Backwards compatibility aliases
+TestOperator = AAA_OT_test_operator
+TestContextDebugger = AAA_OT_test_context_debugger

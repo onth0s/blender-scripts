@@ -1,7 +1,7 @@
 import bpy  # type: ignore
 from bpy.types import Operator  # type: ignore
 
-class ReorderModifiers(Operator):
+class AAA_OT_reorder_modifiers(Operator):
     bl_idname = "aaa.reorder_modifiers"
     bl_label = "Reorder Modifiers"
     bl_options = {"REGISTER"}
@@ -10,12 +10,13 @@ class ReorderModifiers(Operator):
     where: bpy.props.StringProperty()  # type: ignore
     index: bpy.props.IntProperty()  # type: ignore
 
+    @classmethod
+    def poll(cls, context):
+        return bool(context.active_object and len(context.active_object.modifiers) > 0)
+
     def execute(self, context):
         OBJ_obj = context.active_object
         mods = OBJ_obj.modifiers
-
-        print(">> self.index:")
-        print(self.index)
 
         if self.where == "UP" and self.index > 0:
             mods.move(self.index, self.index - 1)
@@ -32,20 +33,24 @@ class ReorderModifiers(Operator):
         return {"FINISHED"}
 
 
-class AddMaterial(Operator):
+class AAA_OT_add_material(Operator):
     bl_idname = "aaa.add_material"
     bl_label = "Add Material"
     bl_options = {"REGISTER", "UNDO"}
 
     mode: bpy.props.StringProperty()  # type: ignore
 
+    @classmethod
+    def poll(cls, context):
+        return context.active_object is not None
+
     def execute(self, context):
         OB = context.active_object
 
-        if self.mode == "NEW":
-            mat = bpy.data.materials.new(name="Material")
-        elif self.mode == "LAST":
+        if self.mode == "LAST" and bpy.data.materials:
             mat = bpy.data.materials[-1]
+        else:
+            mat = bpy.data.materials.new(name="Material")
 
         mat.use_nodes = True
         if OB.data.materials:
@@ -60,6 +65,10 @@ class AAA_OT_clear_all_transforms(Operator):
     bl_idname = "aaa.clear_all_transforms"
     bl_label = "Clear All Transforms"
     bl_options = {"UNDO"}
+
+    @classmethod
+    def poll(cls, context):
+        return bool(context.selected_objects)
 
     def execute(self, context):
         for ob in context.selected_objects:
@@ -79,6 +88,10 @@ class AAA_OT_clear_except_location(Operator):
     bl_label = "Clear Except Location"
     bl_options = {"UNDO"}
 
+    @classmethod
+    def poll(cls, context):
+        return bool(context.selected_objects)
+
     def execute(self, context):
         for ob in context.selected_objects:
             if ob.rotation_mode == "QUATERNION":
@@ -89,3 +102,8 @@ class AAA_OT_clear_except_location(Operator):
                 ob.rotation_euler = (0.0, 0.0, 0.0)
             ob.scale = (1.0, 1.0, 1.0)
         return {"FINISHED"}
+
+
+# Backwards compatibility aliases
+ReorderModifiers = AAA_OT_reorder_modifiers
+AddMaterial = AAA_OT_add_material

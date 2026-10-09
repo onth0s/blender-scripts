@@ -30,16 +30,29 @@ class VIEW3D_MT_SCULPT_FILTERS(Menu):
         op.type = 'SURFACE_SMOOTH'
 
 
-class VIEW3D_MT_SCULPT_OPS(Menu):
-    bl_label = "Sculpt Operators"
+class VIEW3D_MT_SCULPT_HIDE(Menu):
+    bl_label = "Sculpt Hide"
 
     def draw(self, context):
         LYT = self.layout
+
         op = LYT.operator("paint.hide_show_masked", text="F - Hide Masked")
         op.action = "HIDE"
 
         op = LYT.operator("paint.hide_show_all", text="G - Show All")
         op.action = "SHOW"
+
+        LYT.separator()
+        LYT.operator(
+            "wm.tool_set_by_id", text="H - Lasso Hide"
+        ).name = "builtin.lasso_hide"
+        LYT.operator(
+            "wm.tool_set_by_id", text="B - Box Hide"
+        ).name = "builtin.box_hide"
+
+
+# Backwards compatibility alias
+VIEW3D_MT_SCULPT_OPS = VIEW3D_MT_SCULPT_HIDE
 
 
 class VIEW3D_MT_SCULPT_MASK(Menu):
@@ -51,6 +64,20 @@ class VIEW3D_MT_SCULPT_MASK(Menu):
         LYT.operator(
             "wm.tool_set_by_id", text="Z - Mask"
         ).name = "builtin_brush.mask"
+        LYT.operator(
+            "wm.tool_set_by_id", text="B - Box Mask"
+        ).name = "builtin.box_mask"
+        LYT.operator(
+            "wm.tool_set_by_id", text="L - Lasso Mask"
+        ).name = "builtin.lasso_mask"
+
+        LYT.separator()
+        op = LYT.operator("paint.mask_flood_fill", text="S - Clear")
+        op.mode = "VALUE"
+        op.value = 0
+
+        op = LYT.operator("paint.mask_flood_fill", text="D - Invert")
+        op.mode = "INVERT"
 
 
 class VIEW3D_MT_SCULPT_PAINT(Menu):

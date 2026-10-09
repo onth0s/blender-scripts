@@ -120,6 +120,7 @@ def global_keymap():
 
 
 def register():
+    unregister()
     global_keymap()
 
 

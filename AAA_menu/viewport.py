@@ -94,7 +94,6 @@ class VIEW3D_MT_SHADING_OPTIONS_CAVITY(Menu):
             "aaa.toggle_prop", text="W - " + cavity_state
         ).prop = "context.space_data.shading.show_cavity"
 
-        TEMP = "context.space_data.shading.space_data.shading.cavity_type"  # wait, is it show_cavity or cavity_type? Ah, the original code: TEMP = "context.space_data.shading.cavity_type"
         TEMP = "context.space_data.shading.cavity_type"
         LYT.separator()
         OP = LYT.operator("aaa.switch_value", text="A - World")
@@ -111,7 +110,7 @@ class VIEW3D_MT_SHADING_OPTIONS_CAVITY(Menu):
 
 
 class VIEW3D_MT_RENDERER(Menu):
-    bl_label = ""
+    bl_label = "Renderer"
 
     def draw(self, context):
         OP = "aaa.switch_renderer"
@@ -232,7 +231,7 @@ class VIEW3D_MT_TRANSFORM_GIZMO(Menu):
 
 
 class VIEW3D_MT_PIVOT_POINT(Menu):
-    bl_label = "Pivot Point test"
+    bl_label = "Pivot Point"
 
     def draw(self, context):
         LYT = self.layout

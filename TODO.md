@@ -1,3 +1,0 @@
-- separate mask and hide (sculpt tools) into different Menus called from the S Pie Menu
-- surface smooth sculpt filter to space-pie-bottom 
-- MatCap menu North from Z Pie broken if you go from Workbench render to regular; that's how you reproduce it

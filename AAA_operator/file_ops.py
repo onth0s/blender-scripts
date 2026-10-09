@@ -3,7 +3,7 @@ import os
 from bpy.types import Operator  # type: ignore
 from AAA_utils import resolve_incremented_path
 
-class SaveFile(Operator):
+class AAA_OT_save_file(Operator):
     """Save the current file and check if it has already been saved."""
 
     bl_idname = "aaa.save_file"
@@ -41,9 +41,9 @@ class SaveFile(Operator):
         return {"FINISHED"}
 
 
-class SaveIncremental(Operator):
+class AAA_OT_save_incremental(Operator):
     bl_idname = "aaa.save_incremental"
-    bl_label = ""
+    bl_label = "Save Incremental"
     bl_options = {"REGISTER"}
 
     def execute(self, context):
@@ -74,7 +74,7 @@ class SaveIncremental(Operator):
             return {"CANCELLED"}
 
 
-class ReloadScripts(Operator):
+class AAA_OT_reload_scripts(Operator):
     bl_idname = "aaa.reload_scripts"
     bl_label = "Reload AAA Scripts"
     bl_options = {"REGISTER"}
@@ -133,4 +133,10 @@ class ReloadScripts(Operator):
         bpy.app.timers.register(delayed_reload, first_interval=0.01)
         self.report({"INFO"}, "Scripts Reloaded!")
         return {"FINISHED"}
+
+
+# Backwards compatibility aliases
+SaveFile = AAA_OT_save_file
+SaveIncremental = AAA_OT_save_incremental
+ReloadScripts = AAA_OT_reload_scripts
 

@@ -48,9 +48,9 @@ class PIE_MT_SPACE(Menu):
             pie.operator(MN, text="").name = ""
 
         # ------------------------   BOTTOM   ------------------------------- #
-        if M in (MHS):
-            pie.operator(MN, text="Sculpt Filters").name = "VIEW3D_MT_SCULPT_FILTERS"
-        elif M in (ALL):
+        if M == MHS:
+            pie.operator("sculpt.mesh_filter", text="Surface Smooth").type = "SURFACE_SMOOTH"
+        elif M in ALL:
             pie.operator(MN, text="Apply/Clear").name = "VIEW3D_MT_APPLY_CLEAR"
 
         # ------------------------   TOP   ---------------------------------- #
@@ -121,13 +121,13 @@ class PIE_MT_S(Menu):
         else:
             pie.operator(MT, text="").name = ""
         # ------------------------   TOP-RIGHT   ---------------------------- #
-        if M in (ALL) and context.mode != "SCULPT":
+        if M in ALL and context.mode != "SCULPT":
             pie.operator(MT, text="Modifiers").name = "VIEW3D_MT_MODIFIERS"
-        elif M in (MHS):
-            pie.operator(MT, text="Operators").name = "VIEW3D_MT_SCULPT_OPS"
+        elif M == MHS:
+            pie.operator(MT, text="Hide").name = "VIEW3D_MT_SCULPT_HIDE"
         # ------------------------   BOTTOM-LEFT   -------------------------- #
         if M in (OBJ, MHE):
-            pie.operator(PT, text="Proportional").name = "VIEW3D_PT_proportional_edit_2"
+            pie.operator(PT, text="Proportional").name = "AAA_PT_proportional_edit"
         elif M in (MHS):
             pie.operator(PT, text="Symmetry").name = "AAA_PT_sculpt_symmetry"
         else:
@@ -169,17 +169,20 @@ class VIEW3D_MT_SHADING_PIE(Menu):
         MN = "wm.call_menu"
         PT = "wm.call_panel"
 
-        pie.operator(PT, text="Object Color").name = "VIEW3D_PT_object_color"
+        pie.operator(PT, text="Object Color").name = "AAA_PT_object_color"
         pie.operator(MN, text="Display").name = "VIEW3D_MT_VIEWPORT_DISPLAY"
 
         pie.operator(MN, text="Renderer").name = "VIEW3D_MT_RENDERER"
 
-        if context.scene.render.engine != "BLENDER_WORKBENCH":
-            pie.operator(PT, text="Lighting").name = "VIEW3D_PT_lighting"
+        if (
+            context.space_data.shading.type == "SOLID"
+            or context.scene.render.engine != "BLENDER_WORKBENCH"
+        ):
+            pie.operator(PT, text="Lighting").name = "AAA_PT_lighting"
         else:
             pie.operator(MN, text="")
 
-        pie.operator(PT, text="Background Color").name = "VIEW3D_PT_background_color"
+        pie.operator(PT, text="Background Color").name = "AAA_PT_background_color"
         pie.operator(MN, text="")
         pie.operator(MN, text="")
 
@@ -194,7 +197,7 @@ class PIE_MT_KEY_CONDITIONS(Menu):
         OP = "aaa.switch_condition"
         pie = self.layout.menu_pie()
 
-        pie.operator("wm.call_panel", text="Frame Range").name = "VIEW3D_PT_frame_range"
+        pie.operator("wm.call_panel", text="Frame Range").name = "AAA_PT_frame_range"
 
         pie.operator(OP, text="Transform").cond = "TRANSFORM"
         pie.operator(OP, text="").cond = ""

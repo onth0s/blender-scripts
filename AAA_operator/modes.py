@@ -4,11 +4,15 @@ from bpy.props import StringProperty  # type: ignore
 from AAA_utils import MHE, MHS, MHV, OBJ
 
 
-class ModeSet(Operator):
+class AAA_OT_mode_set(Operator):
     bl_idname = "aaa.mode_set"
-    bl_label = ""
+    bl_label = "Set Mode"
 
     mode: StringProperty()  # type: ignore
+
+    @classmethod
+    def poll(cls, context):
+        return context.active_object is not None
 
     def execute(self, context):
         # space_data is None in headless/background mode; guard before accessing shading
@@ -22,7 +26,7 @@ class ModeSet(Operator):
         return {"FINISHED"}
 
 
-class STDTools(Operator):
+class AAA_OT_std_tools(Operator):
     bl_idname = "aaa.std_tools"
     bl_label = "Standard Tools"
     bl_options = {"REGISTER"}
@@ -103,5 +107,10 @@ class AAA_OT_sculpt_brush_activate(Operator):
             bpy.ops.wm.tool_set_by_id(name=self.tool_id)
 
         return {"FINISHED"}
+
+
+# Backwards compatibility aliases
+ModeSet = AAA_OT_mode_set
+STDTools = AAA_OT_std_tools
 
 

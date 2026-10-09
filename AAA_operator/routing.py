@@ -81,7 +81,7 @@ CONDITIONS_ROUTER = {
 }
 
 
-class GlobalQ(Operator):
+class AAA_OT_global_q(Operator):
     bl_idname = "aaa.key_q"
     bl_label = "GLOBAL_Q"
     bl_options = {"REGISTER", "UNDO"}
@@ -97,7 +97,7 @@ class GlobalQ(Operator):
         return {"FINISHED"}
 
 
-class GlobalW(Operator):
+class AAA_OT_global_w(Operator):
     bl_idname = "aaa.key_w"
     bl_label = "GLOBAL_W"
     bl_options = {"REGISTER", "UNDO"}
@@ -113,7 +113,7 @@ class GlobalW(Operator):
         return {"FINISHED"}
 
 
-class GlobalE(Operator):
+class AAA_OT_global_e(Operator):
     bl_idname = "aaa.key_e"
     bl_label = "GLOBAL_E"
     bl_options = {"REGISTER", "UNDO"}
@@ -127,3 +127,9 @@ class GlobalE(Operator):
                 {"WARNING"}, f"No mapping found for key E under condition '{CN}'"
             )
         return {"FINISHED"}
+
+
+# Backwards compatibility aliases
+GlobalQ = AAA_OT_global_q
+GlobalW = AAA_OT_global_w
+GlobalE = AAA_OT_global_e

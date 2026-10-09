@@ -6,14 +6,18 @@ import gpu  # type: ignore
 from gpu_extras.batch import batch_for_shader  # type: ignore
 from AAA_utils import MHS, OBJ
 
-class SwitchWorkspace(Operator):
+class AAA_OT_switch_workspace(Operator):
     """Switch Workspace"""
 
     bl_idname = "aaa.switch_workspace"
-    bl_label = ""
+    bl_label = "Switch Workspace"
     bl_options = {"REGISTER"}
 
     name: bpy.props.StringProperty()  # type: ignore
+
+    @classmethod
+    def poll(cls, context):
+        return bool(context.window)
 
     def execute(self, context):
         if self.name in bpy.data.workspaces:
@@ -23,7 +27,7 @@ class SwitchWorkspace(Operator):
         return {"CANCELLED"}
 
 
-class ToggleOverlays(Operator):
+class AAA_OT_toggle_overlays(Operator):
     bl_idname = "aaa.toggle_overlays"
     bl_label = "Toggle Overlays"
     bl_options = {"REGISTER"}
@@ -74,19 +78,10 @@ class ToggleOverlays(Operator):
         return {"FINISHED"}
 
 
-class RollViewport(Operator):
+class AAA_OT_roll_viewport(Operator):
     bl_idname = "aaa.roll_viewport"
     bl_label = "Roll Viewport"
     bl_options = {"GRAB_CURSOR"}
-
-    initial_angle = 0
-    angle_now = 0
-    initial_rotation = Vector((0, 0, 0))  # type: ignore
-    camNormal = Vector((0, 0, -1))  # type: ignore
-
-    temp_degree = 0
-
-    _draw_handler = None
 
     # margin (px) offset from the mouse cursor for the rotation pivot.
     # the pivot is placed along the ray from viewport center through the mouse,
@@ -96,9 +91,20 @@ class RollViewport(Operator):
     # a value of 0 rotates around the mouse itself.
     margin: bpy.props.IntProperty(default=100)  # type: ignore
 
+    @classmethod
+    def poll(cls, context):
+        return bool(
+            context.space_data
+            and context.space_data.type == "VIEW_3D"
+            and context.region
+        )
+
     def invoke(self, context, event):
         rv3d = context.space_data.region_3d
         context.window_manager.modal_handler_add(self)
+
+        self._draw_handler = None
+        self.temp_degree = 0.0
 
         self.camera = context.scene.camera
         self.rotate_camera = (
@@ -150,12 +156,13 @@ class RollViewport(Operator):
             direction = Vector((0, 0))  # type: ignore
         self.view3d_center = mouseloc - direction * self.margin
 
-        # DEBUG: draw the pivot as a crosshair in the viewport
-        self._region_x = context.region.x
-        self._region_y = context.region.y
-        self._draw_handler = bpy.types.SpaceView3D.draw_handler_add(
-            self._draw_pivot, (self,), "WINDOW", "POST_PIXEL"
-        )
+        # Optional debug crosshair in viewport when enabled
+        if getattr(context.scene, "debug_roll_pivot", False):
+            self._region_x = context.region.x
+            self._region_y = context.region.y
+            self._draw_handler = bpy.types.SpaceView3D.draw_handler_add(
+                self._draw_pivot, (self,), "WINDOW", "POST_PIXEL"
+            )
 
         # angle from the pivot to the mouse position at invocation (radians).
         # this is the baseline angle; subsequent mouse movement is compared against it.
@@ -169,10 +176,10 @@ class RollViewport(Operator):
         # rotation axis mapped from the scene property
         if context.scene.axis_roll == "X":
             self.camNormal = Vector((1, 0, 0))  # type: ignore
-        elif context.scene.axis_roll == "Y":
-            self.camNormal = Vector((0, 0, -1))  # type: ignore
         elif context.scene.axis_roll == "Z":
             self.camNormal = Vector((0, 1, 0))  # type: ignore
+        else:
+            self.camNormal = Vector((0, 0, -1))  # type: ignore
 
         return {"RUNNING_MODAL"}
 
@@ -258,9 +265,9 @@ class RollViewport(Operator):
         return {"RUNNING_MODAL"}
 
 
-class RollAxis(Operator):
+class AAA_OT_roll_axis(Operator):
     bl_idname = "aaa.roll_axis"
-    bl_label = ""
+    bl_label = "Roll Axis"
     bl_options = {"REGISTER"}
 
     axis: bpy.props.StringProperty()  # type: ignore
@@ -276,7 +283,7 @@ class RollAxis(Operator):
         return {"FINISHED"}
 
 
-class SwitchRenderer(Operator):
+class AAA_OT_switch_renderer(Operator):
     bl_idname = "aaa.switch_renderer"
     bl_label = "Switch Renderer"
     bl_options = {"REGISTER"}
@@ -315,3 +322,11 @@ class SwitchRenderer(Operator):
                 else:
                     context.space_data.shading.type = "MATERIAL"
         return {"FINISHED"}
+
+
+# Backwards compatibility aliases
+SwitchWorkspace = AAA_OT_switch_workspace
+ToggleOverlays = AAA_OT_toggle_overlays
+RollViewport = AAA_OT_roll_viewport
+RollAxis = AAA_OT_roll_axis
+SwitchRenderer = AAA_OT_switch_renderer

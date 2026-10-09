@@ -11,7 +11,7 @@ class VIEW3D_MT_STD_TOOLS(Menu):
 
         BRUSH = "brushes\\essentials_brushes-mesh_sculpt.blend\\Brush\\"
 
-        if M in (MHE):
+        if M == MHE:
             LYT.operator_context = "INVOKE_DEFAULT"
 
             LYT.operator("mesh.duplicate_move", text="Q - Duplicate")
@@ -34,12 +34,12 @@ class VIEW3D_MT_STD_TOOLS(Menu):
             ).name = "VIEW3D_MT_edit_mesh_merge"
             LYT.operator("mesh.subdivide", text="V - Subdivide")
 
-        elif M in (OBJ):
+        elif M == OBJ:
             LYT.operator("object.parent_set", text="E - Parent Object").type = "OBJECT"
             LYT.operator("object.parent_clear", text="Q - Clear Parent + Keep Transform").type = "CLEAR_KEEP_TRANSFORM"
             LYT.operator("object.parent_clear", text="R - Clear Parent").type = "CLEAR"
 
-        elif M in (MHS):
+        elif M == MHS:
             OP = LYT.operator("aaa.sculpt_brush_activate", text="R - Smooth")
             OP.asset_identifier = BRUSH + "Smooth"
             OP.brush_type = "STANDARD"
@@ -116,7 +116,7 @@ class VIEW3D_MT_MODIFIERS(Menu):
 
         LYT.operator(
             "wm.call_panel", text="D - Manage"
-        ).name = "VIEW3D_PT_manage_modifiers"
+        ).name = "AAA_PT_manage_modifiers"
         LYT.separator()
 
         LYT.operator("object.modifier_add", text="S - Subsurf").type = "SUBSURF"
@@ -174,21 +174,20 @@ class VIEW3D_MT_CLEAR(Menu):
 
     def draw(self, context):
         LYT = self.layout
-        OB = "object"
 
         LYT.operator("aaa.clear_all_transforms", text="Q - Clear All")
         LYT.separator()
 
-        props = LYT.operator(OB + ".location_clear", text="A - Location")
+        props = LYT.operator("object.location_clear", text="A - Location")
         props.clear_delta = False
 
-        props = LYT.operator(OB + ".scale_clear", text="S - Scale")
+        props = LYT.operator("object.scale_clear", text="S - Scale")
         props.clear_delta = False
 
-        props = LYT.operator(OB + ".rotation_clear", text="D - Rotation")
+        props = LYT.operator("object.rotation_clear", text="D - Rotation")
         props.clear_delta = False
 
         LYT.operator("aaa.clear_except_location", text="W - Except Location")
 
         LYT.separator()
-        props = LYT.operator(OB + ".origin_clear", text="E - Origin to Parent")
+        props = LYT.operator("object.origin_clear", text="E - Origin to Parent")

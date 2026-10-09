@@ -17,9 +17,7 @@ class VIEW3D_MT_ABOUT_FRAMES(Menu):
 
     def draw(self, context):
         LYT = self.layout
-
-        LYT = self.layout
-        LYT.operator("wm.call_panel", text="A - Rate").name = "VIEW3D_PT_FRAME_RATE"
+        LYT.operator("wm.call_panel", text="A - Rate").name = "AAA_PT_frame_rate"
         LYT.operator(
             "aaa.toggle_prop", text="D - Preview"
         ).prop = "context.scene.use_preview_range"

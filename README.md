@@ -31,10 +31,10 @@ sculpting/retopology workflow.
 
 | Key | Pie | Contents |
 |---|---|---|
-| **SPACE** | `PIE_MT_SPACE` | Workspace, View, Select, Select Mode, Apply/Clear, Object Ops / Edit Mode / Face Sets, Transform Gizmo, Sculpt Filters |
-| **S** | `PIE_MT_S` | Orientation, Tools, Pivot Point, Snapping, Proportional Edit, Modifiers, Cursor, Mode, Sculpt Symmetry/Operators |
+| **SPACE** | `PIE_MT_SPACE` | Workspace, View, Select, Select Mode, Apply/Clear, Object Ops / Edit Mode / Face Sets, Transform Gizmo, Sculpt Surface Smooth |
+| **S** | `PIE_MT_S` | Orientation, Tools, Pivot Point, Snapping, Proportional Edit, Modifiers, Cursor, Mode, Sculpt Symmetry / Hide / Mask |
 | **A** | `PIE_MT_ANIMATION` | Timeline playback, frame range |
-| **Z** | `VIEW3D_MT_SHADING_PIE` | Object Color, Display, Renderer, Lighting, Background, Shading Options |
+| **Z** | `VIEW3D_MT_SHADING_PIE` | Object Color, Display, Renderer, Lighting / MatCap, Background, Shading Options |
 | **C** | `PIE_MT_KEY_CONDITIONS` | Switch between Transform / Timeline key routing modes |
 | **Ctrl+S** | `PIE_MT_SAVE_N_STUFF` | Save, Save Incremental, Open, New, Append, Import OBJ, Override Startup, Reload Scripts (Run Script/Toggle Comment in Text Editor) |
 
@@ -53,38 +53,39 @@ Switch via `PIE_MT_KEY_CONDITIONS` (pie bound to **C**).
 
 ## Key Operators
 
-| Operator | ID | Action |
+| Operator Class | ID | Action |
 |---|---|---|
-| `SaveFile` | `aaa.save_file` | Save current blend; warns if no changes |
-| `SaveIncremental` | `aaa.save_incremental` | Save with incremented filename (`file_001.blend` → `file_002.blend`) |
-| `ReloadScripts` | `aaa.reload_scripts` | Unregister, purge, re-import and re-register all `AAA_*` modules |
-| `SwitchWorkspace` | `aaa.switch_workspace` | Switch to a named workspace |
-| `ModeSet` | `aaa.mode_set` | Switch object mode (also sets cavity type) |
-| `ToggleOverlays` | `aaa.toggle_overlays` | Toggle header / floor / all overlays |
-| `RollViewport` | `aaa.roll_viewport` | Drag-rotate viewport around chosen axis (**Alt+MMB**) |
-| `RollAxis` | `aaa.roll_axis` | Set the roll axis (X/Y/Z) |
-| `ReorderModifiers` | `aaa.reorder_modifiers` | Move modifier up/down/top/bottom |
-| `AddMaterial` | `aaa.add_material` | Add new or most-recent material to active object |
-| `SwitchRenderer` | `aaa.switch_renderer` | Swap between Solid / Material / EEVEE / Cycles / Workbench |
-| `STDTools` | `aaa.std_tools` | Set standard tools (e.g. spin tool) |
-| `SwitchCondition` | `aaa.switch_condition` | Set `scene.conditions` |
-| `SwitchValue` / `ToggleProp` | `aaa.switch_value` / `aaa.toggle_prop` | Generic exec-based value assignment / toggle |
-| `ClearAllTransforms` / `ClearExceptLocation` | `aaa.clear_all_transforms` / `aaa.clear_except_location` | Reset transforms of selected objects |
-| `GlobalQ/W/E` | `aaa.key_q/w/e` | Routed by `CONDITIONS_ROUTER` |
-| `TestOperator` / `TestContextDebugger` | `aaa.test_operator` / `aaa.test_context_debugger` | Debug utilities |
+| `AAA_OT_save_file` | `aaa.save_file` | Save current blend; warns if no changes |
+| `AAA_OT_save_incremental` | `aaa.save_incremental` | Save with incremented filename (`file_001.blend` → `file_002.blend`) |
+| `AAA_OT_reload_scripts` | `aaa.reload_scripts` | Unregister, purge, re-import and re-register all `AAA_*` modules |
+| `AAA_OT_switch_workspace` | `aaa.switch_workspace` | Switch to a named workspace |
+| `AAA_OT_mode_set` | `aaa.mode_set` | Switch object mode (also sets cavity type) |
+| `AAA_OT_toggle_overlays` | `aaa.toggle_overlays` | Toggle header / floor / all overlays |
+| `AAA_OT_roll_viewport` | `aaa.roll_viewport` | Drag-rotate viewport around chosen axis (**Alt+MMB**) |
+| `AAA_OT_roll_axis` | `aaa.roll_axis` | Set the roll axis (X/Y/Z) |
+| `AAA_OT_reorder_modifiers` | `aaa.reorder_modifiers` | Move modifier up/down/top/bottom |
+| `AAA_OT_add_material` | `aaa.add_material` | Add new or most-recent material to active object |
+| `AAA_OT_switch_renderer` | `aaa.switch_renderer` | Swap between Solid / Material / EEVEE / Cycles / Workbench |
+| `AAA_OT_std_tools` | `aaa.std_tools` | Set standard tools (e.g. spin tool) |
+| `AAA_OT_sculpt_brush_activate` | `aaa.sculpt_brush_activate` | Sculpt brush activate with wireframe and Dyntopo restoration |
+| `AAA_OT_switch_condition` | `aaa.switch_condition` | Set `scene.conditions` |
+| `AAA_OT_switch_value` / `AAA_OT_toggle_prop` | `aaa.switch_value` / `aaa.toggle_prop` | Generic exec-based value assignment / toggle |
+| `AAA_OT_clear_all_transforms` / `AAA_OT_clear_except_location` | `aaa.clear_all_transforms` / `aaa.clear_except_location` | Reset transforms of selected objects |
+| `AAA_OT_global_q/w/e` | `aaa.key_q/w/e` | Routed by `CONDITIONS_ROUTER` |
+| `AAA_OT_test_operator` / `AAA_OT_test_context_debugger` | `aaa.test_operator` / `aaa.test_context_debugger` | Debug utilities |
 
 ---
 
 ## Panels
 
-- **Manage Modifiers** (`VIEW3D_PT_manage_modifiers`) — reorder list with up/down/top/bottom buttons
-- **Proportional Editing** (`VIEW3D_PT_proportional_edit_2`) — distance, connected, falloff
-- **Frame Range** (`VIEW3D_PT_frame_range`) — start/end, preview range, loop toggle
-- **Object Color** (`VIEW3D_PT_object_color`) — color type, single/object/material
-- **Lighting** (`VIEW3D_PT_lighting`) — studio light, matcap, scene lights/world
-- **Background Color** (`VIEW3D_PT_background_color`) — viewport/world background
+- **Manage Modifiers** (`AAA_PT_manage_modifiers`) — reorder list with up/down/top/bottom buttons
+- **Proportional Editing** (`AAA_PT_proportional_edit`) — distance, connected, falloff
+- **Frame Range** (`AAA_PT_frame_range`) — start/end, preview range, loop toggle
+- **Object Color** (`AAA_PT_object_color`) — color type, single/object/material
+- **Lighting** (`AAA_PT_lighting`) — studio light, matcap, scene lights/world
+- **Background Color** (`AAA_PT_background_color`) — viewport/world background
 - **Symmetry & Symmetrize** (`AAA_PT_sculpt_symmetry`) — mirror axes, symmetrize direction
-- **Frame Rate** (`VIEW3D_PT_FRAME_RATE`) — FPS display
+- **Frame Rate** (`AAA_PT_frame_rate`) — FPS display
 
 ---
 
