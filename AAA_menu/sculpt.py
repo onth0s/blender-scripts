@@ -44,10 +44,10 @@ class VIEW3D_MT_SCULPT_HIDE(Menu):
 
         LYT.separator()
         LYT.operator(
-            "wm.tool_set_by_id", text="H - Lasso Hide"
+            "wm.tool_set_by_id", text="A - Lasso Hide"
         ).name = "builtin.lasso_hide"
         LYT.operator(
-            "wm.tool_set_by_id", text="B - Box Hide"
+            "wm.tool_set_by_id", text="S - Box Hide"
         ).name = "builtin.box_hide"
 
 
