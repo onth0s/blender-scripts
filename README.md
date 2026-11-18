@@ -16,7 +16,7 @@ sculpting/retopology workflow.
 |---|---|
 | `AAA_settings.py` | Declares custom `Scene` properties (`conditions`, `show_overlays`, `axis_roll`, `loop_frames`, …) |
 | `AAA_operator.py` | Thin wrapper that registers the `AAA_operator/` package on import |
-| `AAA_operator/` | Package of 22 operators: save, mode switching, workspace switch, modifier reorder, viewport roll, global key routing, property toggles, clear transforms, debug tools |
+| `AAA_operator/` | Package of 23 operators: save, mode switching, workspace switch, modifier reorder, viewport roll, global key routing, property toggles, clear transforms, debug tools |
 | `AAA_menu.py` | Thin wrapper that registers the `AAA_menu/` package on import |
 | `AAA_menu/` | Custom `VIEW3D_MT_*` menus (workspace, mode, viewport display, shading, renderer, select, tools, modifiers, pivot, apply/clear, …) |
 | `AAA_pie.py` | Pie menus: **SPACE** (general), **S** (tools), **A** (animation), **Z** (shading), **C** (key conditions), **Ctrl+S** (save) |
@@ -105,7 +105,7 @@ Switch via `PIE_MT_KEY_CONDITIONS` (pie bound to **C**).
 | **Shift+Ctrl+MMB** | `view3d.view_selected` |
 | **Ctrl+Alt+MMB** | `view3d.view_center_pick` |
 | **Shift+Ctrl+MMB** (Image Editor) | Zoom to 1:1 |
-| **Alt+LMB** (Texture / Image Paint) | Sample Color / Eyedropper (`paint.sample_color`) |
+| **Alt+LMB** (Image Paint / Vertex Paint / Sculpt) | Sample Color / Eyedropper (`paint.sample_color`) |
 
 ---
 
