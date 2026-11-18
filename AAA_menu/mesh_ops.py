@@ -44,6 +44,9 @@ class VIEW3D_MT_STD_TOOLS(Menu):
             LYT.operator(
                 "wm.tool_set_by_id", text="G - Tweak"
             ).name = "retopoflow.tweak"
+            LYT.operator(
+                "wm.tool_set_by_id", text="H - Relax"
+            ).name = "retopoflow.relax"
 
         elif M == OBJ:
             LYT.operator("object.parent_set", text="E - Parent Object").type = "OBJECT"
