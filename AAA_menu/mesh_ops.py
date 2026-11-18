@@ -17,7 +17,7 @@ class VIEW3D_MT_STD_TOOLS(Menu):
             LYT.operator("mesh.duplicate_move", text="Q - Duplicate")
             LYT.operator("mesh.inset", text="W - Inset")
             LYT.operator("mesh.vert_connect_path", text="E - Connect Path")
-            LYT.operator("mesh.split", text="R - Split")
+            LYT.operator("mesh.split", text="Y - Split")
 
             LYT.separator()
             LYT.operator("mesh.extrude_region_move", text="S - Extrude")
@@ -33,6 +33,17 @@ class VIEW3D_MT_STD_TOOLS(Menu):
                 "wm.call_menu", text="C - Merge"
             ).name = "VIEW3D_MT_edit_mesh_merge"
             LYT.operator("mesh.subdivide", text="V - Subdivide")
+
+            LYT.separator()
+            LYT.operator(
+                "wm.tool_set_by_id", text="R - PolyPen"
+            ).name = "retopoflow.polypen"
+            LYT.operator(
+                "wm.tool_set_by_id", text="T - PolyStrips"
+            ).name = "retopoflow.polystrips"
+            LYT.operator(
+                "wm.tool_set_by_id", text="G - Tweak"
+            ).name = "retopoflow.tweak"
 
         elif M == OBJ:
             LYT.operator("object.parent_set", text="E - Parent Object").type = "OBJECT"
